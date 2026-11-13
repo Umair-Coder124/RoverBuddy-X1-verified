@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1050" viewBox="0 0 1500 1050"><rect width="100%" height="100%" fill="#f5f8fb"/>
+<text x="30" y="50" font-family="sans-serif" font-size="30" fill="#163149">RoverBuddy X1 | System wiring DRAFT</text>
+<text x="30" y="82" font-family="sans-serif" font-size="17" fill="#163149">Architecture only. Protection, exact pinout, connector details and electrical ratings remain unresolved.</text>
+<rect x="40" y="130" width="250" height="100" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="54" y="161" font-family="sans-serif" font-size="17" fill="#163149">3S assembled battery</text>
+<text x="54" y="190" font-family="sans-serif" font-size="17" fill="#163149">11.1 V nominal</text>
+<text x="54" y="219" font-family="sans-serif" font-size="17" fill="#163149">12.6 V full charge</text>
+<rect x="355" y="120" width="480" height="120" rx="12" fill="#ffe3d6" stroke="#54748c" stroke-width="2"/>
+<text x="369" y="151" font-family="sans-serif" font-size="17" fill="#163149">REQUIRED: fuse + disconnect + cutoff</text>
+<text x="369" y="180" font-family="sans-serif" font-size="17" fill="#163149">Hardware drive isolation / stop</text>
+<text x="369" y="209" font-family="sans-serif" font-size="17" fill="#163149">Circuit and component ratings: NOT FINAL</text>
+<polyline points="290,180 355,180" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="355,180 343.0,175.0 343.0,185.0" fill="#376685"/>
+<rect x="980" y="130" width="450" height="100" rx="12" fill="#ffe3d6" stroke="#54748c" stroke-width="2"/>
+<text x="994" y="161" font-family="sans-serif" font-size="17" fill="#163149">6 V motor regulator: sizing HOLD</text>
+<text x="994" y="190" font-family="sans-serif" font-size="17" fill="#163149">6 A stall estimate vs 5.5 A nominal</text>
+<text x="994" y="219" font-family="sans-serif" font-size="17" fill="#163149">Verify regulator, thermal and wiring limits</text>
+<rect x="980" y="340" width="450" height="90" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="994" y="371" font-family="sans-serif" font-size="17" fill="#163149">6 V servo regulator</text>
+<text x="994" y="400" font-family="sans-serif" font-size="17" fill="#163149">Two neck servos; signal control pending</text>
+<rect x="980" y="520" width="450" height="90" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="994" y="551" font-family="sans-serif" font-size="17" fill="#163149">Pi power module</text>
+<text x="994" y="580" font-family="sans-serif" font-size="17" fill="#163149">Verify input, USB loads and output supply</text>
+<polyline points="835,180 980,180" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="980,180 968.0,175.0 968.0,185.0" fill="#376685"/>
+<polyline points="870,180 870,385 980,385" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="980,385 968.0,380.0 968.0,390.0" fill="#376685"/>
+<polyline points="870,385 870,565 980,565" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="980,565 968.0,560.0 968.0,570.0" fill="#376685"/>
+<rect x="980" y="255" width="450" height="65" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="994" y="286" font-family="sans-serif" font-size="17" fill="#163149">2 x MDD3A -&gt; 4 x TT motors</text>
+<polyline points="1205,230 1205,255" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="1205,255 1210.0,243.0 1200.0,243.0" fill="#376685"/>
+<rect x="400" y="500" width="360" height="110" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="414" y="531" font-family="sans-serif" font-size="17" fill="#163149">Raspberry Pi 5</text>
+<text x="414" y="560" font-family="sans-serif" font-size="17" fill="#163149">Camera tracking + chest UI: planned</text>
+<text x="414" y="589" font-family="sans-serif" font-size="17" fill="#163149">USB host for controller</text>
+<polyline points="980,565 760,565" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="760,565 772.0,570.0 772.0,560.0" fill="#376685"/>
+<text x="785" y="547" font-family="sans-serif" font-size="17" fill="#163149">regulated Pi power</text>
+<rect x="40" y="500" width="270" height="110" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="54" y="531" font-family="sans-serif" font-size="17" fill="#163149">Camera: CSI</text>
+<text x="54" y="560" font-family="sans-serif" font-size="17" fill="#163149">Display: HDMI + USB touch</text>
+<text x="54" y="589" font-family="sans-serif" font-size="17" fill="#163149">Audio: USB</text>
+<polyline points="310,555 400,555" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="400,555 388.0,550.0 388.0,560.0" fill="#376685"/>
+<text x="315" y="537" font-family="sans-serif" font-size="17" fill="#163149">interfaces</text>
+<rect x="400" y="730" width="360" height="100" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="414" y="761" font-family="sans-serif" font-size="17" fill="#163149">Pico-family controller</text>
+<text x="414" y="790" font-family="sans-serif" font-size="17" fill="#163149">Exact third-party board unverified</text>
+<text x="414" y="819" font-family="sans-serif" font-size="17" fill="#163149">Drive firmware disabled by default</text>
+<polyline points="580,610 580,730" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="580,730 585.0,718.0 575.0,718.0" fill="#376685"/>
+<text x="590" y="667" font-family="sans-serif" font-size="17" fill="#163149">USB data; power/backfeed review</text>
+<polyline points="760,775 920,775 920,290 980,290" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="980,290 968.0,285.0 968.0,295.0" fill="#376685"/>
+<text x="770" y="757" font-family="sans-serif" font-size="17" fill="#163149">8 GPIO motor signals</text>
+<rect x="40" y="730" width="270" height="100" rx="12" fill="#e0edf6" stroke="#54748c" stroke-width="2"/>
+<text x="54" y="761" font-family="sans-serif" font-size="17" fill="#163149">Ultrasonic sensor (planned)</text>
+<text x="54" y="790" font-family="sans-serif" font-size="17" fill="#163149">5 V echo needs conversion</text>
+<text x="54" y="819" font-family="sans-serif" font-size="17" fill="#163149">Pan/tilt GPIO reserved</text>
+<polyline points="310,780 400,780" fill="none" stroke="#376685" stroke-width="3"/>
+<polygon points="400,780 388.0,775.0 388.0,785.0" fill="#376685"/>
+<text x="40" y="911" font-family="sans-serif" font-size="21" fill="#163149">All control grounds need a common reference. Do not join separate positive rails.</text>
+<text x="40" y="947" font-family="sans-serif" font-size="17" fill="#163149">No custom PCB exists. This image is not a validated pin-to-pin schematic or a wiring instruction.</text>
+<text x="40" y="982" font-family="sans-serif" font-size="17" fill="#163149">Follow-me behavior, obstacle handling, head motion and independent protection remain to be implemented.</text>
+</svg>
