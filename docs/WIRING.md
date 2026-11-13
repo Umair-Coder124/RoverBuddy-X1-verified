@@ -43,6 +43,22 @@ Match the GP labels against the exact controller board before assigning physical
 
 [Cytron MDD3A datasheet, board layout and functions](https://www.electrokit.com/upload/product/41018/41018266/MDD3A%20Datasheet.pdf)
 
+## Motor driver 2 — rear wheels
+
+| Controller or motor connection | Cytron MDD3A driver 2 |
+|---|---|
+| Controller GP6 | M1A signal input |
+| Controller GP7 | M1B signal input |
+| Controller GP8 | M2A signal input |
+| Controller GP9 | M2B signal input |
+| Controller signal ground | GND on the signal header |
+| Rear-left motor, two leads | Motor 1 output terminal pair |
+| Rear-right motor, two leads | Motor 2 output terminal pair |
+| No connection | 5VO |
+| Motor supply positive and return | VB+ and VB− respectively, pending power design |
+
+Use the same controller pinout and power checks listed for driver 1 before connecting or powering the hardware.
+
 ## Unresolved before operation
 
 - Battery cutoff thresholds and circuit, hardware stop, fuse and switch ratings at 12.6 V.
