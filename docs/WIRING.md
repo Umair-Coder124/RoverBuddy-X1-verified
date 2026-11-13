@@ -25,6 +25,24 @@ The MDD3A uses two control inputs per motor. This starter uses one PWM input at 
 
 GP10/GP11 are reserved for future pan/tilt signals, and GP12/GP13 for future ultrasonic trigger/echo. No servo or ultrasonic implementation is included in this drive starter. Do not feed a 5 V echo directly into 3.3 V GPIO: the exact level-conversion circuit remains to be designed and verified. GP14 is reserved for a future hardware-interlock status input; reading that input in software would not itself provide a hardware stop.
 
+## Motor driver 1 — front wheels
+
+| Controller or motor connection | Cytron MDD3A driver 1 |
+|---|---|
+| Controller GP2 | M1A signal input |
+| Controller GP3 | M1B signal input |
+| Controller GP4 | M2A signal input |
+| Controller GP5 | M2B signal input |
+| Controller signal ground | GND on the signal header |
+| Front-left motor, two leads | Motor 1 output terminal pair |
+| Front-right motor, two leads | Motor 2 output terminal pair |
+| No connection | 5VO |
+| Motor supply positive and return | VB+ and VB− respectively, pending power design |
+
+Match the GP labels against the exact controller board before assigning physical header pin numbers. Keep the hardware unpowered until the power design and protection are verified.
+
+[Cytron MDD3A datasheet, board layout and functions](https://www.electrokit.com/upload/product/41018/41018266/MDD3A%20Datasheet.pdf)
+
 ## Unresolved before operation
 
 - Battery cutoff thresholds and circuit, hardware stop, fuse and switch ratings at 12.6 V.
