@@ -18,6 +18,6 @@ Sophia confirmed that a wiring diagram is acceptable for this module-based desig
 
 ## BOM and submission
 
-The [BOM](bom.csv) contains indicative USD estimates converted at 3.75 SAR per USD. Fill in missing purchase links and mark owned parts. Confirm pricing, stock and shipping before ordering. Resolve the power and pinout issues listed in the wiring draft before wiring or powering the robot.
+The [BOM](bom.csv) contains indicative USD estimates converted at 3.75 SAR per USD. Fill in missing purchase links and mark owned parts. Confirm pricing, stock and shipping before ordering. The draft specifies the official Pico 2 pinout and separate front and rear motor supplies. Battery protection, hardware isolation and bench validation remain open. The overview image shows the earlier architecture. Use the wiring draft for the revised design.
 
 This is a review package with AI-assisted reference material. Fallen's rules require entrants to design and document their own work. Ask the organizers whether any reference material can be reused, complete and document your own work, and check the submission requirements before sending the project for review.
