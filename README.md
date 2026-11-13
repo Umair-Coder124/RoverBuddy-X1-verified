@@ -8,7 +8,7 @@ RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum whee
 
 ![Full CAD assembly from two angles](cad/Assembly_Preview.png)
 
-The [CAD notes](cad/README.md) describe the wheel and motor mounts, camera carrier and electronics placement. The full assembly STEP and 131 individual STEP files are in [cad](cad/). Purchased component envelopes are identified in the [parts manifest](cad/Parts_Manifest.csv). Hardware fit and reviewer access to Onshape still need confirmation. Onshape import warnings were reported for Roller_Rear_L_03 and Roller_Front_R_03. Inspect both in Onshape before exporting or printing.
+The [CAD notes](cad/README.md) describe the wheel and motor mounts, camera carrier and electronics placement. The full assembly STEP and 131 individual STEP files are in [cad](cad/). Purchased component envelopes are identified in the [parts manifest](cad/Parts_Manifest.csv). The STEP revision replaces `Roller_Rear_L_03` and `Roller_Front_R_03` with simplified representations of the purchased wheel rollers. The repaired import opened without the previously reported warnings in the project owner’s Onshape session. Hardware fit still needs confirmation.
 
 ## Wiring and intended use
 
