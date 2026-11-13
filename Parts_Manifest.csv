@@ -1,0 +1,132 @@
+Part,Finish,Design status
+02_Chest_Panel_140x110x3,#8F969E,Retained source geometry; placement revised
+04_Neck_Base_Plate_50x35x4,#B5BCC3,Retained source geometry
+05_Single_Concept_Gusset_4mm,#B5BCC3,Retained source geometry; placement revised
+09_Obstacle_Sensor_Front_Reference,#32694F,Retained source geometry
+Ultrasonic_Transducer_-12,#B5BCC3,Retained source geometry; placement revised
+Ultrasonic_Transducer_12,#B5BCC3,Retained source geometry; placement revised
+10_Neck_Pan_Axis_Bearing_Concept,#B5BCC3,Retained source geometry
+Neck_Pan_Axis_Placeholder,#B5BCC3,Retained source geometry
+Cradle_Base_Screw_Front_L_39.8_42,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Front_L_39.8_88,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Front_L_75_42,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Front_L_75_88,#B5BCC3,Nominal M3 fastener envelope
+Motor_Cradle_Front_L,#B5BCC3,Provisional custom part
+Motor_3777_Envelope_Front_L,#4D5762,Purchased envelope; shaft position assumed
+Cradle_Cap_Post_Front_L_46.5,#B5BCC3,Provisional custom part
+Cradle_Cap_Post_Front_L_71.5,#B5BCC3,Provisional custom part
+Motor_Cradle_Cap_Front_L,#B5BCC3,Provisional custom part
+Motor_Shaft_Reference_Front_L,#B5BCC3,Purchased interface reference
+Supplied_Coupling_Reference_Front_L,#B5BCC3,Purchased interface reference; bore illustrative
+Mecanum_Wheel_Hub_Front_L,#343941,Purchased wheel representation
+Roller_Front_L_01,#757D86,Purchased wheel representation
+Roller_Front_L_02,#757D86,Purchased wheel representation
+Roller_Front_L_03,#757D86,Purchased wheel representation
+Roller_Front_L_04,#757D86,Purchased wheel representation
+Roller_Front_L_05,#757D86,Purchased wheel representation
+Roller_Front_L_06,#757D86,Purchased wheel representation
+Roller_Front_L_07,#757D86,Purchased wheel representation
+Roller_Front_L_08,#757D86,Purchased wheel representation
+Roller_Front_L_09,#757D86,Purchased wheel representation
+Cradle_Base_Screw_Rear_L_39.8_-88,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Rear_L_39.8_-42,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Rear_L_75_-88,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Rear_L_75_-42,#B5BCC3,Nominal M3 fastener envelope
+Motor_Cradle_Rear_L,#B5BCC3,Provisional custom part
+Motor_3777_Envelope_Rear_L,#4D5762,Purchased envelope; shaft position assumed
+Cradle_Cap_Post_Rear_L_46.5,#B5BCC3,Provisional custom part
+Cradle_Cap_Post_Rear_L_71.5,#B5BCC3,Provisional custom part
+Motor_Cradle_Cap_Rear_L,#B5BCC3,Provisional custom part
+Motor_Shaft_Reference_Rear_L,#B5BCC3,Purchased interface reference
+Supplied_Coupling_Reference_Rear_L,#B5BCC3,Purchased interface reference; bore illustrative
+Mecanum_Wheel_Hub_Rear_L,#343941,Purchased wheel representation
+Roller_Rear_L_01,#757D86,Purchased wheel representation
+Roller_Rear_L_02,#757D86,Purchased wheel representation
+Roller_Rear_L_03,#757D86,Purchased wheel representation
+Roller_Rear_L_04,#757D86,Purchased wheel representation
+Roller_Rear_L_05,#757D86,Purchased wheel representation
+Roller_Rear_L_06,#757D86,Purchased wheel representation
+Roller_Rear_L_07,#757D86,Purchased wheel representation
+Roller_Rear_L_08,#757D86,Purchased wheel representation
+Roller_Rear_L_09,#757D86,Purchased wheel representation
+Cradle_Base_Screw_Front_R_39.8_42,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Front_R_39.8_88,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Front_R_75_42,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Front_R_75_88,#B5BCC3,Nominal M3 fastener envelope
+Motor_Cradle_Front_R,#B5BCC3,Provisional custom part
+Motor_3777_Envelope_Front_R,#4D5762,Purchased envelope; shaft position assumed
+Cradle_Cap_Post_Front_R_46.5,#B5BCC3,Provisional custom part
+Cradle_Cap_Post_Front_R_71.5,#B5BCC3,Provisional custom part
+Motor_Cradle_Cap_Front_R,#B5BCC3,Provisional custom part
+Motor_Shaft_Reference_Front_R,#B5BCC3,Purchased interface reference
+Supplied_Coupling_Reference_Front_R,#B5BCC3,Purchased interface reference; bore illustrative
+Mecanum_Wheel_Hub_Front_R,#343941,Purchased wheel representation
+Roller_Front_R_01,#757D86,Purchased wheel representation
+Roller_Front_R_02,#757D86,Purchased wheel representation
+Roller_Front_R_03,#757D86,Purchased wheel representation
+Roller_Front_R_04,#757D86,Purchased wheel representation
+Roller_Front_R_05,#757D86,Purchased wheel representation
+Roller_Front_R_06,#757D86,Purchased wheel representation
+Roller_Front_R_07,#757D86,Purchased wheel representation
+Roller_Front_R_08,#757D86,Purchased wheel representation
+Roller_Front_R_09,#757D86,Purchased wheel representation
+Cradle_Base_Screw_Rear_R_39.8_-88,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Rear_R_39.8_-42,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Rear_R_75_-88,#B5BCC3,Nominal M3 fastener envelope
+Cradle_Base_Screw_Rear_R_75_-42,#B5BCC3,Nominal M3 fastener envelope
+Motor_Cradle_Rear_R,#B5BCC3,Provisional custom part
+Motor_3777_Envelope_Rear_R,#4D5762,Purchased envelope; shaft position assumed
+Cradle_Cap_Post_Rear_R_46.5,#B5BCC3,Provisional custom part
+Cradle_Cap_Post_Rear_R_71.5,#B5BCC3,Provisional custom part
+Motor_Cradle_Cap_Rear_R,#B5BCC3,Provisional custom part
+Motor_Shaft_Reference_Rear_R,#B5BCC3,Purchased interface reference
+Supplied_Coupling_Reference_Rear_R,#B5BCC3,Purchased interface reference; bore illustrative
+Mecanum_Wheel_Hub_Rear_R,#343941,Purchased wheel representation
+Roller_Rear_R_01,#757D86,Purchased wheel representation
+Roller_Rear_R_02,#757D86,Purchased wheel representation
+Roller_Rear_R_03,#757D86,Purchased wheel representation
+Roller_Rear_R_04,#757D86,Purchased wheel representation
+Roller_Rear_R_05,#757D86,Purchased wheel representation
+Roller_Rear_R_06,#757D86,Purchased wheel representation
+Roller_Rear_R_07,#757D86,Purchased wheel representation
+Roller_Rear_R_08,#757D86,Purchased wheel representation
+Roller_Rear_R_09,#757D86,Purchased wheel representation
+Battery_108x35x27_Envelope,#4D5762,Purchased body reference; plug excluded
+Battery_Tray_Open_End_With_Strap_Slots,#94BACF,Provisional custom part
+Pi_Tray_100_Raised,#5F80B4,Provisional custom part
+Pi_Bridge_Standoff_-33_-48,#B5BCC3,Provisional custom part
+Pi_Bridge_Standoff_-33_-3,#B5BCC3,Provisional custom part
+Pi_Bridge_Standoff_33_-48,#B5BCC3,Provisional custom part
+Pi_Bridge_Standoff_33_-3,#B5BCC3,Provisional custom part
+Pi_Board_Spacer_-33_-47,#B5BCC3,Provisional mounting pattern
+Pi_Board_Spacer_-33_-3,#B5BCC3,Provisional mounting pattern
+Pi_Board_Spacer_33_-47,#B5BCC3,Provisional mounting pattern
+Pi_Board_Spacer_33_-3,#B5BCC3,Provisional mounting pattern
+Pi5_Board_Envelope,#32694F,Purchased envelope
+Pi5_Cooler_Envelope,#B5BCC3,Purchased envelope
+Driver_Left_Foot,#5F80B4,Provisional custom part
+Driver_Left_Envelope,#32694F,Provisional electronics space claim
+Driver_Right_Foot,#5F80B4,Provisional custom part
+Driver_Right_Envelope,#32694F,Provisional electronics space claim
+Controller_Foot,#5F80B4,Provisional custom part
+Controller_Envelope,#32694F,Provisional electronics space claim
+Power_Distribution_Foot,#5F80B4,Provisional custom part
+Power_Distribution_Envelope,#32694F,Provisional electronics space claim
+Chest_Base_Bracket_-58,#B5BCC3,Provisional custom part
+Chest_Base_Bracket_58,#B5BCC3,Provisional custom part
+Display_Bezel_Service_Frame,#666D75,Provisional custom part
+Display_5inch_121x89p48_Envelope,#253E54,Purchased overall envelope; connector geometry unverified
+Display_Side_Retainer_-62.5,#B5BCC3,Provisional custom part
+Display_Side_Retainer_62.5,#B5BCC3,Provisional custom part
+Hollow_Head_With_Lens_And_Ribbon_Openings,#94BACF,Provisional custom part
+Camera_Carrier_Frame,#B5BCC3,Provisional edge retainer; confirm component clearance
+Camera_Module_3_PCB_Envelope,#32694F,Purchased envelope; exact hole pattern pending
+Camera_Lens_Envelope,#202830,Purchased lens envelope
+Neck_To_Head_Adapter_Plate,#B5BCC3,Provisional custom part
+Pan_Servo_Envelope,#4D5762,Provisional servo envelope; bracket dimensions pending
+Pan_Servo_Support,#B5BCC3,Provisional custom part
+Tilt_Servo_Envelope,#4D5762,Provisional servo envelope; bracket dimensions pending
+Tilt_Servo_Support,#B5BCC3,Provisional custom part
+Sensor_Mount_-11,#B5BCC3,Provisional custom part
+Sensor_Mount_11,#B5BCC3,Provisional custom part
+Base_Chassis_With_Mount_Holes,#A6C8DA,Provisional custom part
