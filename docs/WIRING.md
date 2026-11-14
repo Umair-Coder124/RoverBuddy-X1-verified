@@ -50,6 +50,18 @@ At the modeled simultaneous motor stall, the four motors draw approximately 36 W
 
 [Venom pack limits](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [Pi regulator output rating](https://geekworm.com/products/yb-mpp01) · [Victron BatteryProtect](https://www.victronenergy.com/battery_protect/smart-battery-protect) · [G8JN relay datasheet](https://omronfs.omron.com/en_US/ecb/products/pdf/en-g8jn.pdf)
 
+### Protection component shortlist
+
+| Function | Exact candidate | Remaining check |
+|---|---|---|
+| Manual whole-robot disconnect | Littelfuse 75920-01, 36 V series | Check the switch's mounting envelope, terminal hardware, and delivered price. This is a manual disconnect. |
+| Hardware cutoff for both drive regulators | Omron/Aratas G8JN-1C6T-DC12, normally open contact | Qualify the relay and socket for the combined regulator input inrush, actual DC interruption duty, and minimum loaded coil voltage. Verify manual re-arm and power-loss behavior. |
+| Automatic battery disconnect | Victron Smart BatteryProtect 65 A, conditional | Requires a compatible weak-cell protection signal and a load path matched to the downstream inrush. Victron advises controlling a remote enable for high-inrush loads. Verify that the final design actually isolates the downstream loads and stays off after low-voltage recovery until deliberately re-armed. |
+
+The reviewed 20 A 3S protection board is specified as auto-recovering. The selected battery is a preassembled pack, so retain its factory wiring. Screen a compatible external weak-cell monitor and shutdown interface as a pair. The parts above remain candidates pending these checks and are excluded from the priced BOM.
+
+[Manual disconnect listing](https://www.digikey.com/en/products/detail/littelfuse-commercial-vehicle-products/75920-01/27496177) · [Drive relay listing](https://www.digikey.com/en/products/detail/omron-electronics-inc-emc-div/G8JN-1C6T-DC12/252469) · [BatteryProtect manual](https://www.victronenergy.com/upload/documents/BatteryProtect_12V_24V/114439-Smart_BatteryProtect-pdf-en.pdf)
+
 ### Servo current and wire screening
 
 The exact TD8120MG listing identifies a reseller specification of 3.1 A stall at 7.4 V. A verified 6 V stall rating is still needed. For sensitivity only, budgeting 3.1 A per servo at the 6 V rail gives 6.2 A for the pair, above the shared regulator's typical 5.5 A rating. Combined with the earlier 61 W motor and Pi example, that gives about 12.8 A at 9 V input and 85% assumed efficiency before inrush. These are screening scenarios. Obtain the vendor's 6 V data or measure startup and brief peak demand with a current-limited bench supply and the final linkage before selecting the servo regulator and fuse.
