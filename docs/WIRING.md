@@ -101,6 +101,16 @@ If limited pan travel is acceptable and a pair of D645MW servos fits, their publ
 
 [Hitec D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Hitec product page](https://hitecrcd.com/d645mw-high-torque-metal-gear-25T-digital-sport-servo/)
 
+### Full-turn pan option
+
+Keep 360° commanded pan as the design goal. A position-feedback candidate is the metal-gear ROBOTIS DYNAMIXEL XM430-W210-T. Its 12-bit magnetic encoder resolves one revolution into 4096 counts. Extended position mode can command across the single-turn boundary. The actuator uses a half-duplex TTL serial bus and needs a compatible interface, a revised mount and separate power. ROBOTIS specifies 10–14.8 V operating input and 2.3 A stall current at 12 V. The planned 6 V servo rail is outside that range, and the battery voltage can fall below 10 V. Evaluate a dedicated regulated supply, control interface and power budget before committing to this actuator.
+
+For a one-turn sweep with the existing Camera Module 3 and a stationary Pi, evaluate a guided flex-cable loop that unwinds by reversing. Set software limits inside a physically verified free travel range and check strain relief and clearance at both ends. Until tested, the cable path and full-turn range remain open. Repeated same-direction turns require a different camera and tilt wiring architecture or a rotary interface qualified for those signals. The existing camera ribbon carries MIPI CSI-2. An ordinary power slip ring has no established compatibility with that link.
+
+Keep the Hitec D645MW as the limited-angle tilt candidate. The pan and tilt alternatives stay outside the order BOM pending mount fit, cable travel, power and sourcing.
+
+[ROBOTIS actuator specifications](https://en.robotis.com/service/selection_guide4.php) · [Operating modes](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/) · [Camera Module 3 schematic](https://pip-assets.raspberrypi.com/categories/1207-design-files/documents/RP-008969-SD-3-Raspberry%20Pi%20Camera%20Module%203%20Reference%20Schematic.pdf)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
