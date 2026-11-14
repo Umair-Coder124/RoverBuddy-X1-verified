@@ -26,15 +26,16 @@ Sophia confirmed that a wiring diagram is acceptable for this module-based desig
 
 The drive controller passed five desktop tests and a simulated watchdog stop. The [serial parser fix](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/commit/4406fdf8919625282004607cfbc282fbfebdae76) also passed a desktop check that an oversized line is discarded and the next valid line is accepted. Motor outputs are disabled by default.
 
-- [ ] Confirm the repaired Onshape tab loads and rotates from the public link.
+- [x] Repaired Onshape tab loaded and rotated via the public link (confirmed by the project owner).
 - [x] Check raised head and camera geometry against the imported pan-actuator envelope through ±180° in a separate CAD study. See the [fit result](docs/WIRING.md#raised-pan-adapter-fit-study).
 - [ ] Finalize the shaft coupling and tilt mount, then check fastener access, connector clearance and camera ribbon travel in the assembled layout.
 - [ ] Finalize the battery disconnect, hardware motor cutoff, fuse and servo supply ratings. Update the wiring and BOM together.
-- [ ] Fill any missing purchase links and confirm delivered costs.
-- [ ] Confirm with Fallen which existing reference files may be included.
+- [x] Reconcile the priced BOM lines to the provisional subtotal.
+- [ ] Add exact links and costs for the selected power-protection hardware, identify the owned screwdrivers if possible, and confirm delivered costs.
+- [ ] Confirm which AI-assisted CAD and firmware files, if any, Fallen accepts in the actual design submission. The organizer feedback reported so far addressed the wiring diagram and rollers.
 
 ## BOM and submission
 
-The [BOM](bom.csv) includes two matching battery packs and one balance charger. The indicative priced subtotal is 4,596.18 SAR (1,225.65 USD at 3.75 SAR per USD), excluding unpriced protection parts and delivered costs. Fill in missing purchase links and mark owned parts. Confirm pricing, stock and shipping before ordering. The draft specifies the official Pico 2 pinout and separate front and rear motor supplies. Battery protection, hardware isolation and bench validation remain open. The overview above shows the proposed power architecture.
+The [BOM](bom.csv) includes two matching battery packs and one balance charger. The indicative priced subtotal is 4,596.18 SAR (1,225.65 USD at 3.75 SAR per USD), excluding unpriced protection parts and delivered costs. The second pack is an offboard spare at 315.00 SAR. The priced subtotal for one pack is 4,281.18 SAR (1,141.65 USD), before protection parts and delivered costs. Request funding only for parts the build requires. Confirm pricing, stock and shipping before ordering. The draft specifies the official Pico 2 pinout and separate front and rear motor supplies. Battery protection, hardware isolation and bench validation remain open. The overview above shows the proposed power architecture.
 
-This is a review package with AI-assisted reference material. Fallen's rules require entrants to design and document their own work. Ask the organizers whether any reference material can be reused, complete and document your own work, and check the submission requirements before sending the project for review.
+This is a review package with AI-assisted reference material. The [Fallen submission guide](https://fallen.hackclub.com/docs/submitting) calls for a finished entrant-designed digital project at the funding stage. Untested firmware is acceptable at that stage, and the physical build and demo are assessed at the build stage. Fallen's rules require entrants to design and document their own work. Ask the organizers whether any reference material can be reused, complete and document your own work, and check the submission requirements before sending the project for review.
