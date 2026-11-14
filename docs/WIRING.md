@@ -152,6 +152,8 @@ For a power-off mock-up, mark the axis and sweep circle on a plan view, place a 
 
 The 46.5 × 28.5 mm body fits inside the neck plate's footprint only when comparing centered rectangles. That comparison leaves 3.5 mm and 6.5 mm total clearance along the two dimensions and does not include the output-axis offset, mounting tabs or connector. Use the vendor STEP and frame drawings to locate the actual holes and check the stacked assembly with the head at both tilt extremes. This is a layout for CAD placement. Hole locations, stack height and the attainable sweep are still open.
 
+**Envelope stack check.** The neck plate top is at Z = 149 mm and the underside of the current head adapter is at Z = 182 mm. That leaves 33 mm. In the proposed orientation with the 46.5 × 28.5 mm faces parallel to the neck plate, the published 34 mm overall envelope exceeds that space by 1 mm even before reserving room for external mounting and fasteners. Allow for a raised head or a recessed mount and verify the actual horn datum and stack with vendor CAD. The official actuator and hinge-frame download links returned 404 pages during this check. Shaft offset, overhang and connector access still require the actual vendor geometry.
+
 [ROBOTIS XM430 and compatible frame drawings](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/#drawings)
 
 ## Proposed logical GPIO allocation
