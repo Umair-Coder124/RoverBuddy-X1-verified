@@ -129,6 +129,20 @@ If limited pan travel is acceptable and a pair of D645MW servos fits, their publ
 
 [Hitec D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Hitec product page](https://hitecrcd.com/d645mw-high-torque-metal-gear-25T-digital-sport-servo/)
 
+### Selected head motion target
+
+The project owner selected a 360° commanded sweep. The design assumption is a bounded sweep from approximately −180° to +180° around neutral, reversing at the endpoints so the cable unwinds. Actual endpoints remain subject to the mechanical cable test. The XM430-W210-T remains the pan actuator candidate and the D645MW remains the tilt candidate.
+
+| Load | Screening output power |
+|---|---:|
+| Four drive motors at estimated stall, 6 V × 6 A total | 36.0 W |
+| Pi branch at the existing 5 V × 5 A design allowance | 25.0 W |
+| XM430 pan candidate at 12 V × 2.3 A stall | 27.6 W |
+| D645MW tilt candidate at 6 V × 2.15 A stall | 12.9 W |
+| Total screening load | 101.5 W |
+
+At 9 V pack voltage and 85% assumed overall efficiency, the illustrative combined demand is about 13.3 A before startup surges and other unbudgeted loads. This establishes a higher screening load than the earlier two-tilt-servo comparison. It does not establish normal running current or a fuse rating. The previously reviewed 12 A continuous pack and 10 A fuse cannot be approved from this estimate. A dedicated regulated 12 V supply for pan needs to maintain output across the selected pack's loaded voltage range, including voltages below and above 12 V if using the 3S pack. Fit, available supply current, and sourcing must be confirmed before adding these candidates to the order BOM.
+
 ### Full-turn pan option
 
 Keep 360° commanded pan as the design goal. A position-feedback candidate is the metal-gear ROBOTIS DYNAMIXEL XM430-W210-T. Its 12-bit magnetic encoder resolves one revolution into 4096 counts. Extended position mode can command across the single-turn boundary. The actuator uses a half-duplex TTL serial bus and needs a compatible interface, a revised mount and separate power. ROBOTIS specifies 10–14.8 V operating input and 2.3 A stall current at 12 V. The planned 6 V servo rail is outside that range, and the battery voltage can fall below 10 V. Evaluate a dedicated regulated supply, control interface and power budget before committing to this actuator.
