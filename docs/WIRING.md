@@ -78,6 +78,14 @@ The earlier all-rail examples span roughly 11.35–12.8 A at 9 V, excluding inru
 
 [Bioenno BLF-1206A specifications](https://www.bioennopower.com/products/12v-6ah-lifepo4-battery-pvc)
 
+### 9 Ah battery fit screening
+
+The Bioenno BLF-1209W manual lists a 108 × 76 × 70 mm pack, 1.18 kg mass and 18 A continuous discharge. A rigid envelope of those dimensions was checked against the repaired STEP parts with the old battery and tray excluded. In the original tray position it intersects the Raspberry Pi board envelope, cooler, raised tray and supports. Four additional floor-level placements were screened at the front and rear, with the pack length aligned along or across the chassis. All four intersected existing parts. This was a placement screen, with no allowance for the connector, strap or removal path.
+
+Keep the current chassis layout and keep the BLF-1209W off the purchase BOM. Retain a single removable onboard pack with an identical offboard spare as the preferred configuration. First source a compact factory-protected pack with a documented charger and confirmed Saudi delivery, then check the CAD envelope, loaded voltage, current capability and connector before committing to a tray. The existing LiPo remains a design reference pending its separate protection work.
+
+[Bioenno BLF-1209W manual](https://cdn.powerwerx.com/productattachments/BLF-1209W_User_Manual_rev_08_05_2016.pdf)
+
 ### Servo current and wire screening
 
 The exact TD8120MG listing identifies a reseller specification of 3.1 A stall at 7.4 V. A verified 6 V stall rating is still needed. For sensitivity only, budgeting 3.1 A per servo at the 6 V rail gives 6.2 A for the pair, above the shared regulator's typical 5.5 A rating. Combined with the earlier 61 W motor and Pi example, that gives about 12.8 A at 9 V input and 85% assumed efficiency before inrush. These are screening scenarios. Obtain the vendor's 6 V data or measure startup and brief peak demand with a current-limited bench supply and the final linkage before selecting the servo regulator and fuse.
