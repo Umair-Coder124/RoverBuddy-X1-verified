@@ -65,6 +65,14 @@ Keep the 10 A fuse and shared servo regulator provisional. Do not increase the f
 
 [TD8120MG reseller specification](https://www.mantech.co.za/datasheets/products/td8120mg-220871.pdf) · [DC wire sizing guidance](https://www.bluesea.com/support/reference/535/Voltage_Drop_in_Conductor_-_Wire_Sizing_Chart)
 
+### Head servo alternative
+
+Hitec's D950TW has published 6 V figures: 29 kgf·cm stall torque and 4.8 A stall current per servo. Its case is 40 × 20 × 38 mm with a 25T spline and programmable travel up to 175°. Two units can reach 9.6 A at 6 V under simultaneous stall. That rules out the shared 5.5 A regulator for this option. Even with one existing regulator per servo, 4.8 A leaves little margin against the typical 5.5 A rating, which varies with input and thermal conditions.
+
+Keep the TD8120MG entries provisional. Consider the D950TW if the current specification for the original servo remains unavailable and after checking bracket fit, required holding torque, travel, price and a suitable power supply. Estimate tilt torque from the mass of the moving head and its balance-point offset from the tilt axis, including cable drag and motion loads. Use an operating torque target below stall torque. Verify the actual servo supply and connector peaks on the bench before selecting the fuse.
+
+[Hitec D950TW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D950TW_Specsheetv2.2_102-1729876661.pdf)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
