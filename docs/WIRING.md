@@ -117,6 +117,10 @@ The STEP has a nominal 19 × 5 mm opening cut into the head floor. Its center is
 
 Route the Camera Module 3 ribbon from the head-floor opening to a moving strain-relief point above the pan joint. Allow tilt slack between the head and that point. Below it, reserve an external service loop between the moving neck and a fixed chassis-side anchor. From the fixed anchor, route toward the stationary Pi tray. Keep the loop clear of the shaft, bracket, wheels and head motion.
 
+**CAD length check.** The head exit is at approximately (24.5, 29.5, 185) mm and the Pi board envelope spans X = −42.5 to 42.5 mm, Y = −53 to 3 mm at Z = 84 mm. The nearest point on that board envelope is about 104 mm away in a straight line. This is a lower bound for the external run and excludes the internal head run. For an illustrative right-angle route, the drop to board height (101 mm), the fore-aft run toward the board (27–83 mm), and a possible centerline-to-edge run (up to 68 mm from the exit X coordinate) give about 128–252 mm before detours or slack. The actual CSI connector location is absent from the CAD envelope.
+
+For a loop centered on the modeled pan axis, a 25 mm radius sweeps about 79 mm of arc from neutral to either 180° endpoint. Use this as a space-planning example, since loop shape and slack payout depend on the anchors. Adding that allowance to the sample external routes gives about 207–331 mm before tilt slack, the internal run and connector strain relief. The 300 mm BOM cable is plausible for a short route but has no demonstrated margin for a full turn. Mock up 300 mm and 500 mm lengths before changing the BOM, and check whether the extra length can be restrained without reaching the wheel or joint.
+
 | Check | Method |
 |---|---|
 | Length | With a paper strip or flexible mock-up, trace both strain-relief points, the fixed run and the loops. Compare the measured route at every extreme with the BOM's 300 mm cable. Raspberry Pi lists 200, 300 and 500 mm versions of the Standard–Mini cable. |
