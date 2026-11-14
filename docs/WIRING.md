@@ -243,6 +243,12 @@ The protection design remains on hold. Require automatic isolation if any indivi
 
 [Hitec D645MW dimensional drawing](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Junsi CellLog 8S specifications](https://www.jun-si.com/EnProductShow.asp?ID=96) · [ServoCity cutoff description](https://www.servocity.com/low-voltage-cutoff-switch/)
 
+### Tilt servo packaging check
+
+A side-to-side 53.4 × 20.0 × 37.8 mm nominal screening box, spanning the Hitec drawing's tab length, was placed at X=−26.7 to +26.7, Y=13 to 33, Z=193 to 230.8 mm in the original head STEP coordinate system. Add 20 mm to Z in the raised pan study. Solid intersections were zero against the shell, camera carrier, PCB and lens. Minimum distances were 5.0, 5.0, 7.0 and 8.5 mm respectively. A centered front-to-back body placement intersected the shell and camera geometry.
+
+This is a static packaging candidate. The box excludes the actual horn and cable exit. The tilt pivot, stationary support and fasteners still need to be modeled and checked through motion, together with the pan coupling and camera ribbon. Use the [manufacturer drawing](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) as the reference for the hardware interfaces.
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
