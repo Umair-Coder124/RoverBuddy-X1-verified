@@ -37,6 +37,7 @@ try:
     previous = time.ticks_ms()
     elapsed = 0
     buffer = ''
+    discard_line = False
     while True:
         tick = time.ticks_ms()
         elapsed += time.ticks_diff(tick, previous)
@@ -50,17 +51,21 @@ try:
                 controller.stop()
                 break
             if char == '\n':
-                try:
-                    command = json.loads(buffer)
-                    controller.receive(command, elapsed)
-                except (ValueError, TypeError):
+                if not discard_line:
+                    try:
+                        command = json.loads(buffer)
+                        controller.receive(command, elapsed)
+                    except (ValueError, TypeError):
+                        controller.stop()
+                buffer = ''
+                discard_line = False
+            elif not discard_line:
+                if len(buffer) >= 256:
                     controller.stop()
-                buffer = ''
-            elif len(buffer) >= 256:
-                controller.stop()
-                buffer = ''
-            else:
-                buffer += char
+                    buffer = ''
+                    discard_line = True
+                else:
+                    buffer += char
         apply(controller.output(elapsed))
         time.sleep_ms(5)
 finally:
