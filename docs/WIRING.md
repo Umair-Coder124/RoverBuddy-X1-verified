@@ -78,6 +78,16 @@ The earlier all-rail examples span roughly 11.35–12.8 A at 9 V, excluding inru
 
 [Bioenno BLF-1206A specifications](https://www.bioennopower.com/products/12v-6ah-lifepo4-battery-pvc)
 
+### Provisional charging and spare plan
+
+Use the existing Venom 15190 envelope as the packaging reference while evaluating protection. Plan one removable pack in the robot and one identical spare stored offboard. Swap with the robot switched off. This plan does not approve the Venom pack for operation, and the priced BOM still includes only one reference pack.
+
+The Venom 15190 is a 3S 2.2 Ah LiPo with 11.1 V nominal and 12.6 V full-charge voltage. Its manual charging configuration must match the actual pack label. The named wall-powered SkyRC S100neo supports 3S LiPo balance charging. Confirm the mains lead for the destination, the mating charge lead and adapter polarity, and the balance connector before ordering. Use LiPo balance mode following both manufacturers' instructions and the pack's charge-current limit. Disconnect the pack from the robot before charging. The 14.6 V LiFePO4 charger discussed for the Bioenno alternative is incompatible with this reference pack.
+
+Each reference pack stores about 24.4 Wh nominal. At an illustrative 40–60 W average battery draw and an assumed 80% usable fraction, planning runtime is roughly 20–29 minutes per pack. This is a sensitivity estimate, pending measured usage and the selected cutoff threshold.
+
+[Venom pack specifications](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [SkyRC S100neo manual](https://www.skyrc.com/download/100202%20S100neo%20Instruction%20Manual_V27.pdf)
+
 ### 9 Ah battery fit screening
 
 The Bioenno BLF-1209W manual lists a 108 × 76 × 70 mm pack, 1.18 kg mass and 18 A continuous discharge. A rigid envelope of those dimensions was checked against the repaired STEP parts with the old battery and tray excluded. In the original tray position it intersects the Raspberry Pi board envelope, cooler, raised tray and supports. Four additional floor-level placements were screened at the front and rear, with the pack length aligned along or across the chassis. All four intersected existing parts. This was a placement screen, with no allowance for the connector, strap or removal path.
