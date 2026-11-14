@@ -222,6 +222,18 @@ The supplied `XM,H-430_idler.stp` opens as an actuator reference assembly with a
 
 The imported envelope spans 42.7 mm axially including the modeled protrusions. The original neck-to-adapter gap is 33 mm, and the raised study provides 41 mm. With the entire imported envelope between those planes, it exceeds the raised gap by 1.7 mm before fastener or cable allowance. Use the appropriate fixed-side and moving-side mounting datums to refine the stack. Verify the plugged-in harness and sweep with the selected bracket geometry.
 
+### Raised pan adapter fit study
+
+The offset deck uses the imported 22 × 40 mm reference grid. Its top is at Z=157 mm, 2 mm below the reference's lower mounting face. The central relief clears the lower protrusion. The raised head and camera clear the modeled fixed geometry by 5.3 mm vertically throughout the ±180° pan range. The shaft coupling, fasteners, tilt mount, connector and camera service loop still need a fit check. The raised layout is a separate study from the current Onshape assembly.
+
+### Battery and stop acceptance
+
+Budget one Venom 15190 pack in the robot and one same-model offboard spare. The S100neo supports 3S LiPo balance charging from AC mains. Confirm the supplied mains lead and correct main-output and balance connections. The pack manufacturer specifies 2.2 A charging. Nominal energy is 24.42 Wh. At 80% assumed usable energy and 40–60 W average draw, estimated runtime is 20–29 minutes per pack.
+
+The protection design remains on hold. Require automatic isolation if any individual cell crosses its selected cutoff threshold, detection of a lost sense lead, and manual re-arm after recovery. Validate those behaviors with a current-limited test setup before connecting the production pack. For the drive stop, verify that the normally open DC switching path drops power to both motor regulators independently of software, including with the Pico held unresponsive. Verify that releasing the stop leaves drive power disabled until a separate re-arm. Qualify disconnect hardware, fuse, wiring and regulator inrush together before marking any protection part as selected.
+
+[Venom 15190 specifications](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [SkyRC S100neo specifications](https://www.skyrc.com/s100neo)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
