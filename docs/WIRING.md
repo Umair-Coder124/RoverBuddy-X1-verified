@@ -91,6 +91,16 @@ The modeled gravity load does not justify choosing a 29 kgf·cm stall-torque ser
 
 [PETG density reference](https://prusament.com/wp-content/uploads/2022/10/PETG_Prusament_TDS_2021_10_EN.pdf)
 
+### Lower-current head servo and pan screening
+
+The Hitec D645MW (36645S) is a metal-gear tilt candidate. At 6 V, Hitec lists 2.15 A stall current, 11.3 kgf·cm stall torque, and 2.3 kgf·cm torque at peak efficiency. The last figure exceeds the preliminary 1.25 kgf·cm tilt target and supports shortlisting it. Check the mounting drawing, 25T horn fit, available travel, and actual loaded motion before purchase. The servo supports positional travel up to 175°. The design still needs a separate decision if full 360° pan is required.
+
+For pan, an upright vertical axis has no static gravitational moment about the axis. Screen acceleration separately from bearing friction, cable drag, and any load from axis misalignment. As an illustrative upper-inertia case, put an assumed 0.20 kg of rotating assembly at a radius of 0.080 m. Then I ≤ 0.00128 kg·m² for that mass and radius. At an assumed 8 rad/s², the inertial torque is about 0.010 N·m (0.10 kgf·cm). This excludes friction and cable drag. Weigh the rotating hardware, check its radial extent and desired acceleration, then measure breakaway torque with the camera cable routed before choosing the pan actuator. A continuous-rotation servo alone does not provide absolute angle positioning.
+
+If limited pan travel is acceptable and a pair of D645MW servos fits, their published simultaneous stall estimate is 4.30 A at 6 V. This is below the existing regulator's typical 5.5 A rating on paper. Check actual regulator capacity at the intended pack voltage and cooling, plus transient response and connector ratings. With the earlier 61 W motor and Pi load example, the pair adds 25.8 W, or about 11.35 A upstream in total at 9 V and 85% assumed efficiency, excluding inrush. Keep the fuse and servo supply provisional. Retain the existing BOM pending pan travel, fit, and supplier availability.
+
+[Hitec D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Hitec product page](https://hitecrcd.com/d645mw-high-torque-metal-gear-25T-digital-sport-servo/)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
