@@ -234,6 +234,15 @@ The protection design remains on hold. Require automatic isolation if any indivi
 
 [Venom 15190 specifications](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [SkyRC S100neo specifications](https://www.skyrc.com/s100neo)
 
+### Component compatibility review
+
+- **Pan output:** The imported reference shows eight centers on a 16 mm pitch circle around the output axis. The envelope study measures 5.3 mm of vertical clearance to the raised head. Check the exact horn, screw engagement and central protrusion against the mating plate before using this clearance as available coupling height.
+- **Tilt:** The current Hitec D645MW drawing gives a 40.8 × 20.0 × 37.8 mm body and a 25-tooth, 6 mm output spline. The older tilt placeholder is only 20 mm high in its current orientation. Replace it with an oriented vendor envelope including mounting ears, horn and wire exit before checking tilt and pan together.
+- **Weak-cell cutoff:** Junsi CellLog 8S is a monitor candidate because the manufacturer documents individual-cell measurements and an alarm port. Its alarm rating does not qualify it to carry the robot load. Verify supply-loss and sense-lead fault behavior, output interface, manual reset and availability before selecting it. The ServoCity Low Voltage Cutoff Switch documentation describes pack-voltage cutoff and does not establish independent weak-cell detection.
+- **Motor stop:** Retain the existing normally open relay candidate pending regulator input inrush and DC interruption checks. Keep both protection entries provisional until the complete circuits and parts are specified.
+
+[Hitec D645MW dimensional drawing](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Junsi CellLog 8S specifications](https://www.jun-si.com/EnProductShow.asp?ID=96) · [ServoCity cutoff description](https://www.servocity.com/low-voltage-cutoff-switch/)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
