@@ -70,6 +70,14 @@ The Junsi CellLog 8S manual documents individual cell monitoring and an alarm ou
 
 [Pololu regulator connections](https://www.pololu.com/product/4092#connections) · [Junsi CellLog 8S manual](https://www.manualslib.com/manual/1979403/Junsi-Celllog-8s.html?page=2)
 
+### Factory-protected battery alternative
+
+The Bioenno BLF-1206A is a factory-assembled 12 V, 6 Ah LiFePO4 candidate with an integrated protection module. Bioenno lists 12 A continuous and 24 A for two seconds, a 14.6 V charger, and a PP30 discharge connector. Verify the protection module's weak-cell behavior and recovery before relying on it in the robot. Retain independent drive isolation and qualify the fuse for the final harness.
+
+The earlier all-rail examples span roughly 11.35–12.8 A at 9 V, excluding inrush and depending on servo selection. The Bioenno's 12 A continuous rating is too close to that envelope to approve without a revised budget and bench evidence. At approximately 108 × 64 × 69 mm and 0.7 kg, it also needs a wider and taller tray than the current 108 × 35 × 27 mm pack. Update the connector, retention, center-of-gravity check and charger if adopting this route. Saudi delivery and landed pricing remain unverified. Leave the costed BOM unchanged until the battery decision is made.
+
+[Bioenno BLF-1206A specifications](https://www.bioennopower.com/products/12v-6ah-lifepo4-battery-pvc)
+
 ### Servo current and wire screening
 
 The exact TD8120MG listing identifies a reseller specification of 3.1 A stall at 7.4 V. A verified 6 V stall rating is still needed. For sensitivity only, budgeting 3.1 A per servo at the 6 V rail gives 6.2 A for the pair, above the shared regulator's typical 5.5 A rating. Combined with the earlier 61 W motor and Pi example, that gives about 12.8 A at 9 V input and 85% assumed efficiency before inrush. These are screening scenarios. Obtain the vendor's 6 V data or measure startup and brief peak demand with a current-limited bench supply and the final linkage before selecting the servo regulator and fuse.
