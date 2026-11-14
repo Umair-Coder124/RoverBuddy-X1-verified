@@ -216,6 +216,12 @@ The 46.5 × 28.5 mm body fits inside the neck plate's footprint only when compar
 
 [ROBOTIS XM430 and compatible frame drawings](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/#drawings)
 
+### Imported XM/H430 idler assembly fit check
+
+The supplied `XM,H-430_idler.stp` opens as an actuator reference assembly with an idler and mounting hardware. Its coaxial cylindrical faces establish the axis at local X = 0, Y = 0. The main solid extends 35.25 mm in one direction and 11.25 mm in the other along the long dimension. Aligning that axis to the center of the 50 mm neck plate leaves 10.25 mm of overhang on the long side. The shorter side has 13.75 mm to the plate edge. The visible screw center grid in this reference is 22 × 40 mm. Verify which threads and fastener depths apply to the chosen mount.
+
+The imported envelope spans 42.7 mm axially including the modeled protrusions. The original neck-to-adapter gap is 33 mm, and the raised study provides 41 mm. With the entire imported envelope between those planes, it exceeds the raised gap by 1.7 mm before fastener or cable allowance. Use the appropriate fixed-side and moving-side mounting datums to refine the stack. Verify the plugged-in harness and sweep with the selected bracket geometry.
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
