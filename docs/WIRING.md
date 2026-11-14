@@ -141,6 +141,19 @@ For a power-off mock-up, mark the axis and sweep circle on a plan view, place a 
 
 [ROBOTIS dimensions and ratings](https://en.robotis.com/service/selection_guide4.php)
 
+### XM430 pan mount layout
+
+| Interface | Layout |
+|---|---|
+| Shaft datum | Keep the output axis vertical at X = 0, Y = 28 mm. Use the existing Z = 149 mm neck plate top as the fixed-side datum. |
+| Fixed side | Lay out an adapter on the 50 × 35 mm neck plate, with the actuator's 46.5 mm body dimension along the 50 mm direction. Center the **output axis** using the ROBOTIS drawing. The body may overhang because the axis and body midpoint differ. Check that the adapter spreads the load onto the neck plate. |
+| Moving side | Mate the output horn to an adapter that carries the tilt assembly. The existing head-adapter underside at Z = 182 mm is a reference elevation. Check the full horn, bracket and fastener stack before deciding whether the head must sit higher. |
+| Cable clearance | Keep the actuator's stationary power and data leads on the fixed side. Leave the external camera and tilt cable loop clear of the output horn and bracket. Check access for the connector plug and mounting screws at assembly. |
+
+The 46.5 × 28.5 mm body fits inside the neck plate's footprint only when comparing centered rectangles. That comparison leaves 3.5 mm and 6.5 mm total clearance along the two dimensions and does not include the output-axis offset, mounting tabs or connector. Use the vendor STEP and frame drawings to locate the actual holes and check the stacked assembly with the head at both tilt extremes. This is a layout for CAD placement. Hole locations, stack height and the attainable sweep are still open.
+
+[ROBOTIS XM430 and compatible frame drawings](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/#drawings)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
