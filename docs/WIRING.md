@@ -111,6 +111,22 @@ Keep the Hitec D645MW as the limited-angle tilt candidate. The pan and tilt alte
 
 [ROBOTIS actuator specifications](https://en.robotis.com/service/selection_guide4.php) · [Operating modes](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/) · [Camera Module 3 schematic](https://pip-assets.raspberrypi.com/categories/1207-design-files/documents/RP-008969-SD-3-Raspberry%20Pi%20Camera%20Module%203%20Reference%20Schematic.pdf)
 
+### Camera ribbon routing and travel check
+
+The STEP has a nominal 19 × 5 mm opening cut into the head floor. Its center is about 25 mm from the modeled pan axis in plan view. The pan shaft is modeled as a solid placeholder. Use an external route alongside the neck for this layout. Verify that the actual cable end can pass through the opening and that the edge and nearby bracket leave room for the cable to exit without pinching.
+
+Route the Camera Module 3 ribbon from the head-floor opening to a moving strain-relief point above the pan joint. Allow tilt slack between the head and that point. Below it, reserve an external service loop between the moving neck and a fixed chassis-side anchor. From the fixed anchor, route toward the stationary Pi tray. Keep the loop clear of the shaft, bracket, wheels and head motion.
+
+| Check | Method |
+|---|---|
+| Length | With a paper strip or flexible mock-up, trace both strain-relief points, the fixed run and the loops. Compare the measured route at every extreme with the BOM's 300 mm cable. Raspberry Pi lists 200, 300 and 500 mm versions of the Standard–Mini cable. |
+| Travel | With power off, start at neutral and move the head toward each pan endpoint, checking both tilt extremes at each end. Stop before the cable binds, rubs or pulls a connector. Record the smallest clearance and the actual available angular range. Set software limits inside that verified range. |
+| Signal | After the mechanical checks and electrical review, verify the live camera feed through repeated sweeps and reversals. Check for dropouts and connector movement. |
+
+The final shaft, strain reliefs, cable bend radius and achievable sweep still need a mock-up. Keep 360° as the goal until that test establishes the range. The prototype may need a revised exit or a longer ribbon.
+
+[Raspberry Pi camera cable options](https://www.raspberrypi.com/products/camera-cable/)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
