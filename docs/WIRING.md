@@ -73,6 +73,24 @@ Keep the TD8120MG entries provisional. Consider the D950TW if the current specif
 
 [Hitec D950TW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D950TW_Specsheetv2.2_102-1729876661.pdf)
 
+### CAD-based head tilt load estimate
+
+The current STEP models a servo envelope but does not locate a final shaft axis. For this estimate, assume a left-to-right tilt axis through the envelope center at Y = 39 mm and Z = 165 mm. Lever arms below use the distance from that axis in the Y–Z plane, so their sum bounds static gravity torque over the full tilt range under these assumptions.
+
+| Moving item | Estimated mass | Lever arm | Static torque bound |
+|---|---:|---:|---:|
+| Head shell, 41.02 cm³ of PETG | 52.1 g | 48.1 mm | 0.251 kgf·cm |
+| Camera carrier and head adapter, 4.35 cm³ of PETG | 5.5 g | Calculated separately for each part | 0.021 kgf·cm |
+| Camera and lens allowance | 10 g | 50 mm | 0.050 kgf·cm |
+| Fasteners, moving bracket hardware and cable mass allowance | 15 g | 60 mm | 0.090 kgf·cm |
+| Total | 82.6 g | | 0.41 kgf·cm (0.040 N·m) |
+
+Printed part estimates use solid PETG at 1.27 g/cm³. The camera and hardware entries are allowances. A preliminary tilt screening target of about 1.25 kgf·cm (0.12 N·m) gives roughly three times the modeled static torque. This target is for usable operating torque. Check the physical shaft location, moving bracket mass, cable drag, acceleration and binding before selecting a servo. Pan needs a separate check because this gravity estimate applies to the tilt axis.
+
+The modeled gravity load does not justify choosing a 29 kgf·cm stall-torque servo by itself. No servo part or price is changed by this estimate.
+
+[PETG density reference](https://prusament.com/wp-content/uploads/2022/10/PETG_Prusament_TDS_2021_10_EN.pdf)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
