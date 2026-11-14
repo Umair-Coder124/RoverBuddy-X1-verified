@@ -131,6 +131,16 @@ The final shaft, strain reliefs, cable bend radius and achievable sweep still ne
 
 [Raspberry Pi camera cable options](https://www.raspberrypi.com/products/camera-cable/)
 
+### Pan mount clearance and mock-up
+
+The STEP places the pan-axis placeholder at X = 0, Y = 28 mm. At neutral tilt, the head shell's bounding box extends 40 mm sideways and 20 mm fore and aft from that axis. Its corners therefore sweep within a radius of about 45 mm. The camera lens envelope lies within that radius. Reserve a roughly 90 mm diameter sweep zone for the shell at neutral tilt. The estimate excludes the ribbon, brackets and any change in the swept volume during tilt.
+
+The existing pan servo envelope is 40 × 20 × 35 mm. The provisional XM430-W210-T body measures 28.5 × 46.5 × 34.0 mm. The existing envelope cannot contain that body with its faces aligned to the envelope. Use the actuator mounting drawing to lay out a new bracket around the pan axis, allowing access for fasteners and the connector. The current STEP does not establish fit for this actuator.
+
+For a power-off mock-up, mark the axis and sweep circle on a plan view, place a cardboard template of the actuator and connector at the intended mount, and trace both the 300 and 500 mm ribbon paths. Sweep from neutral toward both endpoints at minimum, neutral and maximum tilt. For each combination, record reach, smallest clearance, snag points and whether reversing returns the cable to neutral without a twist. Use the observed clear range to set initial travel limits. Keep actuator and ribbon choices provisional until fit and motion are checked.
+
+[ROBOTIS dimensions and ratings](https://en.robotis.com/service/selection_guide4.php)
+
 ## Proposed logical GPIO allocation
 
 These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
