@@ -64,7 +64,7 @@ The reviewed 20 A 3S protection board is specified as auto-recovering. The selec
 
 ### Regulator inhibit and external cell-monitor review
 
-Pololu documents an active-low EN input on the D36V50F6. This gives the two drive regulators a hardware inhibit input that can be evaluated for a secondary stop path. The board is enabled by default. A broken inhibit wire must therefore be considered during design review. Regulator inhibit alone does not establish battery isolation, and the output voltage and wheel stop behavior after disabling still need measurement.
+Pololu documents that pulling EN below 1.2 V puts the D36V50F6 into sleep. This gives the two drive regulators a hardware inhibit input that can be evaluated for a secondary stop path. The board is enabled by default. A broken inhibit wire must therefore be considered during design review. Regulator inhibit alone does not establish battery isolation, and the output voltage and wheel stop behavior after disabling still need measurement.
 
 The Junsi CellLog 8S manual documents individual cell monitoring and an alarm output. It is a candidate for evaluating the external weak-cell signal. Keep it off the purchase BOM until current sourcing and the output behavior on alarm, power loss, and balance-plug removal are verified. The final cutoff must latch off after a fault, require deliberate re-arm, and remain independent of the Pico. Keep the hardware drive cutoff and manual whole-robot disconnect as separate functions pending qualification.
 
