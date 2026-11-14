@@ -12,12 +12,18 @@ The [CAD notes](cad/README.md) describe the wheel and motor mounts, camera carri
 
 ## Wiring and intended use
 
-![Module wiring overview](docs/images/wiring_draft.png)
+```mermaid
+flowchart LR
+    BAT["3S battery"] --> PROT["Main fuse, disconnect and undervoltage protection"]
+    PROT --> AUX["Separate Pi and servo supplies"]
+    PROT --> STOP["Hardware motor cutoff"]
+    STOP --> MOTOR["Independent front and rear 6 V motor supplies"]
+```
 
 Sophia confirmed that a wiring diagram is acceptable for this module-based design. See the [wiring draft](docs/WIRING.md) and [firmware instructions](firmware/README.md). Use the firmware simulator to try the drive logic. The intended physical workflow is to select a target through the camera system, then use the controller to command the four motors. Hardware testing and an end-to-end follow mode are pending.
 
 ## BOM and submission
 
-The [BOM](bom.csv) contains indicative USD estimates converted at 3.75 SAR per USD. Fill in missing purchase links and mark owned parts. Confirm pricing, stock and shipping before ordering. The draft specifies the official Pico 2 pinout and separate front and rear motor supplies. Battery protection, hardware isolation and bench validation remain open. The overview image shows the earlier architecture. Use the wiring draft for the revised design.
+The [BOM](bom.csv) contains indicative USD estimates converted at 3.75 SAR per USD. Fill in missing purchase links and mark owned parts. Confirm pricing, stock and shipping before ordering. The draft specifies the official Pico 2 pinout and separate front and rear motor supplies. Battery protection, hardware isolation and bench validation remain open. The overview above shows the proposed power architecture.
 
 This is a review package with AI-assisted reference material. Fallen's rules require entrants to design and document their own work. Ask the organizers whether any reference material can be reused, complete and document your own work, and check the submission requirements before sending the project for review.
