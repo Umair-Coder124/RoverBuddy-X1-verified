@@ -62,6 +62,14 @@ The reviewed 20 A 3S protection board is specified as auto-recovering. The selec
 
 [Manual disconnect listing](https://www.digikey.com/en/products/detail/littelfuse-commercial-vehicle-products/75920-01/27496177) · [Drive relay listing](https://www.digikey.com/en/products/detail/omron-electronics-inc-emc-div/G8JN-1C6T-DC12/252469) · [BatteryProtect manual](https://www.victronenergy.com/upload/documents/BatteryProtect_12V_24V/114439-Smart_BatteryProtect-pdf-en.pdf)
 
+### Regulator inhibit and external cell-monitor review
+
+Pololu documents an active-low EN input on the D36V50F6. This gives the two drive regulators a hardware inhibit input that can be evaluated for a secondary stop path. The board is enabled by default. A broken inhibit wire must therefore be considered during design review. Regulator inhibit alone does not establish battery isolation, and the output voltage and wheel stop behavior after disabling still need measurement.
+
+The Junsi CellLog 8S manual documents individual cell monitoring and an alarm output. It is a candidate for evaluating the external weak-cell signal. Keep it off the purchase BOM until current sourcing and the output behavior on alarm, power loss, and balance-plug removal are verified. The final cutoff must latch off after a fault, require deliberate re-arm, and remain independent of the Pico. Keep the hardware drive cutoff and manual whole-robot disconnect as separate functions pending qualification.
+
+[Pololu regulator connections](https://www.pololu.com/product/4092#connections) · [Junsi CellLog 8S manual](https://www.manualslib.com/manual/1979403/Junsi-Celllog-8s.html?page=2)
+
 ### Servo current and wire screening
 
 The exact TD8120MG listing identifies a reseller specification of 3.1 A stall at 7.4 V. A verified 6 V stall rating is still needed. For sensitivity only, budgeting 3.1 A per servo at the 6 V rail gives 6.2 A for the pair, above the shared regulator's typical 5.5 A rating. Combined with the earlier 61 W motor and Pi example, that gives about 12.8 A at 9 V input and 85% assumed efficiency before inrush. These are screening scenarios. Obtain the vendor's 6 V data or measure startup and brief peak demand with a current-limited bench supply and the final linkage before selecting the servo regulator and fuse.
