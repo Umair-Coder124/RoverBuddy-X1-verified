@@ -1,11 +1,13 @@
 # RoverBuddy X1 detailed CAD review
 
-This is a separate revision based on the colored RoverBuddy STEP. Import
+The [November 15 full assembly STEP](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) is the current camera-head fit study. [Assembly_Preview.png](Assembly_Preview.png), [Drive_Corner.png](Drive_Corner.png), and [Head_Camera.png](Head_Camera.png) show this revision.
+
+The notes below document the earlier detailed assembly based on the colored RoverBuddy STEP. Import
 RoverBuddy_X1_Detailed_Assembly.step with **Import appearances** enabled.
 The full assembly includes purchased component envelopes for fit review.
 Parts_Manifest.csv identifies individual parts and reference models.
 Interference_Check.csv records positive-volume intersections in this CAD
-revision. Assembly_Preview.png shows both sides. Drive_Corner.png and Head_Camera.png show the two interfaces called out in the review.
+revision.
 
 ## How the parts attach
 

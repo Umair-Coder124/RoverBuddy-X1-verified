@@ -6,17 +6,17 @@ RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum whee
 
 [Open the original Onshape model used for Fallen review](https://cad.onshape.com/documents/7af13938ef1c0698d1f50b49/w/3e6d69d20d18f8a901bda826/e/d6c90a986fc1453722e99382)
 
-### Updated camera head
+### November 15 pan-and-tilt assembly
 
-The full-robot pan-and-tilt fit study adds the new camera head, side-mounted tilt servo, U-shaped bracket and revised neck mount. The pan hub is a placeholder, and the fasteners and camera cable still need to be checked through combined pan and tilt.
+- [Download the full assembly STEP](cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step)
+- [Camera and servo bracket close-up](cad/Head_Camera.png)
+- [Drive corner close-up](cad/Drive_Corner.png)
 
-- [Read the fit-study notes on GitHub](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/roverbuddy-tilt-fit-review/cad/FULL_PAN_TILT_FIT_STUDY.md)
+The pan hub is centered over the chest display. The pan mounting plate extends farther on one side, and the tilt bracket has a side-mounted servo. The hub is a placeholder. Check fastener access and camera cable clearance through combined pan and tilt before fabrication.
 
-The preview below shows the original Onshape model used for review.
+![November 15 assembly with the pan-and-tilt camera head](cad/Assembly_Preview.png)
 
-![Original assembly from two angles](cad/Assembly_Preview.png)
-
-The [CAD notes](cad/README.md) describe the wheel and motor mounts, camera carrier and electronics placement. The full assembly STEP and 131 individual STEP files are in [cad](cad/). Purchased component envelopes are identified in the [parts manifest](cad/Parts_Manifest.csv). The STEP revision replaces `Roller_Rear_L_03` and `Roller_Front_R_03` with simplified representations of the purchased wheel rollers. The repaired import opened without the previously reported warnings in the project owner’s Onshape session. Hardware fit still needs confirmation.
+The [CAD notes](cad/README.md) include the earlier detailed assembly and its individual part exports.
 
 ## Wiring and intended use
 
