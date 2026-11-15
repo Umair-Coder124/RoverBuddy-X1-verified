@@ -4,9 +4,18 @@ RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum whee
 
 ## CAD
 
-[Open the latest Onshape revision](https://cad.onshape.com/documents/7af13938ef1c0698d1f50b49/w/3e6d69d20d18f8a901bda826/e/d6c90a986fc1453722e99382)
+[Open the original Onshape model used for Fallen review](https://cad.onshape.com/documents/7af13938ef1c0698d1f50b49/w/3e6d69d20d18f8a901bda826/e/d6c90a986fc1453722e99382)
 
-![Full CAD assembly from two angles](cad/Assembly_Preview.png)
+### Updated camera head
+
+The full-robot pan-and-tilt fit study adds the new camera head, side-mounted tilt servo, U-shaped bracket and revised neck mount. Use the STEP to view the updated geometry in CAD. The pan hub is a placeholder, and the fasteners and camera cable still need to be checked through combined pan and tilt.
+
+- [Download the updated full-robot STEP](https://chatgpt.com/library?file_id=libfile_8838221781288191abc750bba02640aa&account_id=personal) (project owner’s ChatGPT file)
+- [Read the fit-study notes on GitHub](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/roverbuddy-tilt-fit-review/cad/FULL_PAN_TILT_FIT_STUDY.md)
+
+The preview below shows the original Onshape model used for review.
+
+![Original assembly from two angles](cad/Assembly_Preview.png)
 
 The [CAD notes](cad/README.md) describe the wheel and motor mounts, camera carrier and electronics placement. The full assembly STEP and 131 individual STEP files are in [cad](cad/). Purchased component envelopes are identified in the [parts manifest](cad/Parts_Manifest.csv). The STEP revision replaces `Roller_Rear_L_03` and `Roller_Front_R_03` with simplified representations of the purchased wheel rollers. The repaired import opened without the previously reported warnings in the project owner’s Onshape session. Hardware fit still needs confirmation.
 
