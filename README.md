@@ -8,9 +8,8 @@ RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum whee
 
 ### Updated camera head
 
-The full-robot pan-and-tilt fit study adds the new camera head, side-mounted tilt servo, U-shaped bracket and revised neck mount. Use the STEP to view the updated geometry in CAD. The pan hub is a placeholder, and the fasteners and camera cable still need to be checked through combined pan and tilt.
+The full-robot pan-and-tilt fit study adds the new camera head, side-mounted tilt servo, U-shaped bracket and revised neck mount. The pan hub is a placeholder, and the fasteners and camera cable still need to be checked through combined pan and tilt.
 
-- [Download the updated full-robot STEP](https://chatgpt.com/library?file_id=libfile_8838221781288191abc750bba02640aa&account_id=personal) (project owner’s ChatGPT file)
 - [Read the fit-study notes on GitHub](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/roverbuddy-tilt-fit-review/cad/FULL_PAN_TILT_FIT_STUDY.md)
 
 The preview below shows the original Onshape model used for review.
