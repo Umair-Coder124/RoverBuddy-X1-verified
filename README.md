@@ -14,7 +14,30 @@ The November 15 assembly includes the camera head, side-mounted tilt servo, and 
 
 ## Wiring and control
 
-![RoverBuddy X1 wiring draft showing power, control and drive connections](docs/images/wiring_draft.png)
+### Power distribution
+
+```mermaid
+flowchart TD
+  BAT["3S battery"] --> PROT["Fuse, main disconnect and undervoltage protection"]
+  PROT --> STOP["Hardware motor cutoff"]
+  PROT --> AUX["Separate Pi and servo supplies"]
+  STOP --> FRONT["Front 6 V regulator"]
+  STOP --> REAR["Rear 6 V regulator"]
+  FRONT --> FD["Front MDD3A → two front motors"]
+  REAR --> RD["Rear MDD3A → two rear motors"]
+```
+
+### Signal connections
+
+```mermaid
+flowchart TD
+  CAM["Camera"] -->|CSI| PI["Raspberry Pi 5"]
+  PI -->|HDMI and USB| SCREEN["Chest display"]
+  PI -->|USB data| PICO["Pico 2"]
+  PICO -->|PWM and direction| FD["Front MDD3A"]
+  PICO -->|PWM and direction| RD["Rear MDD3A"]
+```
+
 
 The diagram shows the planned connections. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
 
