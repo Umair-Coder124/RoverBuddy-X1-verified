@@ -2,39 +2,29 @@
 
 RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum wheels let it drive sideways as well as forward and backward. A camera in the moving head is intended to track a person, and the chest display is intended to show status. The project combines computer vision, motion control and a custom chassis.
 
-## CAD
+## 3D model
 
-[Open the original Onshape model used for Fallen review](https://cad.onshape.com/documents/7af13938ef1c0698d1f50b49/w/3e6d69d20d18f8a901bda826/e/d6c90a986fc1453722e99382)
+[Open RoverBuddy X1 3D Model in Onshape](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
 
-### November 15 pan-and-tilt assembly
+![Full RoverBuddy X1 assembly with the pan-and-tilt camera head, chest display and mecanum drive](cad/Assembly_Preview.png)
 
-- [Download the full assembly STEP](cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step)
-- [Camera and servo bracket close-up](cad/Head_Camera.png)
-- [Drive corner close-up](cad/Drive_Corner.png)
+The November 15 assembly includes the camera head, side-mounted tilt servo, and pan mount above the chest display. The pan hub is centered over the display. Fastener access and cable clearance through combined pan and tilt still need checking.
 
-The pan hub is centered over the chest display. The pan mounting plate extends farther on one side, and the tilt bracket has a side-mounted servo. The hub is a placeholder. Check fastener access and camera cable clearance through combined pan and tilt before fabrication.
+[Camera and servo bracket close-up](cad/Head_Camera.png) · [CAD files and revision notes](cad/README.md)
 
-![November 15 assembly with the pan-and-tilt camera head](cad/Assembly_Preview.png)
+## Wiring and control
 
-The [CAD notes](cad/README.md) include the earlier detailed assembly and its individual part exports.
+![RoverBuddy X1 wiring draft showing power, control and drive connections](docs/images/wiring_draft.png)
 
-## Wiring and intended use
+The diagram shows the planned connections. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
 
-```mermaid
-flowchart LR
-    BAT["3S battery"] --> PROT["Main fuse, disconnect and undervoltage protection"]
-    PROT --> AUX["Separate Pi and servo supplies"]
-    PROT --> STOP["Hardware motor cutoff"]
-    STOP --> MOTOR["Independent front and rear 6 V motor supplies"]
-```
-
-Sophia confirmed that a wiring diagram is acceptable for this module-based design. See the [wiring draft](docs/WIRING.md) and [firmware instructions](firmware/README.md). Use the firmware simulator to try the drive logic. The intended physical workflow is to select a target through the camera system, then use the controller to command the four motors. Hardware testing and an end-to-end follow mode are pending.
+The [firmware instructions](firmware/README.md) explain how to run the drive simulator. The planned workflow uses the camera to select a target and the controller to drive the four motors. End-to-end follow mode and hardware testing are pending.
 
 ## Design submission readiness
 
 The drive controller passed five desktop tests and a simulated watchdog stop. The [serial parser fix](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/commit/4406fdf8919625282004607cfbc282fbfebdae76) also passed a desktop check that an oversized line is discarded and the next valid line is accepted. Motor outputs are disabled by default.
 
-- [x] Repaired Onshape tab loaded and rotated via the public link (confirmed by the project owner).
+- [x] Publish the November 15 full assembly STEP and CAD previews in the repository.
 - [x] Check raised head and camera geometry against the imported pan-actuator envelope through ±180° in a separate CAD study. See the [fit result](docs/WIRING.md#raised-pan-adapter-fit-study).
 - [ ] Finalize the shaft coupling and tilt mount, then check fastener access, connector clearance and camera ribbon travel in the assembled layout.
 - [ ] Finalize the battery disconnect, hardware motor cutoff, fuse and servo supply ratings. Update the wiring and BOM together.
