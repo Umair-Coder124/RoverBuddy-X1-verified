@@ -4,7 +4,9 @@ RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum whee
 
 ## 3D model
 
-[Download the current RoverBuddy X1 STEP assembly](cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step)
+[Open RoverBuddy X1 3D Model in Onshape](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+
+The existing Onshape document shows the earlier imported geometry. Its STEP import still needs updating to match the latest repository assembly.
 
 ![RoverBuddy X1 integrated CAD study](cad/Assembly_Preview.png)
 
@@ -12,9 +14,9 @@ The integrated study combines the lower camera cable centerline with a Pi 5 tray
 
 The cable route was screened in 65 sampled poses over ±180° pan and an assumed ±30° tilt. These checks apply to the modeled centerline and component envelopes. The longest sampled route was approximately 342 mm before the internal camera run, connector exits and service slack. A 500 mm Standard-Mini ribbon is the candidate for a physical fit check. Actual ribbon width, bend radius, strain relief, actuator mounts and connector access still need checking.
 
-[Open RoverBuddy X1 3D Model in Onshape](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+[Download the current STEP assembly file](https://raw.githubusercontent.com/Umair-Coder124/RoverBuddy-X1-verified/main/cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) · [CAD files and revision notes](cad/README.md)
 
-The Onshape document still contains the earlier imported geometry. Update its existing STEP import with the current repository file to review the latest study. [CAD files and revision notes](cad/README.md).
+The STEP link downloads the CAD source for import into Onshape or another CAD application.
 
 ## Wiring and control
 
