@@ -1,4 +1,17 @@
-# RoverBuddy X1 detailed CAD review
+# RoverBuddy X1 CAD studies
+
+The [November 17 integrated CAD study](RoverBuddy_X1_Integrated_CAD_Study.step) combines the lower camera cable route and corrected Pi tray. Import with appearances enabled. The [assembly preview](Integrated_Assembly_Preview.png) and [rear preview](Integrated_Rear_Preview.png) show this STEP.
+
+## November 17 study
+
+- The neutral cable centerline exits through the head-floor opening before turning. The lower pan loop is modeled at Z = 193 mm with a 45 mm planning radius.
+- The Pi mounting pattern is 58 × 49 mm. The board and cooler move 3 mm toward negative X, and the ribbon endpoint reference follows the board.
+- Reopening the integrated STEP retained 155 named components. Checks involving the updated tray, spacers, board, cooler and neutral cable reference found no positive-volume overlaps.
+- The earlier route sampling covered 65 poses at 30° pan and 15° tilt increments. Connector markers identify approximate areas. Actual connector positions and the physical ribbon remain open.
+- The rendered cable uses a 1.3 mm diameter centerline marker for visibility. Check the real ribbon width, thickness, bending and twisting behavior on the build.
+- Keep the 500 mm Standard-Mini camera ribbon as the physical-test candidate. The priced BOM still lists the earlier 300 mm cable pending product selection and delivered cost.
+
+## Earlier assembly
 
 The [November 15 full assembly STEP](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) is the current camera-head fit study. [Assembly_Preview.png](Assembly_Preview.png), [Drive_Corner.png](Drive_Corner.png), and [Head_Camera.png](Head_Camera.png) show this revision.
 
@@ -45,3 +58,4 @@ the pin-to-pin wiring diagram, and synchronize the CAD and BOM. Sophia said a
 wiring diagram is acceptable for this module-based project. This package
 addresses mechanical detail and component placement. Electrical validation,
 hardware fit and a physical build are still pending.
+
