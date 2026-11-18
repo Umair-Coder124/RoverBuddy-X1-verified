@@ -1,6 +1,6 @@
 # RoverBuddy X1 CAD studies
 
-The [November 17 integrated CAD study](RoverBuddy_X1_Integrated_CAD_Study.step) combines the lower camera cable route and corrected Pi tray. Import with appearances enabled. The [assembly preview](Integrated_Assembly_Preview.png) and [rear preview](Integrated_Rear_Preview.png) show this STEP.
+The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) combines the lower camera cable route and corrected Pi tray. Import with appearances enabled. The [assembly preview](Assembly_Preview.png) and [rear preview](Integrated_Rear_Preview.png) show this STEP.
 
 ## November 17 study
 
@@ -11,9 +11,9 @@ The [November 17 integrated CAD study](RoverBuddy_X1_Integrated_CAD_Study.step) 
 - The rendered cable uses a 1.3 mm diameter centerline marker for visibility. Check the real ribbon width, thickness, bending and twisting behavior on the build.
 - Keep the 500 mm Standard-Mini camera ribbon as the physical-test candidate. The priced BOM still lists the earlier 300 mm cable pending product selection and delivered cost.
 
-## Earlier assembly
+## Base assembly notes
 
-The [November 15 full assembly STEP](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) is the current camera-head fit study. [Assembly_Preview.png](Assembly_Preview.png), [Drive_Corner.png](Drive_Corner.png), and [Head_Camera.png](Head_Camera.png) show this revision.
+The existing full-assembly STEP and Assembly_Preview.png paths now carry the integrated study. Earlier revisions remain accessible through Git history.
 
 The notes below document the earlier detailed assembly based on the colored RoverBuddy STEP. Import
 RoverBuddy_X1_Detailed_Assembly.step with **Import appearances** enabled.
