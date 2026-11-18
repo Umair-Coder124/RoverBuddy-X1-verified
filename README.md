@@ -4,13 +4,17 @@ RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum whee
 
 ## 3D model
 
-[Open RoverBuddy X1 3D Model in Onshape](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+[Download the November 17 integrated STEP assembly](cad/RoverBuddy_X1_Integrated_CAD_Study.step)
 
-![Full RoverBuddy X1 assembly with the pan-and-tilt camera head, chest display and mecanum drive](cad/Assembly_Preview.png)
+![RoverBuddy X1 integrated CAD study](cad/Integrated_Assembly_Preview.png)
 
-The November 15 assembly includes the camera head, side-mounted tilt servo, and pan mount above the chest display. The pan hub is centered over the display. Fastener access and cable clearance through combined pan and tilt still need checking.
+The integrated study combines the lower camera cable centerline with a Pi 5 tray using a 58 × 49 mm mounting pattern. The board is shifted 3 mm toward negative X in this study. [Rear view of the cable route and Pi tray](cad/Integrated_Rear_Preview.png).
 
-[Camera and servo bracket close-up](cad/Head_Camera.png) · [CAD files and revision notes](cad/README.md)
+The cable route was screened in 65 sampled poses over ±180° pan and an assumed ±30° tilt. These checks apply to the modeled centerline and component envelopes. The longest sampled route was approximately 342 mm before the internal camera run, connector exits and service slack. A 500 mm Standard-Mini ribbon is the candidate for a physical fit check. Actual ribbon width, bend radius, strain relief, actuator mounts and connector access still need checking.
+
+[Open the November 15 assembly in Onshape](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+
+The Onshape link opens the earlier assembly. Import the integrated STEP as a new revision to review the latest study. [CAD files and revision notes](cad/README.md).
 
 ## Wiring and control
 
@@ -60,3 +64,4 @@ The drive controller passed five desktop tests and a simulated watchdog stop. Th
 The [Fallen BOM](bom.csv) requests **US$1,225.67** for 52 priced lines, including two matching batteries and one balance charger. Unit prices were converted at 3.75 SAR per USD and rounded before calculating line totals. The second battery is an offboard spare. The import excludes owned tools, parts included in other purchases, unpriced power-protection hardware and delivery. The [original cost estimates and item notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/4988d37e5a4969cd980270fd1a0d975400de9bfd/bom.csv) retain the SAR prices and pending items. Confirm pricing, stock and shipping before ordering. Battery protection, hardware isolation and bench validation remain open.
 
 The [Fallen submission guide](https://fallen.hackclub.com/docs/submitting) calls for a finished entrant-designed digital project at the funding stage. Untested firmware is acceptable at that stage, and the physical build and demo are assessed at the build stage. Fallen's rules require entrants to design and document their own work. Ask the organizers whether any reference material can be reused, complete and document your own work, and check the submission requirements before sending the project for review.
+
