@@ -1,7 +1,9 @@
 import unittest, sys
+import tempfile
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from drive_logic import DriveController, HeadController, FollowController, mix
+from simulate import detection_report, video_reports, make_people_detector
 
 class DriveTests(unittest.TestCase):
     def command(self, **changes):
@@ -272,6 +274,124 @@ class FollowTests(unittest.TestCase):
         self.assertEqual(state['head_deg'], (12.0, 6.0))
 
 
+class VideoTests(unittest.TestCase):
+    class Frame:
+        shape = (240, 320, 3)
+
+    class Capture:
+        def __init__(self, frames, opened=True):
+            self.frames = iter(frames)
+            self.opened = opened
+            self.released = False
+        def isOpened(self):
+            return self.opened
+        def read(self):
+            frame = next(self.frames, None)
+            return frame is not None, frame
+        def release(self):
+            self.released = True
+
+    class Backend:
+        def __init__(self, capture):
+            self.capture = capture
+        def VideoCapture(self, path):
+            self.path = path
+            return self.capture
+
+    def test_no_person_and_multiple_candidates_do_not_select_a_target(self):
+        for boxes, status in [([], 'no_person'),
+                ([dict(box=[0, 0, 50, 100], score=1),
+                  dict(box=[100, 0, 50, 100], score=2)], 'multiple_candidates')]:
+            report = detection_report(0, 320, 240, boxes)
+            self.assertEqual(report['status'], status)
+            self.assertNotIn('center_offset', report)
+            self.assertFalse(report['motion_enabled'])
+
+    def test_single_candidate_reports_normalized_center_without_motion(self):
+        report = detection_report(3, 320, 240,
+                                  [dict(box=[120, 60, 80, 120], score=2)])
+        self.assertEqual(report['status'], 'one_person_candidate')
+        self.assertEqual(report['center_offset'], dict(x=0.0, y=0.0))
+        self.assertFalse(report['motion_enabled'])
+
+    def test_bad_detection_coordinates_are_rejected(self):
+        for box in [[-1, 0, 50, 100], [0, 0, 0, 100], [300, 0, 50, 100],
+                    [0, 0, 50, float('nan')], [True, 0, 50, 100]]:
+            with self.assertRaises(ValueError):
+                detection_report(0, 320, 240, [dict(box=box, score=1)])
+        with self.assertRaises(ValueError):
+            detection_report(0, 320, 240, [dict(box=[0, 0, 50, 100], score=float('inf'))])
+
+    def test_video_eof_emits_final_status_and_releases_file(self):
+        cap = self.Capture([self.Frame(), self.Frame()])
+        with tempfile.NamedTemporaryFile() as f:
+            reports = list(video_reports(f.name, cv_module=self.Backend(cap), detector=lambda frame: []))
+        self.assertEqual([r.get('frame') for r in reports[:-1]], [0, 1])
+        self.assertEqual(reports[-1], dict(status='end_of_video', frames=2, motion_enabled=False))
+        self.assertTrue(cap.released)
+        self.assertTrue(all(r['motion_enabled'] is False for r in reports))
+
+    def test_frame_limit_and_early_close_release_capture(self):
+        cap = self.Capture([self.Frame(), self.Frame()])
+        with tempfile.NamedTemporaryFile() as f:
+            reports = list(video_reports(f.name, 1, self.Backend(cap), lambda frame: []))
+        self.assertEqual(reports[-1]['status'], 'frame_limit')
+        self.assertTrue(cap.released)
+        cap = self.Capture([self.Frame(), self.Frame()])
+        with tempfile.NamedTemporaryFile() as f:
+            stream = video_reports(f.name, cv_module=self.Backend(cap), detector=lambda frame: [])
+            next(stream)
+            stream.close()
+        self.assertTrue(cap.released)
+
+    def test_open_decode_and_detector_errors_release_capture(self):
+        for frames, opened in [([], False), ([], True)]:
+            cap = self.Capture(frames, opened)
+            with tempfile.NamedTemporaryFile() as f:
+                with self.assertRaises(ValueError):
+                    list(video_reports(f.name, cv_module=self.Backend(cap), detector=lambda frame: []))
+            self.assertTrue(cap.released)
+        cap = self.Capture([self.Frame()])
+        def broken(frame):
+            raise RuntimeError('detector failed')
+        with tempfile.NamedTemporaryFile() as f:
+            with self.assertRaises(RuntimeError):
+                list(video_reports(f.name, cv_module=self.Backend(cap), detector=broken))
+        self.assertTrue(cap.released)
+
+    def test_video_requires_a_local_file_and_positive_frame_limit(self):
+        with self.assertRaises(ValueError):
+            list(video_reports('https://example.com/video.mp4'))
+        for limit in [0, -1, True, 1.5]:
+            with self.assertRaises(ValueError):
+                list(video_reports('missing.avi', limit))
+
+    def test_detector_resize_maps_boxes_back_to_original_frame(self):
+        class HOG:
+            def setSVMDetector(self, coefficients):
+                pass
+            def detectMultiScale(self, frame, **kwargs):
+                return [(100, 50, 100, 200)], [2.0]
+        class CV:
+            HOGDescriptor = HOG
+            @staticmethod
+            def HOGDescriptor_getDefaultPeopleDetector():
+                return [1]
+            @staticmethod
+            def resize(frame, size):
+                class Resized:
+                    shape = (size[1], size[0], 3)
+                return Resized()
+        class Large:
+            shape = (960, 1280, 3)
+        detect = make_people_detector(CV)
+        self.assertEqual(detect(Large()), [dict(box=[200, 100, 200, 400], score=2.0)])
+        class Small:
+            shape = (60, 40, 3)
+        self.assertEqual(detect(Small()), [])
+
+
 if __name__=='__main__':unittest.main()
+
 
 

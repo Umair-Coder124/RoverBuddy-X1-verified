@@ -1,4 +1,4 @@
-# Firmware: drive control, head and follow-mode simulation
+# Firmware: motion simulation and video detection
 
 **Untested on hardware; actuators disabled by default.** The drive starter and desktop head/follow models are development tools, not a finished follow-me robot.
 
@@ -13,7 +13,34 @@ python3 -m unittest discover -s firmware/tests -v
 
 Neither command accesses GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, the command-timeout stop and rejection of an out-of-range pan target.
 
-All 30 desktop tests passed: five drive tests, twelve head-model tests and thirteen follow-supervisor tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Hardware behavior has not been tested.
+All 38 desktop tests passed: five drive tests, twelve head-model tests, thirteen follow-supervisor tests and eight video/reporting tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Hardware behavior has not been tested.
+
+## Recorded-video detection dry run
+
+The existing simulator can read a local recorded clip and report baseline person detections:
+
+```sh
+python3 -m pip install opencv-python-headless==4.11.0.86
+python3 firmware/simulate.py --video /path/to/clip.mp4 --max-frames 300
+```
+
+OpenCV is optional. The ordinary simulation and unit tests still run without it. Video mode accepts an existing local file and prints one JSON report per processed frame, followed by `end_of_video` or `frame_limit`. It opens no live camera, GPIO or actuator interface.
+
+| Report status | Meaning |
+|---|---|
+| `no_person` | No person box returned by the baseline detector |
+| `one_person_candidate` | One box; report includes its normalized center offset |
+| `multiple_candidates` | Multiple boxes; no candidate is selected |
+| `end_of_video` | Decoder reached the end after at least one frame |
+| `frame_limit` | Requested frame limit was reached |
+
+Every report sets `motion_enabled: false`. One candidate does not establish target identity or a clear path. Video reports are not passed into the motion supervisor, and the program does not invent obstacle readings or send motion commands.
+
+The baseline uses OpenCV's bundled HOG people detector. Wide frames are reduced to at most 640 pixels for analysis; boxes are mapped back to original frame coordinates. Frames smaller than the 64 × 128 detection window return no candidates. HOG scores are classifier margins, not probability estimates. The detector can miss people, return false positives, or lose a person between frames. Persistent identity, camera calibration, distance estimation, steering intent and real-time performance remain open.
+
+Verification used OpenCV 4.11.0 and a temporary three-frame MJPEG clip: blank frame, [OpenCV's basketball sample image](https://github.com/opencv/opencv/blob/4.x/samples/data/basketball1.png), blank frame. It produced `no_person → one_person_candidate → no_person → end_of_video`, with motion disabled throughout. This checks decoding and reporting; it does not measure detection accuracy. The eight unit tests also cover ambiguity, invalid boxes, coordinate scaling, file-open/decode errors, frame limits and capture cleanup.
+
+Sources: [OpenCV HOG descriptor and people detector](https://docs.opencv.org/4.11.0/d5/d33/structcv_1_1HOGDescriptor.html) · [VideoCapture](https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html)
 
 ## Desktop follow-mode supervisor
 
@@ -100,5 +127,6 @@ Drive axes must be finite numbers in −1..1. Fresh commands must arrive faster 
 Hardware and camera integration still to implement and test: target selection/tracking, real target-loss and obstacle/sensor-fault inputs, chest UI, physical pan/tilt interfaces and position recovery, hardware-interlock status, calibration and recovery behavior. A manually armed drive command in this starter can move without obstacle sensing; do not treat it as autonomous or safety validated.
 
 Reference: the manufacturer's [CytronMotorDriver library](https://github.com/CytronTechnologies/CytronMotorDriver) identifies MDD3A as a two-input PWM/PWM driver. Verify the actual board's connector labels and truth table.
+
 
 
