@@ -140,3 +140,107 @@ class HeadController:
         self.updated_ms = now_ms
         return self.position
 
+
+class FollowController:
+    """Desktop motion supervisor fed by synthetic observations and motion intent.
+
+    This does not detect a person, measure distance or control hardware.
+    A stop latches until a valid observation explicitly requests resume.
+    """
+    def __init__(self, obstacle_stop_cm=30.0, sample_timeout_ms=200):
+        if not HeadController._number(obstacle_stop_cm) or obstacle_stop_cm < 0:
+            raise ValueError('finite nonnegative obstacle threshold required')
+        if (isinstance(sample_timeout_ms, bool)
+                or not isinstance(sample_timeout_ms, int) or sample_timeout_ms <= 0):
+            raise ValueError('positive integer sample timeout required')
+        self.drive = DriveController()
+        self.head = HeadController()
+        self.obstacle_stop_cm = obstacle_stop_cm
+        self.sample_timeout_ms = sample_timeout_ms
+        self.armed = False
+        self.reason = 'disarmed'
+        self.deadline_ms = None
+        self.updated_ms = None
+
+    def _time_valid(self, now_ms):
+        return (not isinstance(now_ms, bool) and isinstance(now_ms, int)
+                and now_ms >= 0
+                and (self.updated_ms is None or now_ms >= self.updated_ms))
+
+    def stop(self, reason='stopped'):
+        self.drive.stop()
+        self.head.stop()
+        self.armed = False
+        self.deadline_ms = None
+        self.reason = reason
+
+    def receive(self, observation, now_ms):
+        if not self._time_valid(now_ms):
+            self.stop('invalid_time')
+            return False
+        self.output(now_ms)
+        try:
+            if not isinstance(observation, dict):
+                raise ValueError('expected an object')
+            if observation.get('cmd') == 'stop':
+                self.stop()
+                return True
+            if observation.get('cmd') != 'follow' or observation.get('armed') is not True:
+                raise ValueError('explicit armed follow command required')
+            if any(not isinstance(observation[k], bool)
+                   for k in ('target_visible', 'sensor_ok')):
+                raise ValueError('boolean observation status required')
+            if not observation['sensor_ok']:
+                self.stop('sensor_fault')
+                return False
+            if not observation['target_visible']:
+                self.stop('target_lost')
+                return False
+            samples = [observation[k] for k in ('target_ms', 'obstacle_ms')]
+            if any(isinstance(v, bool) or not isinstance(v, int)
+                   or v < 0 or not 0 <= now_ms - v <= self.sample_timeout_ms
+                   for v in samples):
+                self.stop('stale_observation')
+                return False
+            distance = observation['obstacle_cm']
+            if not HeadController._number(distance) or distance < 0:
+                raise ValueError('finite nonnegative range required')
+            if distance <= self.obstacle_stop_cm:
+                self.stop('obstacle')
+                return False
+            resume = observation.get('resume', False)
+            if not isinstance(resume, bool):
+                raise ValueError('boolean resume required')
+            if not self.armed and not resume:
+                # A clear observation alone must not restart after a stop.
+                return False
+            drive = dict(cmd='drive', armed=True,
+                         **{k: observation[k] for k in ('vx', 'vy', 'wz')})
+            head = dict(cmd='head', armed=True,
+                        **{k: observation[k] for k in ('pan_deg', 'tilt_deg')})
+            if not self.drive.receive(drive, now_ms) or not self.head.receive(head, now_ms):
+                raise ValueError('invalid motion intent')
+            # Refreshing a command must not refresh the underlying sensor samples.
+            self.deadline_ms = min([v + self.sample_timeout_ms for v in samples]
+                                   + [now_ms + self.drive.timeout_ms,
+                                      now_ms + self.head.timeout_ms])
+            self.armed = True
+            self.reason = 'following'
+            return True
+        except (KeyError, TypeError, ValueError, OverflowError):
+            self.stop('invalid_observation')
+            return False
+
+    def output(self, now_ms):
+        if not self._time_valid(now_ms):
+            self.stop('invalid_time')
+        else:
+            if self.armed:
+                self.head.output(min(now_ms, self.deadline_ms))
+                if now_ms > self.deadline_ms:
+                    self.stop('stale_observation')
+            self.updated_ms = now_ms
+        return dict(wheels=self.drive.output(now_ms) if self.armed else (0.0,) * 4,
+                    head_deg=self.head.position, armed=self.armed, reason=self.reason)
+
+
