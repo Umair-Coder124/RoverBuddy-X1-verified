@@ -88,6 +88,92 @@ def detection_report(index, width, height, candidates):
     return report
 
 
+def box_coordinates(detection):
+    try:
+        box = tuple(detection['box'])
+        if (len(box) != 4 or any(not HeadController._number(v) for v in box)
+                or box[0] < 0 or box[1] < 0 or box[2] <= 0 or box[3] <= 0):
+            raise ValueError('invalid target box')
+        return box
+    except (KeyError, TypeError) as exc:
+        raise ValueError('target detection needs a valid box') from exc
+
+
+def box_iou(a, b):
+    """Intersection-over-union for finite (x, y, width, height) boxes."""
+    a, b = box_coordinates(dict(box=a)), box_coordinates(dict(box=b))
+    left, top = max(a[0], b[0]), max(a[1], b[1])
+    right, bottom = min(a[0]+a[2], b[0]+b[2]), min(a[1]+a[3], b[1]+b[3])
+    area = max(0, right-left) * max(0, bottom-top)
+    return area / (a[2]*a[3] + b[2]*b[3] - area)
+
+
+class BoxTargetLock:
+    """Conservative box-overlap association, not person identity recognition."""
+    def __init__(self, min_iou=0.3, ambiguity_margin=0.1):
+        if (not HeadController._number(min_iou) or not 0 < min_iou <= 1
+                or not HeadController._number(ambiguity_margin)
+                or not 0 <= ambiguity_margin <= 1):
+            raise ValueError('valid overlap and ambiguity thresholds required')
+        self.min_iou = min_iou
+        self.ambiguity_margin = ambiguity_margin
+        self.state = 'unselected'
+        self.reason = 'not_selected'
+        self.box = None
+        self.frame_size = None
+        self.index = None
+
+    def snapshot(self):
+        result = dict(state=self.state, reason=self.reason,
+                      box=list(self.box) if self.box is not None else None,
+                      candidate_index=self.index)
+        if self.state == 'locked':
+            x, y, w, h = self.box
+            width, height = self.frame_size
+            result['center_offset'] = dict(x=2*(x+w/2)/width-1,
+                                           y=2*(y+h/2)/height-1)
+        return result
+
+    def lose(self, reason):
+        self.state, self.reason = 'lost', reason
+        self.box, self.index = None, None
+        return self.snapshot()
+
+    def select(self, detections, index, frame_size):
+        if (isinstance(index, bool) or not isinstance(index, int)
+                or index < 0 or index >= len(detections)):
+            raise ValueError('selection index is unavailable in this frame')
+        size = tuple(frame_size)
+        if (len(size) != 2 or any(isinstance(v, bool) or not isinstance(v, int)
+                                 or v <= 0 for v in size)):
+            raise ValueError('positive integer frame size required')
+        self.box = box_coordinates(detections[index])
+        self.frame_size = size
+        self.index = index
+        self.state, self.reason = 'locked', 'selected'
+        return self.snapshot()
+
+    def update(self, detections, frame_size):
+        if self.state != 'locked':
+            return self.snapshot()
+        if tuple(frame_size) != self.frame_size:
+            return self.lose('frame_size_changed')
+        matches = []
+        for index, detection in enumerate(detections):
+            box = box_coordinates(detection)
+            overlap = box_iou(self.box, box)
+            if overlap >= self.min_iou:
+                matches.append((overlap, index, box))
+        matches.sort(reverse=True)
+        if not matches:
+            return self.lose('no_overlap')
+        if len(matches) > 1 and matches[0][0] - matches[1][0] <= self.ambiguity_margin:
+            return self.lose('ambiguous_overlap')
+        _, self.index, self.box = matches[0]
+        self.reason = 'overlap_match'
+        return self.snapshot()
+
+
 def make_people_detector(cv):
     """OpenCV HOG baseline; scores are SVM margins, not probabilities."""
     hog = cv.HOGDescriptor()
@@ -119,10 +205,19 @@ def make_people_detector(cv):
     return detect
 
 
-def video_reports(video_path, max_frames=300, cv_module=None, detector=None):
+def video_reports(video_path, max_frames=300, cv_module=None, detector=None,
+                  target_index=None, select_frame=0):
     """Read only an explicitly supplied local file; yield JSON-ready diagnostics."""
     if isinstance(max_frames, bool) or not isinstance(max_frames, int) or max_frames <= 0:
         raise ValueError('max_frames must be a positive integer')
+    if (isinstance(select_frame, bool) or not isinstance(select_frame, int)
+            or not 0 <= select_frame < max_frames):
+        raise ValueError('select_frame must be inside the processed frame range')
+    if target_index is not None:
+        if isinstance(target_index, bool) or not isinstance(target_index, int) or target_index < 0:
+            raise ValueError('target_index must be a nonnegative integer')
+    elif select_frame != 0:
+        raise ValueError('select_frame requires a target_index')
     path = Path(video_path)
     if not path.is_file():
         raise ValueError('video must be an existing local file')
@@ -133,6 +228,7 @@ def video_reports(video_path, max_frames=300, cv_module=None, detector=None):
             raise RuntimeError('Video mode needs opencv-python-headless; see firmware/README.md') from exc
     cap = cv_module.VideoCapture(str(path.resolve()))
     count = 0
+    target = BoxTargetLock()
     try:
         if not cap.isOpened():
             raise ValueError('could not open the video file')
@@ -142,12 +238,27 @@ def video_reports(video_path, max_frames=300, cv_module=None, detector=None):
             if not ok:
                 if count == 0:
                     raise ValueError('video contains no decodable frames')
-                yield dict(status='end_of_video', frames=count, motion_enabled=False)
+                if target.state == 'locked':
+                    target.lose('end_of_video')
+                yield dict(status='end_of_video', frames=count, motion_enabled=False,
+                           target=target.snapshot())
                 return
             height, width = frame.shape[:2]
-            yield detection_report(count, int(width), int(height), detect(frame))
+            report = detection_report(count, int(width), int(height), detect(frame))
+            if target_index is not None and count == select_frame:
+                try:
+                    target.select(report['detections'], target_index, (int(width), int(height)))
+                except ValueError:
+                    target.lose('selection_unavailable')
+            else:
+                target.update(report['detections'], (int(width), int(height)))
+            report['target'] = target.snapshot()
+            yield report
             count += 1
-        yield dict(status='frame_limit', frames=count, motion_enabled=False)
+        if target.state == 'locked':
+            target.lose('frame_limit')
+        yield dict(status='frame_limit', frames=count, motion_enabled=False,
+                   target=target.snapshot())
     finally:
         cap.release()
 
@@ -156,14 +267,21 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--video', type=Path, help='local recorded video; detection diagnostics only')
     parser.add_argument('--max-frames', type=int, default=300, help='video frame limit (default: 300)')
+    parser.add_argument('--target-index', type=int, help='zero-based detection index to select explicitly')
+    parser.add_argument('--select-frame', type=int, default=0,
+                        help='zero-based frame on which to select (default: 0)')
     args = parser.parse_args(argv)
     if args.max_frames <= 0:
         parser.error('--max-frames must be positive')
+    if args.video is None and (args.target_index is not None or args.select_frame != 0):
+        parser.error('target selection requires --video')
     try:
         if args.video is None:
             run_demo()
         else:
-            for report in video_reports(args.video, args.max_frames):
+            for report in video_reports(args.video, args.max_frames,
+                                        target_index=args.target_index,
+                                        select_frame=args.select_frame):
                 print(json.dumps(report, allow_nan=False))
     except (ValueError, RuntimeError) as exc:
         parser.exit(2, 'error: {}\n'.format(exc))
@@ -172,6 +290,7 @@ def main(argv=None):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
 
 
 

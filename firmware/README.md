@@ -13,7 +13,7 @@ python3 -m unittest discover -s firmware/tests -v
 
 Neither command accesses GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, the command-timeout stop and rejection of an out-of-range pan target.
 
-All 38 desktop tests passed: five drive tests, twelve head-model tests, thirteen follow-supervisor tests and eight video/reporting tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Hardware behavior has not been tested.
+All 52 desktop tests passed: five drive tests, twelve head-model tests, thirteen follow-supervisor tests, eight video/reporting tests and fourteen target-lock tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Hardware behavior has not been tested.
 
 ## Recorded-video detection dry run
 
@@ -30,7 +30,7 @@ OpenCV is optional. The ordinary simulation and unit tests still run without it.
 |---|---|
 | `no_person` | No person box returned by the baseline detector |
 | `one_person_candidate` | One box; report includes its normalized center offset |
-| `multiple_candidates` | Multiple boxes; no candidate is selected |
+| `multiple_candidates` | Multiple boxes; an existing explicit lock can match one by overlap, otherwise none is selected |
 | `end_of_video` | Decoder reached the end after at least one frame |
 | `frame_limit` | Requested frame limit was reached |
 
@@ -41,6 +41,34 @@ The baseline uses OpenCV's bundled HOG people detector. Wide frames are reduced 
 Verification used OpenCV 4.11.0 and a temporary three-frame MJPEG clip: blank frame, [OpenCV's basketball sample image](https://github.com/opencv/opencv/blob/4.x/samples/data/basketball1.png), blank frame. It produced `no_person → one_person_candidate → no_person → end_of_video`, with motion disabled throughout. This checks decoding and reporting; it does not measure detection accuracy. The eight unit tests also cover ambiguity, invalid boxes, coordinate scaling, file-open/decode errors, frame limits and capture cleanup.
 
 Sources: [OpenCV HOG descriptor and people detector](https://docs.opencv.org/4.11.0/d5/d33/structcv_1_1HOGDescriptor.html) · [VideoCapture](https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html)
+
+## Explicit target locking in recorded video
+
+First inspect the ordinary video reports to choose a detection on a particular frame. Then rerun the clip with explicit zero-based frame and detection indices:
+
+```sh
+python3 firmware/simulate.py --video /path/to/clip.mp4 --max-frames 300 --select-frame 10 --target-index 0
+```
+
+This selects the first detection in frame 10's `detections` array. There is no automatic initial selection. If that index is unavailable on the selected frame, the attempt is reported as `selection_unavailable` and is not retried on a later frame.
+
+Each frame now includes a separate `target` object:
+
+| Target state | Meaning |
+|---|---|
+| `unselected` | No explicit selection has been made |
+| `locked` | The selected box, or a sufficiently overlapping continuation, is available |
+| `lost` | Selection failed, association became unreliable, frame size changed, or processing ended |
+
+A locked target includes its box, current detection index and normalized center offset. The detection index can change when the detector changes output order; it is not a person ID. A top-level single-candidate center describes a detection only; use the separate `target` state to inspect the explicit lock.
+
+The baseline compares intersection-over-union with the previous target box. The default minimum overlap is 0.3. If the two best qualifying matches differ by no more than 0.1, the match is treated as ambiguous and the lock is lost. A nonoverlapping bystander, a higher detection score or a larger box does not trigger automatic replacement.
+
+Loss remains latched even if a similar detection reappears. The CLI makes one selection attempt per run; choose again by rerunning the clip with the desired frame and index. An active lock is cleared at end-of-video or the frame limit. Every report still has `motion_enabled: false`.
+
+Verification used a temporary four-frame clip: blank, OpenCV sample image, a slightly shifted copy, blank. The target states were `unselected → locked (selected) → locked (overlap_match) → lost (no_overlap)`. Tests additionally cover changed detection order, bystanders, ambiguous overlap, missing targets, frame-size changes, failed selection and latched loss.
+
+Box overlap is not identity recognition. Nearby or crossing people can still cause incorrect associations, and fast motion or missed detections can lose the target. Appearance-based identity checks, practical tracking accuracy and hardware integration remain open.
 
 ## Desktop follow-mode supervisor
 
@@ -127,6 +155,7 @@ Drive axes must be finite numbers in −1..1. Fresh commands must arrive faster 
 Hardware and camera integration still to implement and test: target selection/tracking, real target-loss and obstacle/sensor-fault inputs, chest UI, physical pan/tilt interfaces and position recovery, hardware-interlock status, calibration and recovery behavior. A manually armed drive command in this starter can move without obstacle sensing; do not treat it as autonomous or safety validated.
 
 Reference: the manufacturer's [CytronMotorDriver library](https://github.com/CytronTechnologies/CytronMotorDriver) identifies MDD3A as a two-input PWM/PWM driver. Verify the actual board's connector labels and truth table.
+
 
 
 

@@ -62,7 +62,7 @@ The [firmware instructions](firmware/README.md) explain how to run the drive/hea
 
 ## Design submission readiness
 
-The drive, head-motion, follow-supervisor and video-reporting checks passed 38 desktop tests. The synthetic follow-mode demo checks target-loss, obstacle, sensor-fault and stale-reading stops, plus explicit resume. The head model checks angle and speed limits and bounded pan reversal. A recorded-video dry run now reports baseline person candidates without enabling motion. Reliable target tracking and physical motion remain unvalidated. The [serial parser fix](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/commit/4406fdf8919625282004607cfbc282fbfebdae76) also passed a desktop check that an oversized line is discarded and the next valid line is accepted. Motor outputs are disabled by default.
+The drive, head-motion, follow-supervisor and video-reporting checks passed 52 desktop tests. The synthetic follow-mode demo checks target-loss, obstacle, sensor-fault and stale-reading stops, plus explicit resume. The head model checks angle and speed limits and bounded pan reversal. The recorded-video dry run reports baseline person candidates and supports [explicit box target locking](firmware/README.md#explicit-target-locking-in-recorded-video), with latched loss on missing or ambiguous matches. Motion stays disabled. Reliable target tracking and physical motion remain unvalidated. The [serial parser fix](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/commit/4406fdf8919625282004607cfbc282fbfebdae76) also passed a desktop check that an oversized line is discarded and the next valid line is accepted. Motor outputs are disabled by default.
 
 - [x] Publish the November 15 full assembly STEP and CAD previews in the repository.
 - [x] Check raised head and camera geometry against the imported pan-actuator envelope through ±180° in a separate CAD study. See the [fit result](docs/WIRING.md#raised-pan-adapter-fit-study).
@@ -77,6 +77,7 @@ The drive, head-motion, follow-supervisor and video-reporting checks passed 38 d
 The [Fallen BOM](bom.csv) retains a **provisional US$1,225.67** subtotal for 52 priced lines, including two matching batteries and one balance charger. It is not a final order total: the older pan/tilt servo and 300 mm ribbon rows are on hold, and the current CAD's replacement actuators, interface, pan supply and 500 mm ribbon still need verified pricing. Unit prices were converted at 3.75 SAR per USD and rounded before calculating line totals. The second battery is an offboard spare. The import excludes owned tools, parts included in other purchases, unpriced power-protection hardware and delivery. The [original cost estimates and item notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/4988d37e5a4969cd980270fd1a0d975400de9bfd/bom.csv) retain the SAR prices and pending items. Confirm pricing, stock and shipping before ordering. Battery protection, hardware isolation and bench validation remain open.
 
 The [Fallen submission guide](https://fallen.hackclub.com/docs/submitting) calls for a finished entrant-designed digital project at the funding stage. Untested firmware is acceptable at that stage, and the physical build and demo are assessed at the build stage.
+
 
 
 
