@@ -2,6 +2,10 @@
 
 This diagram shows the intended architecture. It is not a validated electrical schematic. Do not wire or energize the robot from this diagram alone.
 
+![RoverBuddy X1 power and signal wiring plan](images/wiring_draft.png)
+
+[Scalable SVG diagram](wiring_draft.svg). Orange paths show power; blue paths show control/data. The tilt signal interface, head stop behavior and final component ratings remain open.
+
 ## Current pan and tilt wiring plan
 
 This section applies to the November 17 integrated STEP carried at `cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step`. The older servo comparisons below are retained as design history. The current CAD candidates are one ROBOTIS XM430-W210-T for pan and one Hitec D645MW for tilt. They are not interchangeable three-wire hobby servos.

@@ -24,6 +24,10 @@ The STEP link downloads the CAD source for import into Onshape or another CAD ap
 
 ## Wiring and control
 
+![RoverBuddy X1 wiring plan](docs/images/wiring_draft.png)
+
+[Open the scalable wiring diagram](docs/wiring_draft.svg) · [Pin tables and wiring notes](docs/WIRING.md)
+
 ### Power distribution
 
 ```mermaid
