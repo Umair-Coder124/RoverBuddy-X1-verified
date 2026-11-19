@@ -1,6 +1,6 @@
 # RoverBuddy X1 CAD studies
 
-The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) combines the lower camera cable route and corrected Pi tray. Import with appearances enabled. The [assembly preview](Assembly_Preview.png) and [rear preview](Integrated_Rear_Preview.png) show this STEP.
+The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) combines the lower camera cable route and corrected Pi tray. Import with appearances enabled. The [assembly preview](Assembly_Preview.png), [pan and tilt close-up](Head_Camera.png) and [rear preview](Integrated_Rear_Preview.png) render this geometry with blue shell, silver bracket and dark actuator finishes. These preview finishes do not change the STEP appearances or geometry.
 
 ## November 17 study
 
@@ -10,6 +10,8 @@ The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.ste
 - The earlier route sampling covered 65 poses at 30° pan and 15° tilt increments. Connector markers identify approximate areas. Actual connector positions and the physical ribbon remain open.
 - The rendered cable uses a 1.3 mm diameter centerline marker for visibility. Check the real ribbon width, thickness, bending and twisting behavior on the build.
 - Keep the 500 mm Standard-Mini camera ribbon as the physical-test candidate. The priced BOM still lists the earlier 300 mm cable pending product selection and delivered cost.
+
+The [current wiring plan](../docs/WIRING.md#current-pan-and-tilt-wiring-plan) records the XM430 pan serial interface and separate supply, D645MW tilt PWM branch, and the old BOM entries that need replacement pricing.
 
 ## Base assembly notes
 

@@ -30,7 +30,7 @@ The STEP link downloads the CAD source for import into Onshape or another CAD ap
 flowchart TD
   BAT["3S battery"] --> PROT["Fuse, main disconnect and undervoltage protection"]
   PROT --> STOP["Hardware motor cutoff"]
-  PROT --> AUX["Separate Pi and servo supplies"]
+  PROT --> AUX["Separate Pi, 12 V pan and 6 V tilt branches"]
   STOP --> FRONT["Front 6 V regulator"]
   STOP --> REAR["Rear 6 V regulator"]
   FRONT --> FD["Front MDD3A → two front motors"]
@@ -44,12 +44,15 @@ flowchart TD
   CAM["Camera"] -->|CSI| PI["Raspberry Pi 5"]
   PI -->|HDMI and USB| SCREEN["Chest display"]
   PI -->|USB data| PICO["Pico 2"]
-  PICO -->|PWM and direction| FD["Front MDD3A"]
-  PICO -->|PWM and direction| RD["Rear MDD3A"]
+  PICO -->|PWM/PWM| FD["Front MDD3A"]
+  PICO -->|PWM/PWM| RD["Rear MDD3A"]
+  PI -->|USB data| DXL["U2D2 candidate"]
+  DXL -->|TTL serial| PAN["XM430 pan"]
+  PICO -->|"Tilt PWM; interface check pending"| TILT["D645MW tilt"]
 ```
 
 
-The diagram shows the planned connections. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
+The diagram shows the planned connections. The [current pan and tilt wiring plan](docs/WIRING.md#current-pan-and-tilt-wiring-plan) separates the XM430 serial interface and 12 V power branch from the D645MW tilt PWM and 6 V supply. Head control is not yet implemented. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
 
 The [firmware instructions](firmware/README.md) explain how to run the drive simulator. The planned workflow uses the camera to select a target and the controller to drive the four motors. End-to-end follow mode and hardware testing are pending.
 
@@ -67,7 +70,7 @@ The drive controller passed five desktop tests and a simulated watchdog stop. Th
 
 ## BOM and submission
 
-The [Fallen BOM](bom.csv) requests **US$1,225.67** for 52 priced lines, including two matching batteries and one balance charger. Unit prices were converted at 3.75 SAR per USD and rounded before calculating line totals. The second battery is an offboard spare. The import excludes owned tools, parts included in other purchases, unpriced power-protection hardware and delivery. The [original cost estimates and item notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/4988d37e5a4969cd980270fd1a0d975400de9bfd/bom.csv) retain the SAR prices and pending items. Confirm pricing, stock and shipping before ordering. Battery protection, hardware isolation and bench validation remain open.
+The [Fallen BOM](bom.csv) retains a **provisional US$1,225.67** subtotal for 52 priced lines, including two matching batteries and one balance charger. It is not a final order total: the older pan/tilt servo and 300 mm ribbon rows are on hold, and the current CAD's replacement actuators, interface, pan supply and 500 mm ribbon still need verified pricing. Unit prices were converted at 3.75 SAR per USD and rounded before calculating line totals. The second battery is an offboard spare. The import excludes owned tools, parts included in other purchases, unpriced power-protection hardware and delivery. The [original cost estimates and item notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/4988d37e5a4969cd980270fd1a0d975400de9bfd/bom.csv) retain the SAR prices and pending items. Confirm pricing, stock and shipping before ordering. Battery protection, hardware isolation and bench validation remain open.
 
 The [Fallen submission guide](https://fallen.hackclub.com/docs/submitting) calls for a finished entrant-designed digital project at the funding stage. Untested firmware is acceptable at that stage, and the physical build and demo are assessed at the build stage. Fallen's rules require entrants to design and document their own work. Ask the organizers whether any reference material can be reused, complete and document your own work, and check the submission requirements before sending the project for review.
 
