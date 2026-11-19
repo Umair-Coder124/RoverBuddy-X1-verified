@@ -10,6 +10,10 @@ The existing Onshape document shows the earlier imported geometry. Its STEP impo
 
 ![RoverBuddy X1 integrated CAD study](cad/Assembly_Preview.png)
 
+![Pan and tilt camera assembly](cad/Head_Camera.png)
+
+Preview finishes distinguish the blue shell, silver brackets and dark actuator housings. These are CAD study renders; physical assembly and fit checks remain pending.
+
 The integrated study combines the lower camera cable centerline with a Pi 5 tray using a 58 × 49 mm mounting pattern. The board is shifted 3 mm toward negative X in this study. [Rear view of the cable route and Pi tray](cad/Integrated_Rear_Preview.png).
 
 The cable route was screened in 65 sampled poses over ±180° pan and an assumed ±30° tilt. These checks apply to the modeled centerline and component envelopes. The longest sampled route was approximately 342 mm before the internal camera run, connector exits and service slack. A 500 mm Standard-Mini ribbon is the candidate for a physical fit check. Actual ribbon width, bend radius, strain relief, actuator mounts and connector access still need checking.
