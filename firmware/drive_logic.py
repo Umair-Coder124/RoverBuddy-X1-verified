@@ -174,6 +174,56 @@ class HeadController:
         return self.position
 
 
+class TiltPulsePlanner:
+    """Desktop pulse-width calculation only; no PWM output or hardware approval.
+
+    Default 10 us/degree is an assumed linear map, requiring physical calibration.
+    The narrower angle and pulse windows are project planning limits.
+    """
+    def __init__(self, center_us=1500, us_per_degree=10.0,
+                 angle_limits=(-30.0, 30.0), pulse_limits=(1200, 1800),
+                 reverse=False):
+        try:
+            angles, pulses = tuple(angle_limits), tuple(pulse_limits)
+        except TypeError as exc:
+            raise ValueError('angle and pulse limit pairs required') from exc
+        if (isinstance(center_us, bool) or not isinstance(center_us, int)
+                or not HeadController._number(us_per_degree) or us_per_degree <= 0
+                or not isinstance(reverse, bool)):
+            raise ValueError('integer center, positive finite scale and boolean reverse required')
+        if (len(angles) != 2 or any(not HeadController._number(v) for v in angles)
+                or not angles[0] <= 0 <= angles[1] or angles[0] >= angles[1]):
+            raise ValueError('ordered finite angle limits containing neutral required')
+        if (len(pulses) != 2
+                or any(isinstance(v, bool) or not isinstance(v, int) for v in pulses)
+                or not 900 <= pulses[0] <= center_us <= pulses[1] <= 2100
+                or pulses[0] >= pulses[1]):
+            raise ValueError('ordered integer pulse limits inside 900..2100 us required')
+        self.center_us = center_us
+        self.us_per_degree = us_per_degree
+        self.angle_limits = angles
+        self.pulse_limits = pulses
+        self.reverse = reverse
+        try:
+            for angle in angles:
+                self.pulse_us(angle)
+        except (ValueError, OverflowError) as exc:
+            raise ValueError('angle endpoints exceed the configured pulse window') from exc
+
+    def pulse_us(self, angle_deg):
+        if (not HeadController._number(angle_deg)
+                or not self.angle_limits[0] <= angle_deg <= self.angle_limits[1]):
+            raise ValueError('tilt angle outside configured limits')
+        try:
+            pulse = self.center_us + angle_deg * self.us_per_degree * (-1 if self.reverse else 1)
+            if (not HeadController._number(pulse)
+                    or not self.pulse_limits[0] <= pulse <= self.pulse_limits[1]):
+                raise ValueError('tilt pulse outside configured limits')
+            return int(round(pulse))
+        except OverflowError as exc:
+            raise ValueError('tilt pulse overflow') from exc
+
+
 class FollowController:
     """Desktop motion supervisor fed by synthetic observations and motion intent.
 

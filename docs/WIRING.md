@@ -55,6 +55,23 @@ Use the purchased board's terminal markings, not assumed left/right orientation 
 
 These are signal and power paths, not a pin-to-pin assembly schematic. The existing hardware cutoff covers the drive-motor branches; the head-actuator stop and re-arm behavior still needs specifying. Neither the pan interface nor tilt PWM is implemented in the current drive firmware. Keep GP10 unassigned for this plan. Retain the bounded pan sweep and physically verified tilt limits before enabling movement.
 
+### Tilt PWM requirements and calibration
+
+The [Hitec D645MW v2.2 specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) identifies the servo connector as 1 = SIGNAL, 2 = VCC, 3 = GND in its drawing. Identify the actual plug orientation from that drawing and the purchased unit; do not infer left/right from a mirrored photograph.
+
+| Proposed tilt connection | Destination / qualification |
+|---|---|
+| Pico GP11, physical pin 15 | Servo SIGNAL through the still-unresolved signal interface |
+| Separate 6 V tilt regulator positive | Servo VCC; never supply the servo from a GPIO pin |
+| Tilt regulator return | Servo GND using its own power return |
+| Pico and signal-interface ground reference | Common reference to the tilt branch without carrying servo power current through GPIO wiring |
+
+**Voltage decision remains open.** The reviewed manufacturer data sheet does not publish logic-high/low thresholds or input-current limits. Its supply-voltage range is not a signal-voltage rating. Keep the conditional, unpriced PWM-buffer row in the BOM. A TTL protocol label alone does not confirm a direct 3.3 V PWM connection. Obtain model/revision-specific limits and compare them with the controller's guaranteed levels before choosing a direct connection or buffer, including power sequencing and unpowered behavior. No manufacturer inquiry has been sent by this check.
+
+**Pulse planning:** the desktop [TiltPulsePlanner](../firmware/README.md#desktop-tilt-pulse-planner) assumes a linear map giving −30° / 0° / +30° → 1200 / 1500 / 1800 µs. The software rejects values outside its configured angle and pulse windows. These are project estimates; pulse width alone does not establish physical angle or clearance. The planner does not generate a waveform or choose a refresh period.
+
+**Calibration sequence, not performed:** qualify the logic interface, supply and head stop first. Check pulse timing electrically with the actuator disconnected. Establish the purchased servo's neutral and direction unloaded before attaching the head. Review the actual horn and bracket alignment, then restrict motion to a small clearance-checked region before expanding it. Record measured angle/pulse pairs, supply droop, current and cable behavior; narrow the software limits to the demonstrated sweep. Verify loss-of-signal, stop and deliberate re-arm with the actual load. The current desktop stop models do not implement those physical behaviors.
+
 **BOM reconciliation — November 20, 2026:** the priced TD8120MG pair and 300 mm cable have been replaced with the current actuator and 500 mm cable candidates. The generic bracket and paired 25T horn allowances are replaced by unpriced, actuator-specific mount and tilt-horn rows. The hobby-servo extension quantity is one for tilt; it does not serve the pan bus. The XM430 horn and included leads are accounted for in their parent packages.
 
 ### Sourcing and compatibility check — November 20, 2026
@@ -64,7 +81,7 @@ These are displayed USD product prices, not delivered Saudi quotes. Other existi
 | BOM component | Listed USD, quantity 1 | Source and availability finding |
 |---|---:|---|
 | XM430-W210-T pan | 269.90 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0125-000); global stock and dispatch not confirmed. The [US regional listing](https://robotis.us/products/dynamixel-xm430-w210-t) is sold out and restricted to the Americas; do not use it as a Saudi supply route. |
-| D645MW tilt, HCS ordering part 36645S | 49.99 | [Hitec manufacturer](https://www.hiteccs.com/actuators/product-details/D645MW); local stock and Saudi delivery unconfirmed. |
+| D645MW tilt, HCS ordering part 36645S | 49.99 | [Hitec manufacturer](https://www.hiteccs.com/actuators/product-details/D645MW); international customers are directed to sales. Listed price is a reference; Saudi stock and delivery unconfirmed. |
 | U2D2 interface | 32.10 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0132-000); listed package includes a Type-C USB cable; verify received revision and host connector. |
 | U2D2 Power Hub Board Set | 19.00 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0145-001); U2D2 is separate. Includes 100 mm X3P and X4P leads and mounting supports. |
 | 500 mm camera cable, Adafruit 5820 | 2.50 | [Adafruit seller](https://www.adafruit.com/product/5820); Add to Cart offered for the 500 mm variant. Saudi delivery unquoted. |

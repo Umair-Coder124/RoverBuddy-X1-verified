@@ -7,7 +7,7 @@ import types
 from unittest.mock import patch
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from drive_logic import DriveController, HeadController, FollowController, mix
+from drive_logic import DriveController, HeadController, FollowController, TiltPulsePlanner, mix
 from simulate import detection_report, video_reports, make_people_detector, BoxTargetLock, box_iou
 
 class DriveTests(unittest.TestCase):
@@ -404,6 +404,55 @@ class HeadTests(unittest.TestCase):
         c = HeadController()
         self.assertFalse(c.receive(self.command(pan_deg=181), 0))
         self.assertFalse(c.armed)
+
+
+class TiltPulseTests(unittest.TestCase):
+    def test_planned_endpoints_and_neutral(self):
+        p = TiltPulsePlanner()
+        self.assertEqual([p.pulse_us(v) for v in (-30, 0, 30)], [1200, 1500, 1800])
+
+    def test_reverse_changes_direction_without_moving_neutral(self):
+        p = TiltPulsePlanner(reverse=True)
+        self.assertEqual([p.pulse_us(v) for v in (-30, 0, 30)], [1800, 1500, 1200])
+
+    def test_custom_center_and_scale(self):
+        p = TiltPulsePlanner(center_us=1520, us_per_degree=8,
+                             pulse_limits=(1250, 1800))
+        self.assertEqual([p.pulse_us(v) for v in (-30, 0, 30)], [1280, 1520, 1760])
+
+    def test_fractional_angles_round_to_integer_microseconds(self):
+        p = TiltPulsePlanner()
+        self.assertEqual(p.pulse_us(1.24), 1512)
+        self.assertEqual(p.pulse_us(-1.24), 1488)
+        self.assertIsInstance(p.pulse_us(1.24), int)
+
+    def test_invalid_and_outside_angles_are_rejected(self):
+        p = TiltPulsePlanner()
+        for angle in (True, '0', None, float('nan'), float('inf'),
+                      -30.001, 30.001, 10**1000):
+            with self.subTest(angle=angle), self.assertRaises(ValueError):
+                p.pulse_us(angle)
+
+    def test_invalid_configuration_is_rejected(self):
+        cases = (dict(center_us=True), dict(center_us=1500.5), dict(center_us=2200),
+                 dict(us_per_degree=0), dict(us_per_degree=-1),
+                 dict(us_per_degree=float('inf')), dict(us_per_degree=True),
+                 dict(reverse=1), dict(angle_limits=None), dict(angle_limits=(0,)),
+                 dict(angle_limits=(30, -30)), dict(angle_limits=(1, 2)),
+                 dict(angle_limits=(float('nan'), 30)), dict(pulse_limits=None),
+                 dict(pulse_limits=(800, 2200)), dict(pulse_limits=(1800, 1200)),
+                 dict(pulse_limits=(1200.0, 1800)), dict(pulse_limits=(True, 1800)))
+        for options in cases:
+            with self.subTest(options=options), self.assertRaises(ValueError):
+                TiltPulsePlanner(**options)
+
+    def test_full_angle_window_must_fit_even_before_rounding(self):
+        for options in (dict(center_us=1700), dict(us_per_degree=10.001),
+                        dict(us_per_degree=10**1000), dict(us_per_degree=1e308),
+                        dict(pulse_limits=(1400, 1600)),
+                        dict(angle_limits=(-31, 30)), dict(reverse=True, center_us=1700)):
+            with self.subTest(options=options), self.assertRaises(ValueError):
+                TiltPulsePlanner(**options)
 
 
 class FollowTests(unittest.TestCase):

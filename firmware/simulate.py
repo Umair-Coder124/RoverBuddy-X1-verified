@@ -2,7 +2,7 @@
 import argparse
 import json
 from pathlib import Path
-from drive_logic import DriveController, HeadController, FollowController
+from drive_logic import DriveController, HeadController, FollowController, TiltPulsePlanner
 
 
 def run_demo():
@@ -39,6 +39,17 @@ def run_demo():
     accepted = head.receive(dict(cmd='head', armed=True, pan_deg=181, tilt_deg=0), 1200)
     print('Out-of-range pan accepted:', accepted)
     assert not accepted
+
+    tilt = TiltPulsePlanner()
+    print('\nPlanned tilt pulse widths (desktop calculation; no PWM output):')
+    for angle in (-30, 0, 30):
+        print('{} degrees -> {} us'.format(angle, tilt.pulse_us(angle)))
+    try:
+        tilt.pulse_us(31)
+    except ValueError:
+        print('31-degree tilt rejected by the planning limit')
+    else:
+        raise AssertionError('out-of-range tilt accepted')
     
     def observation(now, **changes):
         # Synthetic fixture: these values are not camera detections or sensor readings.

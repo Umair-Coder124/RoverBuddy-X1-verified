@@ -13,7 +13,7 @@ python3 -m unittest discover -s firmware/tests -v
 
 Neither command accesses real GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, command-timeout stops, rejection of ordinary restart commands, explicit drive/head resume and rejection of an out-of-range pan target.
 
-All 70 desktop tests passed: thirteen drive tests, eighteen head-model tests, fifteen follow-supervisor tests, eight video/reporting tests, fourteen target-lock tests and two mocked Pico runtime tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. The drive checks include invalid/reversed clocks and a late command arriving before the next watchdog output check. The mocked runtime checks the default-disabled guard and serial stop/timeout/malformed-JSON recovery using fake PWM channels. Hardware behavior has not been tested.
+All 77 desktop tests passed: thirteen drive tests, eighteen head-model tests, seven tilt-pulse planner tests, fifteen follow-supervisor tests, eight video/reporting tests, fourteen target-lock tests and two mocked Pico runtime tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. The drive checks include invalid/reversed clocks and a late command arriving before the next watchdog output check. The mocked runtime checks the default-disabled guard and serial stop/timeout/malformed-JSON recovery using fake PWM channels. Hardware behavior has not been tested.
 
 ## Recorded-video detection dry run
 
@@ -146,6 +146,24 @@ The follow supervisor passes its validated resume decision to both motion models
 Pan movement stays inside the configured interval. For example, +170° → −170° travels back through 0°; it does not take a short path across the ±180° boundary and add another cable turn.
 
 This head command is accepted only by the desktop `HeadController`. It is **not** part of the Pico drive runtime's serial protocol. No XM430 packets, D645MW PWM output, physical position feedback, homing or hardware head-stop implementation is supplied. Freezing a simulated angle is not proof that real hardware stops or removes torque.
+
+## Desktop tilt-pulse planner
+
+`TiltPulsePlanner` calculates proposed pulse widths; it does not initialize PWM or connect to the Pico. The default project mapping is `1500 + 10 × tilt_degrees`, rounded to an integer microsecond.
+
+| Logical tilt | Default planned pulse |
+|---|---:|
+| −30° | 1200 µs |
+| 0° | 1500 µs |
+| +30° | 1800 µs |
+
+These are an assumed linear mapping inside the narrower project travel limits. Hitec's [D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) gives a 1500 µs center and 900–2100 µs range with default ±60° travel. That does not establish the actual angle, direction or clearance of the purchased servo and horn.
+
+The planner accepts a custom integer `center_us`, positive `us_per_degree`, ordered `angle_limits` and integer `pulse_limits`, plus boolean `reverse`. Both angle endpoints must fit the configured pulse window before rounding. Configured pulses must stay within the documented outer window. Invalid values, nonfinite numbers, out-of-range angles and inconsistent calibration settings raise `ValueError`; no clamping silently changes a bad request.
+
+Run the ordinary simulator for the three planning examples and rejection of a 31° request. Seven tests cover endpoints, reversed direction, custom calibration, fractional angles, invalid input/configuration and whole-window consistency.
+
+Before hardware integration, verify the signal voltage and refresh period, purchased servo programming, true neutral, direction, narrower mechanical limits and power/stop behavior. The current data sheet does not state logic-high/low thresholds. The [tilt wiring and calibration notes](../docs/WIRING.md#tilt-pwm-requirements-and-calibration) keep the buffer decision open. A planned pulse is not a physical stop, a measured angle or approval to drive the servo.
 
 ## Pico drive starter
 
