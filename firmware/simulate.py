@@ -7,9 +7,17 @@ from drive_logic import DriveController, HeadController, FollowController
 
 def run_demo():
     controller = DriveController()
-    controller.receive({'cmd':'drive','armed':True,'vx':0.5,'vy':0,'wz':0.1}, 0)
+    drive = dict(cmd='drive', armed=True, vx=0.5, vy=0, wz=0.1)
+    assert controller.receive(dict(drive, resume=True), 0)
     print('Simulated FL/FR/RL/RR at 0 ms:', controller.output(0))
     print('After command timeout at 401 ms:', controller.output(401))
+    accepted = controller.receive(drive, 500)
+    print('Ordinary drive command after timeout accepted:', accepted)
+    assert not accepted and not any(controller.output(500))
+    assert controller.receive(dict(drive, resume=True), 600)
+    print('Explicit drive resume at 600 ms:', controller.output(600))
+    assert any(controller.output(600))
+    controller.stop()
     
     head = HeadController()
     target = dict(cmd='head', armed=True, pan_deg=30, tilt_deg=10)

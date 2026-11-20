@@ -11,9 +11,9 @@ python3 firmware/simulate.py
 python3 -m unittest discover -s firmware/tests -v
 ```
 
-Neither command accesses GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, the command-timeout stop, rejection of an ordinary restart command, explicit head resume and rejection of an out-of-range pan target.
+Neither command accesses real GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, command-timeout stops, rejection of ordinary restart commands, explicit drive/head resume and rejection of an out-of-range pan target.
 
-All 59 desktop tests passed: five drive tests, eighteen head-model tests, fourteen follow-supervisor tests, eight video/reporting tests and fourteen target-lock tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Seven regression tests cover the head restart latch and its follow-supervisor integration. Hardware behavior has not been tested.
+All 70 desktop tests passed: thirteen drive tests, eighteen head-model tests, fifteen follow-supervisor tests, eight video/reporting tests, fourteen target-lock tests and two mocked Pico runtime tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. The drive checks include invalid/reversed clocks and a late command arriving before the next watchdog output check. The mocked runtime checks the default-disabled guard and serial stop/timeout/malformed-JSON recovery using fake PWM channels. Hardware behavior has not been tested.
 
 ## Recorded-video detection dry run
 
@@ -141,7 +141,7 @@ Both targets must be finite numbers inside the configured intervals. Booleans, s
 
 `resume` must be a JSON boolean when present; values such as `1` or `"true"` are invalid. A late ordinary command checks the watchdog before attempting to re-arm, so it cannot hide a missed deadline. This is a change to the desktop head command: older clients must add `resume: true` for startup and deliberate recovery. Do not add it automatically to every keepalive or retry. The flag records explicit caller intent; this model does not authenticate that intent or detect replayed commands carrying the flag.
 
-The follow supervisor passes its validated resume decision to the head model. If a head stop causes the next otherwise-valid follow command to be rejected, the supervisor stops both models and requires a fresh explicit follow resume.
+The follow supervisor passes its validated resume decision to both motion models. If an independent drive or head stop causes the next otherwise-valid follow command to be rejected, the supervisor stops both models and requires a fresh explicit follow resume.
 
 Pan movement stays inside the configured interval. For example, +170° → −170° travels back through 0°; it does not take a short path across the ±180° boundary and add another cable turn.
 
@@ -149,18 +149,23 @@ This head command is accepted only by the desktop `HeadController`. It is **not*
 
 ## Pico drive starter
 
-The portable drive controller implements normalized mecanum mixing, bounded commands, a 20% provisional output limit and a 400 ms command watchdog. Malformed commands disarm it. Wheel direction and sign conventions are provisional. A software watchdog cannot replace hardware isolation or battery protection.
+The portable drive controller implements normalized mecanum mixing, bounded commands, a 20% provisional output limit and a 400 ms command watchdog. Startup and recovery require explicit resume. Malformed commands or invalid/reversed time disarm it. Wheel direction and sign conventions are provisional. A software watchdog cannot replace hardware isolation or battery protection.
 
 The MicroPython runtime expects `drive_logic.py`, `pico/config.py` and `pico/main.py` copied to the controller as `/drive_logic.py`, `/config.py`, `/main.py`. Do not enable the flags until the exact board pinmap, power circuit, independent hardware stop, wheel polarity and driver truth table are reviewed. No motor output pins are initialized while the flags remain false.
 
 Proposed drive USB serial protocol, one JSON object per line:
 
 ```json
+{"cmd":"drive","armed":true,"resume":true,"vx":0.1,"vy":0,"wz":0}
 {"cmd":"drive","armed":true,"vx":0.1,"vy":0,"wz":0}
 {"cmd":"stop"}
 ```
 
-Drive axes must be finite numbers in −1..1. Fresh commands must arrive faster than the watchdog. There is no production host controller supplied and no approved procedure for operating the robot on the floor.
+The first line demonstrates deliberate startup/resume; the second is an ordinary keepalive while already armed; the third stops the controller. Drive axes must be finite numbers in −1..1. `resume`, when present, must be a boolean. After startup, a stop, malformed input or watchdog expiry, an ordinary keepalive is rejected and outputs stay at zero until a valid armed command includes `resume: true`. A late command checks the previous deadline before refreshing it, even if no intervening `output()` call occurred.
+
+This changes the starter's drive protocol: older senders must add explicit resume at startup and deliberate recovery. Do not put `resume: true` on every periodic command or retry. It records caller intent; it is not authentication or replay protection. In the Pico parser, malformed JSON, an oversized input line and end-of-input call `stop()` and therefore also require explicit resume afterward. A partial line does not refresh the controller watchdog.
+
+Portable-controller timestamps must be nonnegative integer milliseconds from a monotonic clock; the runtime accumulates `ticks_diff` to supply them. Invalid or reversed timestamps stop output without rewinding the last accepted clock. Constructor watchdogs must be positive integers and output limits finite values in 0..1. Fresh commands must arrive faster than the watchdog. There is no production host controller supplied and no approved procedure for operating the robot on the floor.
 
 Hardware and camera integration still to implement and test: target selection/tracking, real target-loss and obstacle/sensor-fault inputs, chest UI, physical pan/tilt interfaces and position recovery, hardware-interlock status, calibration and recovery behavior. A manually armed drive command in this starter can move without obstacle sensing; do not treat it as autonomous or safety validated.
 

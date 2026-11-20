@@ -8,12 +8,24 @@ def mix(vx, vy, wz):
     return tuple(v / scale for v in values)
 
 class DriveController:
+    """Bounded wheel commands with a watchdog and explicit restart intent."""
     def __init__(self, timeout_ms=400, max_output=0.20):
+        if isinstance(timeout_ms, bool) or not isinstance(timeout_ms, int) or timeout_ms <= 0:
+            raise ValueError('positive integer timeout required')
+        if (isinstance(max_output, bool) or not isinstance(max_output, (int, float))
+                or not 0 <= max_output <= 1):
+            raise ValueError('finite output limit in 0..1 required')
         self.timeout_ms = timeout_ms
         self.max_output = max_output
         self.armed = False
         self.last_ms = None
+        self.updated_ms = None
         self.requested = (0.0, 0.0, 0.0, 0.0)
+
+    def _time_valid(self, now_ms):
+        return (not isinstance(now_ms, bool) and isinstance(now_ms, int)
+                and now_ms >= 0
+                and (self.updated_ms is None or now_ms >= self.updated_ms))
 
     def stop(self):
         self.armed = False
@@ -21,6 +33,11 @@ class DriveController:
         self.requested = (0.0, 0.0, 0.0, 0.0)
 
     def receive(self, command, now_ms):
+        if not self._time_valid(now_ms):
+            self.stop()
+            return False
+        # Check the old deadline before a packet can refresh the watchdog.
+        self.output(now_ms)
         try:
             if not isinstance(command, dict):
                 raise ValueError('expected an object')
@@ -34,6 +51,11 @@ class DriveController:
                 raise ValueError('numeric axes required')
             if any(not math.isfinite(v) or abs(v) > 1 for v in values):
                 raise ValueError('axis outside -1..1')
+            resume = command.get('resume', False)
+            if not isinstance(resume, bool):
+                raise ValueError('boolean resume required')
+            if not self.armed and not resume:
+                return False
             self.requested = tuple(v * self.max_output for v in mix(*values))
             self.last_ms = now_ms
             self.armed = True
@@ -44,8 +66,12 @@ class DriveController:
 
     def output(self, now_ms):
         # Runtime uses a monotonic integer accumulated from MicroPython ticks_diff.
+        if not self._time_valid(now_ms):
+            self.stop()
+            return self.requested
         if not self.armed or self.last_ms is None or now_ms-self.last_ms > self.timeout_ms:
             self.stop()
+        self.updated_ms = now_ms
         return self.requested
 
 
@@ -221,7 +247,7 @@ class FollowController:
             if not self.armed and not resume:
                 # A clear observation alone must not restart after a stop.
                 return False
-            drive = dict(cmd='drive', armed=True,
+            drive = dict(cmd='drive', armed=True, resume=resume,
                          **{k: observation[k] for k in ('vx', 'vy', 'wz')})
             head = dict(cmd='head', armed=True, resume=resume,
                         **{k: observation[k] for k in ('pan_deg', 'tilt_deg')})
