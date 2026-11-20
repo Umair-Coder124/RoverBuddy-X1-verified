@@ -12,7 +12,7 @@ This section applies to the November 17 integrated STEP carried at `cad/RoverBud
 
 | Connection | Current plan | Remaining selection |
 |---|---|---|
-| Pan data | Pi USB → ROBOTIS U2D2 candidate → 3-pin TTL DYNAMIXEL port → XM430-W210-T | Exact U2D2 revision, USB data lead, matching DYNAMIXEL harness and power-injection hardware |
+| Pan data | Pi USB → U2D2 → Power Hub 3-pin TTL bus → XM430-W210-T | Confirm delivered USB revision, included lead lengths, hub placement and final harness |
 | Pan power | Separate regulated 12 V branch; XM430 input specification is 10–14.8 V | Regulator that maintains 12 V across the loaded 3S pack range, including below and above 12 V; transient, protection and current checks |
 | Tilt signal | Pico GP11, physical pin 15, reserved for PWM → D645MW signal connection | Verify the purchased servo's input threshold; specify a buffer if needed for the Pico's 3.3 V output |
 | Tilt power | Separate 6 V regulator branch → D645MW supply and return | Verify connector polarity, regulator response and loaded current; manufacturer stall figure is 2.15 A at 6 V |
@@ -21,7 +21,7 @@ This section applies to the November 17 integrated STEP carried at `cad/RoverBud
 
 The U2D2 converts USB to the DYNAMIXEL communication bus; it does **not** supply actuator power. Use its TTL port for the **-T** actuator, rather than the RS-485 port. A generic servo extension is not a replacement DYNAMIXEL harness. Select the USB cable for the actual adapter revision; ROBOTIS documents a change from Micro-B to Type-C in August 2025.
 
-The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pack also falls below the XM430's specified minimum near discharge. The pan supply, U2D2, power-injection hardware and matching leads are not yet costed in `bom.csv`. Do not treat the old two-servo subtotal as the cost of this layout.
+The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pack also falls below the XM430's specified minimum near discharge. `bom.csv` now prices the U2D2 and its separate Power Hub using manufacturer references; the 12 V regulator and any extra-length harness remain unpriced. The hub distributes power and does not regulate it.
 
 ```mermaid
 flowchart TD
@@ -41,7 +41,30 @@ flowchart TD
 
 These are signal and power paths, not a pin-to-pin assembly schematic. The existing hardware cutoff covers the drive-motor branches; the head-actuator stop and re-arm behavior still needs specifying. Neither the pan interface nor tilt PWM is implemented in the current drive firmware. Keep GP10 unassigned for this plan. Retain the bounded pan sweep and physically verified tilt limits before enabling movement.
 
-**BOM reconciliation:** the TD8120MG pan/tilt pair, generic two-servo bracket and paired horn/extension allowances describe the earlier concept. Their rows now carry hold notes. Existing amounts are retained as historical estimates until exact replacements and delivered prices are verified. The 300 mm ribbon is also an earlier allowance: the updated route reached approximately 342 mm in sampled poses before the internal camera run, connector exits and service slack, so it does not cover this route. A 500 mm cable is the fit-test candidate, not a validated final length.
+**BOM reconciliation — November 20, 2026:** the priced TD8120MG pair and 300 mm cable have been replaced with the current actuator and 500 mm cable candidates. The generic bracket and paired 25T horn allowances are replaced by unpriced, actuator-specific mount and tilt-horn rows. The hobby-servo extension quantity is one for tilt; it does not serve the pan bus. The XM430 horn and included leads are accounted for in their parent packages.
+
+### Sourcing and compatibility check — November 20, 2026
+
+These are displayed USD product prices, not delivered Saudi quotes. Other existing BOM rows retain their earlier estimates; this check does not revalidate all vendors.
+
+| BOM component | Listed USD, quantity 1 | Source and availability finding |
+|---|---:|---|
+| XM430-W210-T pan | 269.90 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0125-000); global stock and dispatch not confirmed. The [US regional listing](https://robotis.us/products/dynamixel-xm430-w210-t) is sold out and restricted to the Americas; do not use it as a Saudi supply route. |
+| D645MW tilt, HCS ordering part 36645S | 49.99 | [Hitec manufacturer](https://www.hiteccs.com/actuators/product-details/D645MW); local stock and Saudi delivery unconfirmed. |
+| U2D2 interface | 32.10 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0132-000); listed package includes a Type-C USB cable; verify received revision and host connector. |
+| U2D2 Power Hub Board Set | 19.00 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0145-001); U2D2 is separate. Includes 100 mm X3P and X4P leads and mounting supports. |
+| 500 mm camera cable, Adafruit 5820 | 2.50 | [Adafruit seller](https://www.adafruit.com/product/5820); Add to Cart offered for the 500 mm variant. Saudi delivery unquoted. |
+| One 300 mm hobby-servo extension | 4.64 | [Pololu 2184](https://www.pololu.com/product/2184); backorders allowed, immediate stock unconfirmed. Tilt only; current and reach checks remain. |
+
+**Subtotal:** US$1,524.39 for 52 priced lines (approximately SAR 5,716.46 at the planning conversion of 3.75). Five rows have blank prices: mounts, tilt horn, pan regulator, conditional extra DYNAMIXEL cable and conditional PWM buffer. Blank means unknown, not free. The subtotal also excludes unresolved battery-protection and isolation hardware, shipping, import charges and any tax not already included in earlier estimates.
+
+**Mount and horn check:** the XM430 package lists its HN12-N101 horn, thrust washer and assembly fasteners. Compare that exact horn and the manufacturer's body drawing with the CAD adapter before fabrication. The old two-standard-servo bracket is not established as compatible. D645MW uses a 25T output, but the spline count alone does not establish horn offset, hole pattern or bracket fit. Keep its metal horn/coupling unpriced until those dimensions and supplied accessories are checked.
+
+**Power regulator check:** the [Pololu S13V25F12](https://www.pololu.com/product/4984) is a possible buck-boost topology reference, not a selected BOM part. Its listed US$18.95 and nominal 2.5 A rating do not establish adequate output across the complete loaded pack range and temperature. Output capability changes with input voltage and cooling; compare the curves against the XM430's 2.3 A stall demand at 12 V and verify transient response before choosing a regulator. Do not substitute a buck-only 12 V board on a 3S pack.
+
+**Cable check:** the sampled external route reached approximately 342 mm before the internal camera run, connector exits and service slack. The 500 mm Standard-Mini camera cable has the required connector family; length, real ribbon width, twist and strain relief still require physical checks. Pan remains bounded and reverses to unwind. Measure the DYNAMIXEL path separately: included 180 mm actuator and 100 mm hub leads do not prove adequate reach.
+
+The existing Pi 5/Pico 2 architecture remains the basis of this BOM. No Ventuno Q substitution is budgeted. The head controls remain unimplemented and unpowered for this draft.
 
 Sources: [ROBOTIS XM430 manual](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/) · [U2D2 interface and external power](https://emanual.robotis.com/docs/en/parts/interface/u2d2/) · [Hitec D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Raspberry Pi camera cable](https://www.raspberrypi.com/products/camera-cable/?variant=camera-cable-std-mini-500)
 
