@@ -11,9 +11,9 @@ python3 firmware/simulate.py
 python3 -m unittest discover -s firmware/tests -v
 ```
 
-Neither command accesses GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, the command-timeout stop and rejection of an out-of-range pan target.
+Neither command accesses GPIO, serial devices or actuators. The simulation prints wheel outputs, rate-limited head angles, the command-timeout stop, rejection of an ordinary restart command, explicit head resume and rejection of an out-of-range pan target.
 
-All 52 desktop tests passed: five drive tests, twelve head-model tests, thirteen follow-supervisor tests, eight video/reporting tests and fourteen target-lock tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Hardware behavior has not been tested.
+All 59 desktop tests passed: five drive tests, eighteen head-model tests, fourteen follow-supervisor tests, eight video/reporting tests and fourteen target-lock tests. They cover motion bounds, command and observation validation, independent sample freshness, coordinated stops, explicit resume, timeout deadlines and pan reversal without wrapping. Seven regression tests cover the head restart latch and its follow-supervisor integration. Hardware behavior has not been tested.
 
 ## Recorded-video detection dry run
 
@@ -125,13 +125,23 @@ The scenarios use invented fixture values. Real target identity, target switchin
 
 The limits come from the CAD study assumptions, not a verified physical sweep. Configure narrower limits and suitable rates after mechanical and cable testing. The model does not account for acceleration, load, inertia, cable forces or servo dynamics.
 
-Desktop model command:
+Desktop model command for initial start or deliberate recovery:
 
 ```json
-{"cmd":"head","armed":true,"pan_deg":30,"tilt_deg":10}
+{"cmd":"head","armed":true,"resume":true,"pan_deg":30,"tilt_deg":10}
 ```
 
-Both targets must be finite numbers inside the configured intervals. Booleans, strings, missing axes and invalid command types are rejected and disarm the model. An explicit `{"cmd":"stop"}` freezes its current simulated angles. Send fresh commands faster than the watchdog. If an update arrives late, the model advances only as far as the watchdog deadline, then freezes and requires a fresh armed command to move again.
+Both targets must be finite numbers inside the configured intervals. Booleans, strings, missing axes and invalid command types are rejected and disarm the model. An explicit `{"cmd":"stop"}` freezes its current simulated angles. Send fresh commands faster than the watchdog. If an update arrives late, the model advances only as far as the watchdog deadline, then freezes.
+
+| Head-model state | Command requirement |
+|---|---|
+| Startup, explicit stop, invalid input/time or expired watchdog | A valid armed head command with boolean `resume: true` is required to move again |
+| Already armed, within watchdog | Valid setpoints can omit `resume` or use `resume: false` |
+| Stopped, ordinary setpoint or keepalive received | Reject the command, retain the frozen pose and stay disarmed |
+
+`resume` must be a JSON boolean when present; values such as `1` or `"true"` are invalid. A late ordinary command checks the watchdog before attempting to re-arm, so it cannot hide a missed deadline. This is a change to the desktop head command: older clients must add `resume: true` for startup and deliberate recovery. Do not add it automatically to every keepalive or retry. The flag records explicit caller intent; this model does not authenticate that intent or detect replayed commands carrying the flag.
+
+The follow supervisor passes its validated resume decision to the head model. If a head stop causes the next otherwise-valid follow command to be rejected, the supervisor stops both models and requires a fresh explicit follow resume.
 
 Pan movement stays inside the configured interval. For example, +170° → −170° travels back through 0°; it does not take a short path across the ±180° boundary and add another cable turn.
 

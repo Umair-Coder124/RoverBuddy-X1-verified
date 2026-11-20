@@ -14,7 +14,7 @@ def run_demo():
     head = HeadController()
     target = dict(cmd='head', armed=True, pan_deg=30, tilt_deg=10)
     print('\nSimulated head angles: (pan degrees, tilt degrees)')
-    head.receive(target, 0)
+    assert head.receive(dict(target, resume=True), 0)
     for now in (100, 200, 300):
         head.receive(target, now)  # Refresh before the 400 ms command watchdog.
         print('At {} ms: {}'.format(now, head.output(now)))
@@ -22,7 +22,13 @@ def run_demo():
     held = head.position
     print('Later at 1000 ms:', head.output(1000))
     assert head.position == held and not head.armed
-    accepted = head.receive(dict(cmd='head', armed=True, pan_deg=181, tilt_deg=0), 1000)
+    accepted = head.receive(target, 1000)
+    print('Ordinary head command after timeout accepted:', accepted)
+    assert not accepted and head.output(1100) == held
+    assert head.receive(dict(target, resume=True), 1100)
+    print('After explicit head resume at 1200 ms:', head.output(1200))
+    assert head.armed and head.position != held
+    accepted = head.receive(dict(cmd='head', armed=True, pan_deg=181, tilt_deg=0), 1200)
     print('Out-of-range pan accepted:', accepted)
     assert not accepted
     

@@ -54,6 +54,7 @@ class HeadController:
 
     Zero is an assumed simulation pose, not a hardware startup position.
     Pan follows the bounded interval without wrapping across its endpoints.
+    Startup and every stop require an explicit resume before moving again.
     """
     def __init__(self, timeout_ms=400, pan_speed_dps=30.0,
                  tilt_speed_dps=15.0, pan_limits=(-180.0, 180.0),
@@ -113,6 +114,12 @@ class HeadController:
             if any(not self._number(v) or not lo <= v <= hi
                    for v, (lo, hi) in zip(target, self.limits)):
                 raise ValueError('angle outside configured limits')
+            resume = command.get('resume', False)
+            if not isinstance(resume, bool):
+                raise ValueError('boolean resume required')
+            if not self.armed and not resume:
+                # Ordinary setpoints and keepalives cannot clear a stopped state.
+                return False
             self.target = target
             self.last_ms = now_ms
             self.armed = True
@@ -216,7 +223,7 @@ class FollowController:
                 return False
             drive = dict(cmd='drive', armed=True,
                          **{k: observation[k] for k in ('vx', 'vy', 'wz')})
-            head = dict(cmd='head', armed=True,
+            head = dict(cmd='head', armed=True, resume=resume,
                         **{k: observation[k] for k in ('pan_deg', 'tilt_deg')})
             if not self.drive.receive(drive, now_ms) or not self.head.receive(head, now_ms):
                 raise ValueError('invalid motion intent')

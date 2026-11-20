@@ -41,7 +41,7 @@ class DriveTests(unittest.TestCase):
 
 class HeadTests(unittest.TestCase):
     def command(self, **changes):
-        data = dict(cmd='head', armed=True, pan_deg=90.0, tilt_deg=20.0)
+        data = dict(cmd='head', armed=True, resume=True, pan_deg=90.0, tilt_deg=20.0)
         data.update(changes)
         return data
 
@@ -101,7 +101,7 @@ class HeadTests(unittest.TestCase):
         self.assertTrue(c.receive(self.command(pan_deg=0, tilt_deg=0), 500))
         self.assertEqual(c.output(600), (9.0, 4.5))
 
-    def test_stop_holds_current_angle_until_new_command(self):
+    def test_stop_holds_current_angle(self):
         c = HeadController()
         c.receive(self.command(), 0)
         self.assertTrue(c.receive({'cmd': 'stop'}, 100))
@@ -147,6 +147,76 @@ class HeadTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 HeadController(**kwargs)
 
+    def test_startup_requires_resume_but_normal_keepalives_do_not(self):
+        c = HeadController()
+        ordinary = self.command()
+        del ordinary['resume']
+        self.assertFalse(c.receive(ordinary, 0))
+        self.assertEqual(c.output(100), (0.0, 0.0))
+        self.assertTrue(c.receive(self.command(), 100))
+        self.assertTrue(c.receive(ordinary, 200))
+        self.assertTrue(c.receive(self.command(resume=False), 300))
+        self.assertEqual(c.output(300), (6.0, 3.0))
+
+    def test_stop_cannot_be_cleared_by_ordinary_commands(self):
+        c = HeadController()
+        c.receive(self.command(), 0)
+        c.receive({'cmd': 'stop'}, 100)
+        held = c.position
+        for now in (110, 200, 1000):
+            self.assertFalse(c.receive(self.command(resume=False), now))
+            self.assertEqual(c.output(now), held)
+            self.assertIsNone(c.last_ms)
+        self.assertTrue(c.receive(self.command(), 1100))
+        self.assertEqual(c.output(1200), (6.0, 3.0))
+
+    def test_timeout_cannot_be_cleared_by_keepalive(self):
+        c = HeadController()
+        c.receive(self.command(), 0)
+        held = c.output(401)
+        self.assertFalse(c.receive(self.command(resume=False), 500))
+        self.assertEqual(c.output(600), held)
+        self.assertTrue(c.receive(self.command(), 700))
+        self.assertEqual(c.output(800), (15.0, 7.5))
+
+    def test_late_command_detects_timeout_before_rearming(self):
+        c = HeadController()
+        c.receive(self.command(), 0)
+        ordinary = self.command()
+        del ordinary['resume']
+        self.assertFalse(c.receive(ordinary, 401))
+        self.assertFalse(c.armed)
+        self.assertEqual(c.output(1000), (12.0, 6.0))
+        self.assertTrue(c.receive(self.command(), 1000))
+        self.assertEqual(c.output(1100), (15.0, 7.5))
+
+    def test_invalid_input_and_time_latch_head_stop(self):
+        for bad, now in [(self.command(pan_deg=181), 100),
+                         (None, 100), (self.command(), 99)]:
+            with self.subTest(bad=bad, now=now):
+                c = HeadController()
+                c.receive(self.command(), 0)
+                c.output(100)
+                self.assertFalse(c.receive(bad, now))
+                held = c.position
+                self.assertFalse(c.receive(self.command(resume=False), 200))
+                self.assertEqual(c.output(300), held)
+                self.assertTrue(c.receive(self.command(), 400))
+                self.assertNotEqual(c.output(500), held)
+
+    def test_resume_requires_a_boolean_and_valid_target(self):
+        for resume in (None, 1, 0, 'true', [], {}):
+            with self.subTest(resume=resume):
+                c = HeadController()
+                c.receive(self.command(), 0)
+                self.assertFalse(c.receive(self.command(resume=resume), 100))
+                held = c.position
+                self.assertFalse(c.receive(self.command(resume=False), 200))
+                self.assertEqual(c.output(300), held)
+        c = HeadController()
+        self.assertFalse(c.receive(self.command(pan_deg=181), 0))
+        self.assertFalse(c.armed)
+
 
 class FollowTests(unittest.TestCase):
     def sample(self, now=0, **changes):
@@ -178,6 +248,21 @@ class FollowTests(unittest.TestCase):
         self.assertEqual(state['head_deg'], (3.0, 1.5))
         self.assertTrue(any(state['wheels']))
         self.assertLessEqual(max(abs(x) for x in state['wheels']), 0.2)
+
+    def test_independent_head_stop_requires_supervisor_resume(self):
+        c = self.started()
+        c.output(100)
+        c.head.stop()
+        held = c.head.position
+        self.assertFalse(c.receive(self.sample(110), 110))
+        self.assertStopped(c.output(110))
+        self.assertFalse(c.drive.armed)
+        self.assertFalse(c.receive(self.sample(120), 120))
+        self.assertEqual(c.output(120)['head_deg'], held)
+        self.assertTrue(c.receive(self.sample(130, resume=True), 130))
+        self.assertTrue(c.head.armed)
+        self.assertTrue(c.drive.armed)
+        self.assertNotEqual(c.output(140)['head_deg'], held)
 
     def test_target_loss_stops_drive_and_freezes_head(self):
         c = self.started()
