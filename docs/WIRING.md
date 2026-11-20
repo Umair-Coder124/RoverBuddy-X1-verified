@@ -4,7 +4,7 @@ This diagram shows the intended architecture. It is not a validated electrical s
 
 ![RoverBuddy X1 power and signal wiring plan](images/wiring_draft.png)
 
-[Scalable SVG diagram](wiring_draft.svg). Orange paths show power; blue paths show control/data. The tilt signal interface, head stop behavior and final component ratings remain open.
+[Scalable SVG diagram](wiring_draft.svg). Orange paths show power; blue paths show control/data. The November 20 diagram now includes the DFR0946 supply candidate and U2D2 Power Hub. The hub appears in both views to show its power and signal roles; these are the same single BOM item. Supply qualification, the tilt signal interface, head stop behavior and final component ratings remain open.
 
 ## Current pan and tilt wiring plan
 
@@ -26,7 +26,8 @@ The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pac
 ```mermaid
 flowchart TD
     PI["Raspberry Pi 5"] -->|USB data| USB["U2D2 candidate"]
-    USB -->|TTL half-duplex data| PAN["XM430-W210-T pan"]
+    USB -->|3-pin TTL| HUB["U2D2 Power Hub"]
+    HUB -->|TTL half-duplex data| PAN["XM430-W210-T pan"]
     PI -->|USB data| PICO["Pico 2"]
     PICO -->|"GP11 PWM; interface check pending"| TILT["D645MW tilt"]
 ```
@@ -35,9 +36,22 @@ flowchart TD
 flowchart TD
     PACK["Protected and isolated 3S supply"] --> PANREG["DFR0946 candidate at 12 V; qualification pending"]
     PACK --> TILTREG["Separate 6 V tilt regulator"]
-    PANREG --> PAN["XM430 supply input"]
+    PANREG --> HUB["Power Hub: external power input"]
+    HUB --> PAN["XM430 supply via TTL harness"]
     TILTREG --> TILT["D645MW supply input"]
 ```
+
+Proposed pan branch terminal mapping, subject to the supply qualification and protection checks below:
+
+| From | To | Role / check |
+|---|---|---|
+| Protected distribution positive and its power return | DFR0946 input + and input − | Input branch protection, wiring ratings and head stop remain pending |
+| DFR0946 output +, adjusted and measured at 12 V | Power Hub power-input terminal marked + | Verify setpoint and polarity with the actuator disconnected |
+| DFR0946 output − | Power Hub power-input terminal marked − | Dedicated power return; do not carry pan current through Pico GPIO ground wiring |
+| U2D2 3-pin TTL connector | Power Hub matching 3-pin connector | Data bus connection; USB does not supply actuator power |
+| Power Hub matching 3-pin connector | XM430-W210-T JST 3-pin connector | Combined actuator supply, ground and TTL data; verify exact connector markings and cable reach |
+
+Use the purchased board's terminal markings, not assumed left/right orientation in a picture. The Power Hub does not regulate voltage. Confirm its supplied supports provide underside clearance. [Manufacturer Power Hub layout and assembly](https://docs.robotis.com/docs/parts/interface/u2d2_power_hub/).
 
 These are signal and power paths, not a pin-to-pin assembly schematic. The existing hardware cutoff covers the drive-motor branches; the head-actuator stop and re-arm behavior still needs specifying. Neither the pan interface nor tilt PWM is implemented in the current drive firmware. Keep GP10 unassigned for this plan. Retain the bounded pan sweep and physically verified tilt limits before enabling movement.
 

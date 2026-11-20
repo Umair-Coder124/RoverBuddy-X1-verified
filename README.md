@@ -51,12 +51,13 @@ flowchart TD
   PICO -->|PWM/PWM| FD["Front MDD3A"]
   PICO -->|PWM/PWM| RD["Rear MDD3A"]
   PI -->|USB data| DXL["U2D2 candidate"]
-  DXL -->|TTL serial| PAN["XM430 pan"]
+  DXL -->|3-pin TTL| HUB["U2D2 Power Hub"]
+  HUB -->|TTL serial| PAN["XM430 pan"]
   PICO -->|"Tilt PWM; interface check pending"| TILT["D645MW tilt"]
 ```
 
 
-The diagram shows the planned connections. The [current pan and tilt wiring plan](docs/WIRING.md#current-pan-and-tilt-wiring-plan) separates the XM430 serial interface and 12 V power branch from the D645MW tilt PWM and 6 V supply. Head motion can be tested in the desktop simulator; physical head control is not yet implemented. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
+The diagram shows the planned connections. Pan data runs Pi USB → U2D2 → Power Hub → XM430, while the DFR0946 candidate feeds the hub's separate 12 V input. The hub does not regulate voltage. The [current pan and tilt wiring plan](docs/WIRING.md#current-pan-and-tilt-wiring-plan) separates the XM430 serial interface and 12 V power branch from the D645MW tilt PWM and 6 V supply. Head motion can be tested in the desktop simulator; physical head control is not yet implemented. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
 
 The [firmware instructions](firmware/README.md) explain how to run the drive/head simulation and the [follow-mode supervisor demo](firmware/README.md#desktop-follow-mode-supervisor) with synthetic observations. The planned workflow uses the camera to select a target and the controller to drive the four motors. The existing simulator also offers a [recorded-video detection dry run](firmware/README.md#recorded-video-detection-dry-run). End-to-end follow mode and hardware testing are pending.
 
