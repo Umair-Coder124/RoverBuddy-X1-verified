@@ -13,7 +13,7 @@ This section applies to the November 17 integrated STEP carried at `cad/RoverBud
 | Connection | Current plan | Remaining selection |
 |---|---|---|
 | Pan data | Pi USB → U2D2 → Power Hub 3-pin TTL bus → XM430-W210-T | Confirm delivered USB revision, included lead lengths, hub placement and final harness |
-| Pan power | Separate regulated 12 V branch; XM430 input specification is 10–14.8 V | Regulator that maintains 12 V across the loaded 3S pack range, including below and above 12 V; transient, protection and current checks |
+| Pan power | DFR0946 buck-boost candidate, adjusted to 12 V → Power Hub → XM430; actuator input specification is 10–14.8 V | Verify regulation over the loaded 3S range, startup and load steps, temperature, protection and installation before connecting the actuator |
 | Tilt signal | Pico GP11, physical pin 15, reserved for PWM → D645MW signal connection | Verify the purchased servo's input threshold; specify a buffer if needed for the Pico's 3.3 V output |
 | Tilt power | Separate 6 V regulator branch → D645MW supply and return | Verify connector polarity, regulator response and loaded current; manufacturer stall figure is 2.15 A at 6 V |
 | Signal reference | Common ground reference for the host, interface, actuator supplies and controller | Document the harness return paths and avoid carrying actuator current through GPIO wiring |
@@ -21,7 +21,7 @@ This section applies to the November 17 integrated STEP carried at `cad/RoverBud
 
 The U2D2 converts USB to the DYNAMIXEL communication bus; it does **not** supply actuator power. Use its TTL port for the **-T** actuator, rather than the RS-485 port. A generic servo extension is not a replacement DYNAMIXEL harness. Select the USB cable for the actual adapter revision; ROBOTIS documents a change from Micro-B to Type-C in August 2025.
 
-The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pack also falls below the XM430's specified minimum near discharge. `bom.csv` now prices the U2D2 and its separate Power Hub using manufacturer references; the 12 V regulator and any extra-length harness remain unpriced. The hub distributes power and does not regulate it.
+The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pack also falls below the XM430's specified minimum near discharge. `bom.csv` now prices the U2D2, its separate Power Hub and a DFR0946 pan-supply candidate using manufacturer references; any extra-length harness remains unpriced. Pricing the candidate does not qualify its electrical performance. The hub distributes power and does not regulate it.
 
 ```mermaid
 flowchart TD
@@ -33,7 +33,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    PACK["Protected and isolated 3S supply"] --> PANREG["Regulated 12 V branch; selection pending"]
+    PACK["Protected and isolated 3S supply"] --> PANREG["DFR0946 candidate at 12 V; qualification pending"]
     PACK --> TILTREG["Separate 6 V tilt regulator"]
     PANREG --> PAN["XM430 supply input"]
     TILTREG --> TILT["D645MW supply input"]
@@ -55,12 +55,32 @@ These are displayed USD product prices, not delivered Saudi quotes. Other existi
 | U2D2 Power Hub Board Set | 19.00 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0145-001); U2D2 is separate. Includes 100 mm X3P and X4P leads and mounting supports. |
 | 500 mm camera cable, Adafruit 5820 | 2.50 | [Adafruit seller](https://www.adafruit.com/product/5820); Add to Cart offered for the 500 mm variant. Saudi delivery unquoted. |
 | One 300 mm hobby-servo extension | 4.64 | [Pololu 2184](https://www.pololu.com/product/2184); backorders allowed, immediate stock unconfirmed. Tilt only; current and reach checks remain. |
+| DFR0946 adjustable buck-boost candidate | 8.90 | [DFRobot product](https://www.dfrobot.com/product-2539.html); [manufacturer category](https://www.dfrobot.com/category-70.html) lists stock. Saudi delivery unquoted; electrical qualification pending. |
 
-**Subtotal:** US$1,524.39 for 52 priced lines (approximately SAR 5,716.46 at the planning conversion of 3.75). Five rows have blank prices: mounts, tilt horn, pan regulator, conditional extra DYNAMIXEL cable and conditional PWM buffer. Blank means unknown, not free. The subtotal also excludes unresolved battery-protection and isolation hardware, shipping, import charges and any tax not already included in earlier estimates.
+**Subtotal:** US$1,533.29 for 53 priced lines (approximately SAR 5,749.84 at the planning conversion of 3.75). Four rows have blank prices: mounts, tilt horn, conditional extra DYNAMIXEL cable and conditional PWM buffer. Blank means unknown, not free. The subtotal also excludes unresolved battery-protection and isolation hardware, shipping, import charges and any tax not already included in earlier estimates.
 
 **Mount and horn check:** the XM430 package lists its HN12-N101 horn, thrust washer and assembly fasteners. Compare that exact horn and the manufacturer's body drawing with the CAD adapter before fabrication. The old two-standard-servo bracket is not established as compatible. D645MW uses a 25T output, but the spline count alone does not establish horn offset, hole pattern or bracket fit. Keep its metal horn/coupling unpriced until those dimensions and supplied accessories are checked.
 
-**Power regulator check:** the [Pololu S13V25F12](https://www.pololu.com/product/4984) is a possible buck-boost topology reference, not a selected BOM part. Its listed US$18.95 and nominal 2.5 A rating do not establish adequate output across the complete loaded pack range and temperature. Output capability changes with input voltage and cooling; compare the curves against the XM430's 2.3 A stall demand at 12 V and verify transient response before choosing a regulator. Do not substitute a buck-only 12 V board on a 3S pack.
+### Pan supply candidate and bench qualification
+
+**Status: priced candidate; all bench results pending.** The [DFRobot DFR0946](https://www.dfrobot.com/product-2539.html) is adjustable, with published 6–35 V input and 1–33 V output ranges, 7 A maximum input and 5 A maximum output. These limits screen it for further evaluation at 12 V; they are not a continuous-current guarantee. Its 70 × 39 × 32 mm enclosure needs a CAD placement and ventilation check.
+
+This candidate replaces the unpriced regulator row, not the separate tilt or motor regulators. The earlier [S13V25F12 comparison](https://www.pololu.com/product/4984) remains a rejected selection basis: its nominal 2.5 A figure alone did not demonstrate adequate margin across the pack range.
+
+Use a current-limited bench supply and suitably rated electronic load for initial qualification, with the actuator disconnected. The following are proposed project checks, not completed measurements or manufacturer acceptance limits. Required bench equipment is not assumed to be available and is not included in this BOM update.
+
+| Check | Procedure to record | Acceptance gate |
+|---|---|---|
+| Setpoint and polarity | Verify terminal markings on the purchased module. Adjust the unloaded output to 12.0 V and measure at the intended Power Hub input. Secure adjustment against accidental movement. | Correct polarity and setpoint before any actuator connection. |
+| Input sweep and steady loads | Test 9.0, 10.0, 11.1, 12.0 and 12.6 V inputs, at no load and 0.1, 1.0 and 2.3 A output loads. Record input/output voltage, input current, wiring drop and temperature for every point. | Proposed steady output target: 11.5–12.5 V at the hub throughout the test matrix, with no resets or current-limit collapse. |
+| Startup and load changes | Use an oscilloscope to capture cold start, power cycling and repeated 0.1↔2.3 A load changes at both input endpoints and around 12 V. | Record extrema and recovery. Keep the actuator disconnected until the full trace stays within its 10–14.8 V operating range; no automatic motion on recovery. |
+| Temperature | Repeat the highest measured dissipation point with the intended enclosure, routing and ambient conditions until temperature stabilizes. | Obtain applicable thermal limits from the supplier and demonstrate margin; missing thermal evidence leaves this gate open. |
+| Protection and stop | Review branch wiring, fuse coordination, output overvoltage handling and head stop/re-arm behavior separately. | A converter current limit does not approve battery protection or the head stop circuit. Those open items still block integrated powered tests. |
+| Final assembly | Verify mounting, insulation, ventilation, terminal access and harness reach in the existing CAD; then repeat qualified checks at the actuator connector. | Document clearances and electrical results before adding the actuator. Do not use a deliberately stalled actuator as the bench load. |
+
+The 2.3 A load represents the documented XM430 stall-current demand at 12 V, not normal running current. At 27.6 W output, a screening assumption of 85% efficiency gives about 3.61 A input at 9 V and 4.87 W converter loss. These are calculations, not measured DFR0946 performance. Thermal and startup checks remain necessary.
+
+No physical result, protection rating or final module fit is claimed by this sourcing update.
 
 **Cable check:** the sampled external route reached approximately 342 mm before the internal camera run, connector exits and service slack. The 500 mm Standard-Mini camera cable has the required connector family; length, real ribbon width, twist and strain relief still require physical checks. Pan remains bounded and reverses to unwind. Measure the DYNAMIXEL path separately: included 180 mm actuator and 100 mm hub leads do not prove adequate reach.
 

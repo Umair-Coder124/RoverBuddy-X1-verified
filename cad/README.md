@@ -11,7 +11,7 @@ The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.ste
 - The rendered cable uses a 1.3 mm diameter centerline marker for visibility. Check the real ribbon width, thickness, bending and twisting behavior on the build.
 - Keep the 500 mm Standard-Mini camera ribbon as the physical-test candidate. The November 20 BOM now prices the Adafruit 5820 500 mm cable; delivered cost and physical ribbon fit remain open.
 
-The [current wiring plan](../docs/WIRING.md#current-pan-and-tilt-wiring-plan) records the XM430 pan serial interface and separate supply, D645MW tilt PWM branch, and the current sourcing references. Actuator mounts, tilt horn, 12 V regulator and any additional interface/harness hardware still need final selection and pricing.
+The [current wiring plan](../docs/WIRING.md#current-pan-and-tilt-wiring-plan) records the XM430 pan serial interface and separate supply, D645MW tilt PWM branch, and the current sourcing references. Actuator mounts, tilt horn and any additional interface/harness hardware still need final selection and pricing. The DFR0946 pan-supply candidate is now priced, but its 70 × 39 × 32 mm enclosure needs placement, connector and ventilation checks in this assembly; the STEP has not been changed for it.
 
 ## Base assembly notes
 
