@@ -58,6 +58,14 @@ The Onshape model contains an earlier import. The latest design study and its li
 
 The [parts list (BOM)](bom.csv) has supplier links and estimated costs. The provisional subtotal is **US$1,533.29** for 53 priced rows; four rows are still unpriced. Shipping, local availability, protection hardware and final compatibility are not confirmed.
 
+## Why I chose these electronics
+
+In my old ESP32 project, I would be controlling the car and suddenly everything would stop. I had to go over to the car and restart it. Even after restarting, the video was laggy and shaky, and the car kept disconnecting from my phone. That's why I wanted to try a Raspberry Pi and a different camera this time.
+
+I also used a plastic pan-and-tilt setup on the old project. After using it for a while, the plastic wore out. For this robot I'm planning to use metal parts for the moving camera head instead.
+
+Working on my previous projects taught me how important electrical safety is. I damaged motors while learning to solder and had problems when working with batteries. I want to avoid those mistakes in this build, so I am planning to use a preassembled lithium battery pack and have the wiring, charger, protection and motor controls checked before connecting power.
+
 ## Wiring
 
 ![Simple wiring overview](docs/wiring_overview.svg)
