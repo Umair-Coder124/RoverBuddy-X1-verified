@@ -43,7 +43,7 @@ The [parts list (BOM)](bom.csv) has supplier links and estimated costs. The prov
 
 The Raspberry Pi processes camera information, while the Pico handles the proposed drive controls. The head uses separate pan and tilt connections and power supplies.
 
-Wiring diagram: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/wiring_draft.svg
+Wiring diagram: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/wiring_overview.svg
 
 Wiring notes: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/WIRING.md
 
