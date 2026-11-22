@@ -18,7 +18,7 @@ def run_demo():
     print('Explicit drive resume at 600 ms:', controller.output(600))
     assert any(controller.output(600))
     controller.stop()
-    
+
     head = HeadController()
     target = dict(cmd='head', armed=True, pan_deg=30, tilt_deg=10)
     print('\nSimulated head angles: (pan degrees, tilt degrees)')
@@ -50,7 +50,7 @@ def run_demo():
         print('31-degree tilt rejected by the planning limit')
     else:
         raise AssertionError('out-of-range tilt accepted')
-    
+
     def observation(now, **changes):
         # Synthetic fixture: these values are not camera detections or sensor readings.
         data = dict(cmd='follow', armed=True, target_visible=True, sensor_ok=True,
@@ -58,7 +58,7 @@ def run_demo():
                     vx=0.5, vy=0, wz=0, pan_deg=30, tilt_deg=10)
         data.update(changes)
         return data
-    
+
     print('\nFollow-mode supervisor with synthetic observations:')
     for label, changes in [('Target lost', dict(target_visible=False)),
                            ('Obstacle close', dict(obstacle_cm=20)),
@@ -71,7 +71,7 @@ def run_demo():
         assert not state['armed'] and not any(state['wheels'])
         held = state['head_deg']
         assert follow.output(1000)['head_deg'] == held
-    
+
     follow = FollowController()
     follow.receive(observation(0, resume=True), 0)
     print('Fresh observation:', follow.output(100))
@@ -102,8 +102,12 @@ def detection_report(index, width, height, candidates):
         if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > width or y + h > height:
             raise ValueError('detection box must be inside the frame')
         valid.append(dict(box=list(box), score=float(score)))
-    status = ('no_person' if not valid else
-              'one_person_candidate' if len(valid) == 1 else 'multiple_candidates')
+    if not valid:
+        status = 'no_person'
+    elif len(valid) == 1:
+        status = 'one_person_candidate'
+    else:
+        status = 'multiple_candidates'
     report = dict(frame=index, width=width, height=height, status=status,
                   detections=valid, motion_enabled=False)
     if len(valid) == 1:
@@ -207,9 +211,11 @@ def make_people_detector(cv):
     def detect(frame):
         height, width = frame.shape[:2]
         factor = min(1.0, 640.0 / width)
-        small = (cv.resize(frame, (max(1, round(width * factor)),
-                                   max(1, round(height * factor))))
-                 if factor < 1 else frame)
+        small = frame
+        if factor < 1:
+            new_width = max(1, round(width * factor))
+            new_height = max(1, round(height * factor))
+            small = cv.resize(frame, (new_width, new_height))
         sh, sw = small.shape[:2]
         if sw < 64 or sh < 128:
             return []
@@ -315,7 +321,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     raise SystemExit(main())
-
-
-
-
