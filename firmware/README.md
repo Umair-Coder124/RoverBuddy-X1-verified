@@ -1,6 +1,15 @@
-# Firmware: motion simulation and video detection
+# Robot code
 
-**Untested on hardware; actuators disabled by default.** The drive starter and desktop head/follow models are development tools, not a finished follow-me robot.
+The code can be tested on a computer before the robot is built. It does not yet run a complete working follow-me robot. Motors are disabled by default.
+
+## Main files
+
+- `drive_logic.py`: calculates wheel movement, checks commands and stops on invalid or missing inputs. It also models head movement.
+- `simulate.py`: runs examples on a computer and can examine a recorded video without moving the robot.
+- `pico/main.py`: proposed motor-control program for the Pico.
+- `pico/config.py`: pin settings and safety flags. Keep the flags off until hardware checks are complete.
+
+Start with the desktop demo. The sections below explain the individual tests and limits.
 
 ## Desktop checks
 
