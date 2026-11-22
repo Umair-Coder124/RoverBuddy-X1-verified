@@ -1,6 +1,6 @@
-# November 21 mounting review
+# Mounting check - November 21
 
-This dimensional review uses the documented CAD studies and supplier drawings. It is not a new solid-intersection test or a physical fit approval.
+These checks use the existing 3D design and part drawings. The real parts have not been fitted yet.
 
 | Interface | Documented geometry / calculation | Decision |
 | --- | --- | --- |
@@ -9,9 +9,9 @@ This dimensional review uses the documented CAD studies and supplier drawings. I
 | Tilt mount | Current Hitec v2.2 drawing lists 40.8 × 20.0 × 37.8 mm body, 53.4 mm overall tab length, 10.2 mm transverse mounting-hole spacing and 4.5 mm mounting holes. Older Hitec drawing differs in some dimensions. | Use the current drawing and actual purchased revision; do not manufacture from a generic servo footprint. The existing side-to-side screening box includes tabs but excludes horn and cable. |
 | Tilt horn | 25T, nominal 6 mm spline; Hitec 55738 is a candidate only. | Compare drawing, actual horn attachment and bracket clearance. |
 | Camera ribbon | 500 mm candidate minus 342 mm longest documented sampled centerline gives 158 mm gross nominal remainder. | This is not usable slack: internal run, exits, bend behavior and strain relief are not included in the sampled length. Verify actual ribbon fit. |
-| Pan supply enclosure | DFR0946 candidate 70 × 39 × 32 mm; bounding footprint 2,730 mm² and envelope volume 87,360 mm³. | Reserve a separate accessible stationary location with connector and ventilation space; the current CAD does not verify placement. |
+| Pan supply enclosure | DFR0946 candidate 70 × 39 × 32 mm; bounding footprint 2,730 mm² and envelope volume 87,360 mm³. | Find a place for the regulator with room for cables and airflow. Its fit is not confirmed. |
 
-## Onshape verification sequence
+## What to check in Onshape
 
 - Make a separate revision before replacing imported geometry.
 - Inspect the fixed neck plate, actuator reference, moving adapter and tilt support individually.
