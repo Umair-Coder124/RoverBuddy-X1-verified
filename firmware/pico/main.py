@@ -9,7 +9,8 @@ if not all((config.PINMAP_VERIFIED, config.POWER_AND_HARDWARE_STOP_VERIFIED,
     raise RuntimeError('Actuators disabled: hardware validation flags are false')
 
 from machine import Pin, PWM
-import sys, time
+import sys
+import time
 try:
     import ujson as json
     import uselect as select
@@ -19,19 +20,21 @@ from drive_logic import DriveController
 
 pairs = []
 controller = DriveController()
+
+
 def apply(values):
-    for (a,b), value, sign in zip(pairs, values, config.MOTOR_SIGNS):
+    for (a, b), value, sign in zip(pairs, values, config.MOTOR_SIGNS):
         # First set both low so a polarity change does not command both inputs high.
         a.duty_u16(0)
         b.duty_u16(0)
         value *= sign
-        (a if value >= 0 else b).duty_u16(int(min(1,abs(value))*65535))
+        (a if value >= 0 else b).duty_u16(int(min(1, abs(value)) * 65535))
 
 try:
-    for ga,gb in config.MOTOR_PAIRS:
-        a = PWM(Pin(ga,Pin.OUT,value=0), freq=config.PWM_HZ, duty_u16=0)
-        b = PWM(Pin(gb,Pin.OUT,value=0), freq=config.PWM_HZ, duty_u16=0)
-        pairs.append((a,b))
+    for ga, gb in config.MOTOR_PAIRS:
+        a = PWM(Pin(ga, Pin.OUT,value=0), freq=config.PWM_HZ, duty_u16=0)
+        b = PWM(Pin(gb, Pin.OUT,value=0), freq=config.PWM_HZ, duty_u16=0)
+        pairs.append((a, b))
     poll = select.poll()
     poll.register(sys.stdin, select.POLLIN)
     previous = time.ticks_ms()
@@ -69,7 +72,7 @@ try:
         apply(controller.output(elapsed))
         time.sleep_ms(5)
 finally:
-    for a,b in pairs:
+    for a, b in pairs:
         a.duty_u16(0)
         b.duty_u16(0)
         a.deinit()
