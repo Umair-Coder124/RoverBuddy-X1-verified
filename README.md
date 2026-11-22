@@ -1,84 +1,75 @@
 # RoverBuddy X1
 
-RoverBuddy X1 is a design for a camera-guided companion robot. Four mecanum wheels let it drive sideways as well as forward and backward. A camera in the moving head is intended to track a person, and the chest display is intended to show status. The project combines computer vision, motion control and a custom chassis.
+RoverBuddy X1 is a small robot designed to follow a person using a camera. It has four mecanum wheels, a moving camera head and a screen on its chest.
 
-## 3D model
+## What it is supposed to do
 
-[Open RoverBuddy X1 3D Model in Onshape](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+- Move forward, backward and sideways.
+- Follow a selected person using the camera.
+- Detect obstacles and stop when needed.
+- Show information on the chest screen.
 
-The existing Onshape document shows the earlier imported geometry. Its STEP import still needs updating to match the latest repository assembly.
+These are project goals. The robot has not been built or tested on hardware yet.
 
-![RoverBuddy X1 integrated CAD study](cad/Assembly_Preview.png)
+## 3D design
 
-![Pan and tilt camera assembly](cad/Head_Camera.png)
+![RoverBuddy X1](cad/Assembly_Preview.png)
 
-Preview finishes distinguish the blue shell, silver brackets and dark actuator housings. These are CAD study renders; physical assembly and fit checks remain pending.
+![Camera head](cad/Head_Camera.png)
 
-The integrated study combines the lower camera cable centerline with a Pi 5 tray using a 58 × 49 mm mounting pattern. The board is shifted 3 mm toward negative X in this study. [Rear view of the cable route and Pi tray](cad/Integrated_Rear_Preview.png).
+[Open the Onshape model](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
 
-The cable route was screened in 65 sampled poses over ±180° pan and an assumed ±30° tilt. These checks apply to the modeled centerline and component envelopes. The longest sampled route was approximately 342 mm before the internal camera run, connector exits and service slack. A 500 mm Standard-Mini ribbon is the candidate for a physical fit check. Actual ribbon width, bend radius, strain relief, actuator mounts and connector access still need checking.
+[Download the STEP model](https://raw.githubusercontent.com/Umair-Coder124/RoverBuddy-X1-verified/main/cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step)
 
-[Download the current STEP assembly file](https://raw.githubusercontent.com/Umair-Coder124/RoverBuddy-X1-verified/main/cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) · [CAD files and revision notes](cad/README.md)
+The Onshape model contains an earlier import. The latest design study and its limitations are explained in the [CAD notes](cad/README.md) and [mounting review](cad/2026-11-21-mounting-review.md).
 
-The STEP link downloads the CAD source for import into Onshape or another CAD application.
+## Main parts
 
-## Wiring and control
+| Part | What it does |
+| --- | --- |
+| Raspberry Pi 5 | Handles the camera and display |
+| Raspberry Pi Pico 2 | Controls the motors |
+| Camera Module 3 | Detects people |
+| Four mecanum wheels and motors | Move the robot |
+| XM430 and D645MW servos | Turn and tilt the head |
+| Ultrasonic sensor | Helps detect nearby obstacles |
+| Battery and power modules | Supply power |
 
-![RoverBuddy X1 wiring plan](docs/images/wiring_draft.png)
+The [parts list (BOM)](bom.csv) has supplier links and estimated costs. The provisional subtotal is **US$1,533.29** for 53 priced rows; four rows are still unpriced. Shipping, local availability, protection hardware and final compatibility are not confirmed.
 
-[Open the scalable wiring diagram](docs/wiring_draft.svg) · [Pin tables and wiring notes](docs/WIRING.md)
+## Wiring
 
-### Power distribution
+![Wiring plan](docs/images/wiring_draft.png)
 
-```mermaid
-flowchart TD
-  BAT["3S battery"] --> PROT["Fuse, main disconnect and undervoltage protection"]
-  PROT --> STOP["Hardware motor cutoff"]
-  PROT --> AUX["Separate Pi, 12 V pan and 6 V tilt branches"]
-  STOP --> FRONT["Front 6 V regulator"]
-  STOP --> REAR["Rear 6 V regulator"]
-  FRONT --> FD["Front MDD3A → two front motors"]
-  REAR --> RD["Rear MDD3A → two rear motors"]
-```
+The Raspberry Pi processes camera information, while the Pico handles the proposed drive controls. The head uses separate pan and tilt connections and power supplies.
 
-### Signal connections
+[Full wiring diagram](docs/wiring_draft.svg) · [Detailed wiring and safety notes](docs/WIRING.md)
 
-```mermaid
-flowchart TD
-  CAM["Camera"] -->|CSI| PI["Raspberry Pi 5"]
-  PI -->|HDMI and USB| SCREEN["Chest display"]
-  PI -->|USB data| PICO["Pico 2"]
-  PICO -->|PWM/PWM| FD["Front MDD3A"]
-  PICO -->|PWM/PWM| RD["Rear MDD3A"]
-  PI -->|USB data| DXL["U2D2 candidate"]
-  DXL -->|3-pin TTL| HUB["U2D2 Power Hub"]
-  HUB -->|TTL serial| PAN["XM430 pan"]
-  PICO -->|"Tilt PWM; interface check pending"| TILT["D645MW tilt"]
-```
+**Safety:** The wiring is a draft. Do not power the robot or enable its motors until the battery protection, wiring, isolation and actuator controls have been checked with qualified adult supervision.
 
+## Code and testing
 
-The diagram shows the planned connections. Pan data runs Pi USB → U2D2 → Power Hub → XM430, while the DFR0946 candidate feeds the hub's separate 12 V input. The hub does not regulate voltage. The [current pan and tilt wiring plan](docs/WIRING.md#current-pan-and-tilt-wiring-plan) separates the XM430 serial interface and 12 V power branch from the D645MW tilt PWM and 6 V supply. Head motion can be tested in the desktop simulator; physical head control is not yet implemented. The [wiring notes](docs/WIRING.md) include the proposed [Pico GPIO table](docs/WIRING.md#proposed-logical-gpio-allocation), the [front](docs/WIRING.md#motor-driver-1--front-wheels) and [rear](docs/WIRING.md#motor-driver-2--rear-wheels) motor-driver connections, and the battery protection and motor cutoff design. Component ratings and hardware validation are still pending.
+The [firmware folder](firmware/README.md) contains the desktop simulations and test instructions.
 
-The [firmware instructions](firmware/README.md) explain how to run the drive/head simulation and the [follow-mode supervisor demo](firmware/README.md#desktop-follow-mode-supervisor) with synthetic observations. The planned workflow uses the camera to select a target and the controller to drive the four motors. The existing simulator also offers a [recorded-video detection dry run](firmware/README.md#recorded-video-detection-dry-run). End-to-end follow mode and hardware testing are pending.
+The documented desktop test run passed 77 tests. These are software and mocked tests, not proof that the physical robot works. Real camera tracking, head control and driving still need hardware integration and testing. Motor outputs remain disabled by default.
 
-## Design submission readiness
+## Progress
 
-The drive, head-motion, follow-supervisor, video-reporting and mocked Pico runtime checks passed 77 desktop tests. The synthetic follow-mode demo checks target-loss, obstacle, sensor-fault and stale-reading stops, plus explicit resume. Both wheel and head controllers require explicit `resume: true` at startup and after a stop, timeout or invalid input; ordinary setpoints cannot restart them. The drive controller also rejects invalid/reversed clocks. The head model checks angle and speed limits and bounded pan reversal. The [desktop tilt-pulse planner](firmware/README.md#desktop-tilt-pulse-planner) validates a provisional angle-to-pulse mapping and rejects requests outside its configured limits; physical calibration and the 3.3 V signal interface remain pending. The recorded-video dry run reports baseline person candidates and supports [explicit box target locking](firmware/README.md#explicit-target-locking-in-recorded-video), with latched loss on missing or ambiguous matches. Motion stays disabled. Reliable target tracking and physical motion remain unvalidated. The [serial parser fix](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/commit/4406fdf8919625282004607cfbc282fbfebdae76) also passed a desktop check that an oversized line is discarded and the next valid line is accepted. Motor outputs are disabled by default.
+- [x] Design study and CAD previews
+- [x] Draft wiring diagram and software simulation
+- [x] Review the listed component prices
+- [ ] Finish mounting and camera cable checks
+- [ ] Confirm the remaining power and safety components
+- [ ] Confirm delivered component costs and the submission requirements
+- [ ] Assemble and test the robot
+- [ ] Record a working demo
 
-- [x] Publish the November 15 full assembly STEP and CAD previews in the repository.
-- [x] Check raised head and camera geometry against the imported pan-actuator envelope through ±180° in a separate CAD study. See the [fit result](docs/WIRING.md#raised-pan-adapter-fit-study).
-- [ ] Finalize the shaft coupling and tilt mount, then check fastener access, connector clearance and camera ribbon travel in the assembled layout.
-- [ ] Finalize the battery disconnect, hardware motor cutoff, fuse and servo supply ratings. Update the wiring and BOM together.
-- [x] Reconcile the priced BOM lines to the provisional subtotal.
-- [ ] Add exact links and costs for the selected power-protection hardware, identify the owned screwdrivers if possible, and confirm delivered costs.
-- [ ] Confirm which CAD and firmware reference files, if any, Fallen accepts in the actual design submission. The organizer feedback reported so far addressed the wiring diagram and rollers.
+## Project files
 
-## BOM and submission
-
-The [Fallen BOM](bom.csv) has a **provisional US$1,533.29** subtotal for 53 priced lines (approximately **SAR 5,749.84** at 3.75 SAR per USD), including two matching batteries and one balance charger. The November 20 [sourcing check](docs/WIRING.md#sourcing-and-compatibility-check--november-20-2026) replaces the old pan/tilt servo and 300 mm ribbon allowances with listed prices for the XM430 pan, D645MW tilt, U2D2, Power Hub and 500 mm camera cable. A DFRobot DFR0946 is now budgeted as the 12 V pan-supply candidate; its [bench qualification](docs/WIRING.md#pan-supply-candidate-and-bench-qualification) and CAD placement remain pending. Other rows retain their earlier estimates. Four rows are unpriced: actuator mounts, tilt horn, any extra DYNAMIXEL harness and any required tilt PWM buffer. Blank prices are unknown costs. The second battery is an offboard spare. This is not a final order total: Saudi stock and delivery, unresolved protection/isolation hardware, shipping, import charges and any tax not already included still need confirmation. The [original cost estimates and item notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/4988d37e5a4969cd980270fd1a0d975400de9bfd/bom.csv) retain earlier SAR estimates. Mechanical fit and bench validation remain open.
-
-The [Fallen submission guide](https://fallen.hackclub.com/docs/submitting) calls for a finished entrant-designed digital project at the funding stage. Untested firmware is acceptable at that stage, and the physical build and demo are assessed at the build stage.
-
-
-
-
+- [CAD details](cad/README.md)
+- [Parts list](bom.csv)
+- [Wiring details](docs/WIRING.md)
+- [Software and tests](firmware/README.md)
+- [November 20 review](docs/2026-11-20-design-review.md)
+- [November 21 component and build plan](docs/2026-11-21-procurement-review.md)
+- [November 21 mounting review](cad/2026-11-21-mounting-review.md)
