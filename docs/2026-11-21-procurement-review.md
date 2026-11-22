@@ -1,8 +1,8 @@
-# November 21 component and build-readiness review
+# Parts and build plan - November 21
 
-## Outstanding components
+## Parts still to check
 
-These public manufacturer references are for comparison, not authorization to purchase or proof of CAD fit.
+These are possible parts. Check their fit before ordering.
 
 | Item | Candidate/reference | Open decision |
 | --- | --- | --- |
@@ -13,13 +13,13 @@ These public manufacturer references are for comparison, not authorization to pu
 
 Do not order the hinge assembly or horn until actual suitability is confirmed. The existing BOM remains unchanged.
 
-## Build sequence and acceptance gates
+## Build steps
 
-1. Procurement: confirm the approved revision, delivery dates and actual supplier quotes.
-2. Mechanical review: compare delivered part drawings with CAD, check mount and connector clearances, and obtain fabrication quotes.
-3. Unpowered assembly: inspect fasteners, retention, wheel clearance, ribbon routing and access for maintenance.
+1. Check the correct parts, prices and delivery dates.
+2. Compare the parts with the 3D design and check the mounting holes and cable space. Get printing or fabrication quotes.
+3. Assemble with power off. Check screws, wheel clearance and cable routing.
 4. Electrical review: have a qualified adult review battery protection, wiring and isolation before any energized tests. Keep actuators disabled until qualified.
-5. Supervised integration: record results from each subsystem using the existing acceptance checklist; only proceed after unresolved issues are addressed.
-6. Demo readiness: document actual results and limitations; do not label simulations as physical tests.
+5. Test each part with supervision and record the results. Fix problems before moving on.
+6. Record a demo only after real testing. Keep simulations separate from hardware results.
 
 The live Onshape revision and actual component fit have not been verified in this review. See [CAD notes](../cad/README.md), [wiring notes](WIRING.md), and the [November 20 checklist](2026-11-20-design-review.md).
