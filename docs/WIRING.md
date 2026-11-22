@@ -2,7 +2,7 @@
 
 This diagram shows the intended architecture. It is not a validated electrical schematic. Do not wire or energize the robot from this diagram alone.
 
-![RoverBuddy X1 power and signal wiring plan](images/wiring_draft.png)
+![RoverBuddy X1 power and signal wiring plan](wiring_draft.svg)
 
 [Scalable SVG diagram](wiring_draft.svg). Orange paths show power; blue paths show control/data. The November 20 diagram now includes the DFR0946 supply candidate and U2D2 Power Hub. The hub appears in both views to show its power and signal roles; these are the same single BOM item. Supply qualification, the tilt signal interface, head stop behavior and final component ratings remain open.
 
