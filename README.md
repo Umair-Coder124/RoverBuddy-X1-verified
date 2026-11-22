@@ -101,6 +101,12 @@ The documented desktop test run passed 77 tests. These are software and mocked t
 - [ ] Assemble and test the robot
 - [ ] Record a working demo
 
+## What's next
+
+Once the parts arrive, I want to start building the robot using my assembly plan. I'm most excited to see if the motors respond when I press the controls, and how the moving camera head looks when it turns and tilts. I'll check the mechanical parts and wiring with supervision before powering anything, then test each part separately.
+
+My dream for RoverBuddy X1 is to eventually make a robot that explores beyond Earth. Mars rovers were one of my inspirations, and I'd love to learn how robots could explore Mars and other planets someday. That's a long-term dream, not something this version is designed to do.
+
 ## Project files
 
 - [CAD details](cad/README.md)
