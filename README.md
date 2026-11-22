@@ -28,6 +28,12 @@ This is how I plan for the robot to work. Real movement, obstacle detection and 
 
 ## 3D design
 
+At first I wanted the robot to be like my ESP32 surveillance car, with just a moving camera and no display. Later I got the idea of adding a screen on the chest so it would be easy to see the robot's status.
+
+I based the lower body on my old car, put the screen above it and placed the camera head on top. Mars rovers inspired the design. I chose four wheels for balance and movement, although these mecanum wheels are intended for reasonably flat ground.
+
+This was my first time using Onshape. I ran into geometry errors, trouble positioning the head, and problems with extrusion thickness. Sometimes a part came out as thick as a book, sometimes as thin as paper. I kept working through these issues until the main design came together. Some mounting and clearance checks are still left.
+
 ![RoverBuddy X1](cad/Assembly_Preview.png)
 
 ![Camera head](cad/Head_Camera.png)
