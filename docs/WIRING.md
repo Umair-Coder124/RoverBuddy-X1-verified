@@ -1,10 +1,20 @@
-# Wiring draft — engineering review required
+# Wiring
 
-This diagram shows the intended architecture. It is not a validated electrical schematic. Do not wire or energize the robot from this diagram alone.
+This is the plan for connecting the robot's parts. It has not been tested on real hardware. Do not connect power until a qualified adult has checked the wiring and safety parts.
 
 ![RoverBuddy X1 wiring overview](wiring_overview.svg)
 
-Red lines show power; blue lines show signals. This is the current overview. Supply checks, the tilt interface and hardware stop are still pending.
+Red lines show power. Blue lines show signals.
+
+## How it works
+
+- The battery supplies the robot through protection and power switches.
+- The Pi 5 handles the camera and screen. The Pico 2 sends movement commands.
+- Two motor drivers run the four wheels. The camera head has separate pan and tilt servos.
+- The ultrasonic sensor checks for nearby obstacles.
+- The motor stop and battery protection still need testing. The motor stop does not turn off the head.
+
+The sections below record the exact parts, pin numbers and checks needed before building. They are reference notes, not completed hardware tests.
 
 ## Current pan and tilt wiring plan
 
