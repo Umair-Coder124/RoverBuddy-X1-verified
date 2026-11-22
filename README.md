@@ -39,7 +39,7 @@ The [parts list (BOM)](bom.csv) has supplier links and estimated costs. The prov
 
 ## Wiring
 
-![Wiring plan](docs/wiring_draft.svg)
+![Simple wiring overview](docs/wiring_overview.svg)
 
 The Raspberry Pi processes camera information, while the Pico handles the proposed drive controls. The head uses separate pan and tilt connections and power supplies.
 
