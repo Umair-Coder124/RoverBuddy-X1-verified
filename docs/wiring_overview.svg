@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="820" viewBox="0 0 960 820"><title>RoverBuddy X1 wiring overview (draft)</title><defs><marker id="r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L5 3L0 6Z" fill="red"/></marker><marker id="b" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L5 3L0 6Z" fill="blue"/></marker></defs><rect width="960" height="820" fill="white"/><g font-family="Arial,sans-serif" font-size="16" fill="#111"><text x="20" y="30" font-size="23">RoverBuddy X1 - wiring overview</text><text x="20" y="55" font-size="16">Power (draft)</text><text x="20" y="480" font-size="16">Signals (draft)</text><rect x="20" y="75" width="150" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="95" y="97" text-anchor="middle">3S battery</text>
+<text x="95" y="115" text-anchor="middle">11.1 V nominal</text>
+<rect x="220" y="75" width="190" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="315" y="97" text-anchor="middle">Fuse + disconnect</text>
+<text x="315" y="115" text-anchor="middle">Cell protection (TBD)</text>
+<path d="M170 108 H220" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<rect x="485" y="55" width="175" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="572.5" y="77" text-anchor="middle">Pi power supply</text>
+<rect x="485" y="145" width="175" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="572.5" y="167" text-anchor="middle">12 V pan supply</text>
+<text x="572.5" y="185" text-anchor="middle">Candidate</text>
+<rect x="485" y="235" width="175" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="572.5" y="257" text-anchor="middle">6 V tilt supply</text>
+<rect x="485" y="325" width="175" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="572.5" y="347" text-anchor="middle">Drive cutoff</text>
+<text x="572.5" y="365" text-anchor="middle">Pending</text>
+<path d="M410 108 H445 V87 H485" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<path d="M410 108 H445 V177 H485" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<path d="M410 108 H445 V267 H485" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<path d="M410 108 H445 V357 H485" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<rect x="735" y="55" width="190" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="830" y="77" text-anchor="middle">Raspberry Pi 5</text>
+<rect x="735" y="145" width="190" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="830" y="167" text-anchor="middle">U2D2 Power Hub</text>
+<text x="830" y="185" text-anchor="middle">Pan servo XM430</text>
+<rect x="735" y="235" width="190" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="830" y="257" text-anchor="middle">Tilt servo D645MW</text>
+<rect x="735" y="325" width="190" height="90" fill="white" stroke="#222" stroke-width="2"/>
+<text x="830" y="347" text-anchor="middle">Two 6 V regulators</text>
+<text x="830" y="365" text-anchor="middle">Two MDD3A drivers</text>
+<text x="830" y="383" text-anchor="middle">Four motors</text>
+<path d="M660 87 H735" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<path d="M660 177 H735" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<path d="M660 267 H735" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<path d="M660 357 H735" fill="none" stroke="red" stroke-width="2.5" marker-end="url(#r)"/>
+<text x="20" y="445" font-size="14">Drive cutoff does not disconnect the head. Power protection and ratings are not finalized.</text>
+<rect x="20" y="510" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="110" y="532" text-anchor="middle">Camera Module 3</text>
+<rect x="275" y="510" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="365" y="532" text-anchor="middle">Raspberry Pi 5</text>
+<path d="M200 542 H275" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="205" y="530" font-size="14">CSI</text>
+<rect x="545" y="490" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="635" y="512" text-anchor="middle">Chest display</text>
+<text x="635" y="530" text-anchor="middle">HDMI + USB</text>
+<path d="M455 530 H545" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<rect x="545" y="580" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="635" y="602" text-anchor="middle">Pico 2</text>
+<path d="M455 555 H490 V612 H545" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="459" y="600" font-size="14">USB</text>
+<rect x="20" y="670" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="110" y="692" text-anchor="middle">U2D2 USB adapter</text>
+<rect x="275" y="670" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="365" y="692" text-anchor="middle">U2D2 Power Hub</text>
+<rect x="545" y="670" width="180" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="635" y="692" text-anchor="middle">Pan servo XM430</text>
+<path d="M365 575 V620 H110 V670" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="120" y="610" font-size="14">USB</text>
+<path d="M200 702 H275" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<path d="M455 702 H545" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="208" y="690" font-size="14">TTL</text>
+<text x="465" y="690" font-size="14">TTL</text>
+<rect x="775" y="565" width="160" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="855" y="587" text-anchor="middle">Motor drivers</text>
+<text x="855" y="605" text-anchor="middle">4 motors</text>
+<path d="M725 600 H775" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<rect x="775" y="655" width="160" height="65" fill="white" stroke="#222" stroke-width="2"/>
+<text x="855" y="677" text-anchor="middle">Tilt servo</text>
+<text x="855" y="695" text-anchor="middle">Interface pending</text>
+<path d="M725 620 H750 V687 H775" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="20" y="770" font-size="14">Red = power   Blue = signal / data   Blocks are conceptual, not pin-by-pin instructions.</text>
+<text x="20" y="793" font-size="14">Do not wire or power from this overview alone. See detailed wiring notes and safety checks.</text></g></svg>
