@@ -80,6 +80,12 @@ Wiring notes: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main
 
 ## Code and testing
 
+I've used C++ and Python before. For my ESP32 car, I used basic C++ to program the controls.
+
+For RoverBuddy, I want to make a web page that opens on a phone. The idea is to control the robot manually, or switch to a follow-me mode and put the phone away. I would also like to explore a supervised patrol mode in the future, for use in places where I have permission.
+
+These are software goals for the build. The phone interface and real-world following and patrol functions have not been completed or tested yet.
+
 The [firmware folder](firmware/README.md) contains the desktop simulations and test instructions.
 
 The documented desktop test run passed 77 tests. These are software and mocked tests, not proof that the physical robot works. Real camera tracking, head control and driving still need hardware integration and testing. Motor outputs remain disabled by default.
