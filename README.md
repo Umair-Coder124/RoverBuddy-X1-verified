@@ -17,9 +17,9 @@ These are project goals. The robot has not been built or tested on hardware yet.
 
 ![Camera head](cad/Head_Camera.png)
 
-[Open the Onshape model](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+Onshape model: https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d
 
-[Download the STEP model](https://raw.githubusercontent.com/Umair-Coder124/RoverBuddy-X1-verified/main/cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step)
+STEP model: https://raw.githubusercontent.com/Umair-Coder124/RoverBuddy-X1-verified/main/cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step
 
 The Onshape model contains an earlier import. The latest design study and its limitations are explained in the [CAD notes](cad/README.md) and [mounting review](cad/2026-11-21-mounting-review.md).
 
@@ -43,9 +43,9 @@ The [parts list (BOM)](bom.csv) has supplier links and estimated costs. The prov
 
 The Raspberry Pi processes camera information, while the Pico handles the proposed drive controls. The head uses separate pan and tilt connections and power supplies.
 
-Wiring diagram: `docs/wiring_draft.svg`
+Wiring diagram: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/wiring_draft.svg
 
-Wiring notes: `docs/WIRING.md`
+Wiring notes: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/WIRING.md
 
 **Safety:** The wiring is a draft. Do not power the robot or enable its motors until the battery protection, wiring, isolation and actuator controls have been checked with qualified adult supervision.
 
