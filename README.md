@@ -16,6 +16,16 @@ For RoverBuddy X1, I want to improve on those problems. I chose a Raspberry Pi, 
 
 I've finished the main digital design and planning, but I'm still waiting to get the parts so I can start building. Some design checks are still open. These are planned features, not tested hardware features yet.
 
+## How it works
+
+The Raspberry Pi 5 is the robot's brain. It processes the camera images and decides what movement to request. The Pico 2 receives those instructions and controls the motors.
+
+The mecanum wheels allow the robot to move forward, backward and sideways, turn, or combine those movements. The camera helps the software locate the person I select for it to follow.
+
+The ultrasonic sensor measures the distance to obstacles in front of the robot so it can stop when something is too close. The pan-and-tilt servos let the camera look up, down, left and right. The chest screen is for displaying information about the robot.
+
+This is how I plan for the robot to work. Real movement, obstacle detection and following still need to be tested.
+
 ## 3D design
 
 ![RoverBuddy X1](cad/Assembly_Preview.png)
