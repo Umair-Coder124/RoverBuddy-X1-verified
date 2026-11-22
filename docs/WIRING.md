@@ -2,13 +2,13 @@
 
 This diagram shows the intended architecture. It is not a validated electrical schematic. Do not wire or energize the robot from this diagram alone.
 
-![RoverBuddy X1 power and signal wiring plan](wiring_draft.svg)
+![RoverBuddy X1 wiring overview](wiring_overview.svg)
 
-[Scalable SVG diagram](wiring_draft.svg). Orange paths show power; blue paths show control/data. The November 20 diagram now includes the DFR0946 supply candidate and U2D2 Power Hub. The hub appears in both views to show its power and signal roles; these are the same single BOM item. Supply qualification, the tilt signal interface, head stop behavior and final component ratings remain open.
+Red lines show power; blue lines show signals. This is the current overview. Supply checks, the tilt interface and hardware stop are still pending.
 
 ## Current pan and tilt wiring plan
 
-This section applies to the November 17 integrated STEP carried at `cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step`. The older servo comparisons below are retained as design history. The current CAD candidates are one ROBOTIS XM430-W210-T for pan and one Hitec D645MW for tilt. They are not interchangeable three-wire hobby servos.
+This section applies to the November 17 integrated STEP carried at `cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step`. The current CAD candidates are one ROBOTIS XM430-W210-T for pan and one Hitec D645MW for tilt. They are not interchangeable three-wire hobby servos.
 
 | Connection | Current plan | Remaining selection |
 |---|---|---|
@@ -22,24 +22,6 @@ This section applies to the November 17 integrated STEP carried at `cad/RoverBud
 The U2D2 converts USB to the DYNAMIXEL communication bus; it does **not** supply actuator power. Use its TTL port for the **-T** actuator, rather than the RS-485 port. A generic servo extension is not a replacement DYNAMIXEL harness. Select the USB cable for the actual adapter revision; ROBOTIS documents a change from Micro-B to Type-C in August 2025.
 
 The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pack also falls below the XM430's specified minimum near discharge. `bom.csv` now prices the U2D2, its separate Power Hub and a DFR0946 pan-supply candidate using manufacturer references; any extra-length harness remains unpriced. Pricing the candidate does not qualify its electrical performance. The hub distributes power and does not regulate it.
-
-```mermaid
-flowchart TD
-    PI["Raspberry Pi 5"] -->|USB data| USB["U2D2 candidate"]
-    USB -->|3-pin TTL| HUB["U2D2 Power Hub"]
-    HUB -->|TTL half-duplex data| PAN["XM430-W210-T pan"]
-    PI -->|USB data| PICO["Pico 2"]
-    PICO -->|"GP11 PWM; interface check pending"| TILT["D645MW tilt"]
-```
-
-```mermaid
-flowchart TD
-    PACK["Protected and isolated 3S supply"] --> PANREG["DFR0946 candidate at 12 V; qualification pending"]
-    PACK --> TILTREG["Separate 6 V tilt regulator"]
-    PANREG --> HUB["Power Hub: external power input"]
-    HUB --> PAN["XM430 supply via TTL harness"]
-    TILTREG --> TILT["D645MW supply input"]
-```
 
 Proposed pan branch terminal mapping, subject to the supply qualification and protection checks below:
 
@@ -135,15 +117,6 @@ The Pi supplies HDMI to the display, USB for touch/audio, CSI for the camera and
 
 ## Battery protection and motor cutoff design draft
 
-```mermaid
-flowchart LR
-    B["3S pack"] --> F["Main fuse and disconnect"]
-    F --> P["Pack undervoltage disconnect"]
-    P --> L["Pi, 12 V pan and 6 V tilt branches"]
-    P --> S["Hardware motor cutoff"]
-    S --> R["Two separate 6 V regulators and motor drivers"]
-```
-
 - **Main protection:** Put the DC-rated fuse near the battery positive terminal, ahead of downstream distribution. Select it after checking the pack fault current, interrupt rating, normal and startup loads, and the weakest protected wire or connector. Review branch protection where wire ratings decrease.
 - **Undervoltage:** Specify automatic disconnect based on the exact pack manufacturer's discharge limits. Verify how the device handles an individual weak cell, voltage sag, and reconnect behavior. A buzzer can alert the operator. The protection requirement is automatic disconnection.
 - **Motor cutoff:** Use a latching stop control to drop a normally open, DC-rated switching device feeding both motor regulators. Keep the Pico outside the stop control path. Releasing the stop must require a separate deliberate re-arm before motion can resume. Verify switching and inrush ratings, suppression, and actual stopping behavior. The motor cutoff leaves the Pi and servo supplies live while pack protection is active. Use the main disconnect for whole-robot isolation.
@@ -205,58 +178,9 @@ Each reference pack stores about 24.4 Wh nominal. At an illustrative 40–60 W a
 
 [Venom pack specifications](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [SkyRC S100neo manual](https://www.skyrc.com/download/100202%20S100neo%20Instruction%20Manual_V27.pdf)
 
-### 9 Ah battery fit screening
-
-The Bioenno BLF-1209W manual lists a 108 × 76 × 70 mm pack, 1.18 kg mass and 18 A continuous discharge. A rigid envelope of those dimensions was checked against the repaired STEP parts with the old battery and tray excluded. In the original tray position it intersects the Raspberry Pi board envelope, cooler, raised tray and supports. Four additional floor-level placements were screened at the front and rear, with the pack length aligned along or across the chassis. All four intersected existing parts. This was a placement screen, with no allowance for the connector, strap or removal path.
-
-Keep the current chassis layout and keep the BLF-1209W off the purchase BOM. Retain a single removable onboard pack with an identical offboard spare as the preferred configuration. First source a compact factory-protected pack with a documented charger and confirmed Saudi delivery, then check the CAD envelope, loaded voltage, current capability and connector before committing to a tray. The existing LiPo remains a design reference pending its separate protection work.
-
-[Bioenno BLF-1209W manual](https://cdn.powerwerx.com/productattachments/BLF-1209W_User_Manual_rev_08_05_2016.pdf)
-
-### Earlier TD8120MG servo current and wire screening
-
-The exact TD8120MG listing identifies a reseller specification of 3.1 A stall at 7.4 V. A verified 6 V stall rating is still needed. For sensitivity only, budgeting 3.1 A per servo at the 6 V rail gives 6.2 A for the pair, above the shared regulator's typical 5.5 A rating. Combined with the earlier 61 W motor and Pi example, that gives about 12.8 A at 9 V input and 85% assumed efficiency before inrush. These are screening scenarios. Obtain the vendor's 6 V data or measure startup and brief peak demand with a current-limited bench supply and the final linkage before selecting the servo regulator and fuse.
-
-| BOM wire or lead | Proposed use and check |
-|---|---|
-| 14 AWG battery pack leads | Check the mating adapter, fuse holder, disconnect and every downstream conductor independently. |
-| 16 AWG fuse-holder pigtails and 1.0 mm² chassis cable | Candidate power wiring. Check supplier ampacity, insulation, bundling, round-trip length and voltage drop at the actual load. The fuse holder's current rating alone does not qualify its leads. |
-| 22 AWG signal wire and servo extensions | Keep signal wiring separate from main power. Verify extension contact rating and voltage drop for each servo. |
-| Motor leads and 18 AWG spade leads | Check the actual motor lead gauge and the terminal rating. Reserve the spade leads for an identified terminal with a verified fit and rating. |
-
-Keep the 10 A fuse and shared servo regulator provisional. Do not increase the fuse rating until the complete protected path and fault interrupt rating have been checked.
-
-[TD8120MG reseller specification](https://www.mantech.co.za/datasheets/products/td8120mg-220871.pdf) · [DC wire sizing guidance](https://www.bluesea.com/support/reference/535/Voltage_Drop_in_Conductor_-_Wire_Sizing_Chart)
-
-### Earlier D950TW head servo alternative
-
-Hitec's D950TW has published 6 V figures: 29 kgf·cm stall torque and 4.8 A stall current per servo. Its case is 40 × 20 × 38 mm with a 25T spline and programmable travel up to 175°. Two units can reach 9.6 A at 6 V under simultaneous stall. That rules out the shared 5.5 A regulator for this option. Even with one existing regulator per servo, 4.8 A leaves little margin against the typical 5.5 A rating, which varies with input and thermal conditions.
-
-Keep the TD8120MG entries provisional. Consider the D950TW if the current specification for the original servo remains unavailable and after checking bracket fit, required holding torque, travel, price and a suitable power supply. Estimate tilt torque from the mass of the moving head and its balance-point offset from the tilt axis, including cable drag and motion loads. Use an operating torque target below stall torque. Verify the actual servo supply and connector peaks on the bench before selecting the fuse.
-
-[Hitec D950TW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D950TW_Specsheetv2.2_102-1729876661.pdf)
-
-### Earlier CAD-based head tilt load estimate
-
-The earlier STEP used for the following estimate modeled a servo envelope but did not locate a final shaft axis. For this estimate, assume a left-to-right tilt axis through the envelope center at Y = 39 mm and Z = 165 mm. Lever arms below use the distance from that axis in the Y–Z plane, so their sum bounds static gravity torque over the full tilt range under these assumptions.
-
-| Moving item | Estimated mass | Lever arm | Static torque bound |
-|---|---:|---:|---:|
-| Head shell, 41.02 cm³ of PETG | 52.1 g | 48.1 mm | 0.251 kgf·cm |
-| Camera carrier and head adapter, 4.35 cm³ of PETG | 5.5 g | Calculated separately for each part | 0.021 kgf·cm |
-| Camera and lens allowance | 10 g | 50 mm | 0.050 kgf·cm |
-| Fasteners, moving bracket hardware and cable mass allowance | 15 g | 60 mm | 0.090 kgf·cm |
-| Total | 82.6 g | | 0.41 kgf·cm (0.040 N·m) |
-
-Printed part estimates use solid PETG at 1.27 g/cm³. The camera and hardware entries are allowances. A preliminary tilt screening target of about 1.25 kgf·cm (0.12 N·m) gives roughly three times the modeled static torque. This target is for usable operating torque. Check the physical shaft location, moving bracket mass, cable drag, acceleration and binding before selecting a servo. Pan needs a separate check because this gravity estimate applies to the tilt axis.
-
-The modeled gravity load does not justify choosing a 29 kgf·cm stall-torque servo by itself. No servo part or price is changed by this estimate.
-
-[PETG density reference](https://prusament.com/wp-content/uploads/2022/10/PETG_Prusament_TDS_2021_10_EN.pdf)
-
 ### Lower-current head servo and pan screening
 
-The Hitec D645MW (36645S) is a metal-gear tilt candidate. At 6 V, Hitec lists 2.15 A stall current, 11.3 kgf·cm stall torque, and 2.3 kgf·cm torque at peak efficiency. The last figure exceeds the preliminary 1.25 kgf·cm tilt target and supports shortlisting it. Check the mounting drawing, 25T horn fit, available travel, and actual loaded motion before purchase. The servo supports positional travel up to 175°. The design still needs a separate decision if full 360° pan is required.
+The Hitec D645MW (36645S) is a metal-gear tilt candidate. At 6 V, Hitec lists 2.15 A stall current, 11.3 kgf·cm stall torque, and 2.3 kgf·cm torque at peak efficiency. The last figure supports keeping it on the shortlist; actual tilt load still needs checking. Check the mounting drawing, 25T horn fit, available travel, and actual loaded motion before purchase. The servo supports positional travel up to 175°. The design still needs a separate decision if full 360° pan is required.
 
 For pan, an upright vertical axis has no static gravitational moment about the axis. Screen acceleration separately from bearing friction, cable drag, and any load from axis misalignment. As an illustrative upper-inertia case, put an assumed 0.20 kg of rotating assembly at a radius of 0.080 m. Then I ≤ 0.00128 kg·m² for that mass and radius. At an assumed 8 rad/s², the inertial torque is about 0.010 N·m (0.10 kgf·cm). This excludes friction and cable drag. Weigh the rotating hardware, check its radial extent and desired acceleration, then measure breakaway torque with the camera cable routed before choosing the pan actuator. A continuous-rotation servo alone does not provide absolute angle positioning.
 
@@ -287,30 +211,6 @@ For a one-turn sweep with the existing Camera Module 3 and a stationary Pi, eval
 Keep the Hitec D645MW as the limited-angle tilt candidate. The pan and tilt alternatives stay outside the order BOM pending mount fit, cable travel, power and sourcing.
 
 [ROBOTIS actuator specifications](https://en.robotis.com/service/selection_guide4.php) · [Operating modes](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/) · [Camera Module 3 schematic](https://pip-assets.raspberrypi.com/categories/1207-design-files/documents/RP-008969-SD-3-Raspberry%20Pi%20Camera%20Module%203%20Reference%20Schematic.pdf)
-
-### Earlier camera ribbon routing estimate
-
-The dimensions and 300 mm cable comparison in this subsection predate the November 17 integrated route. Use the current pan and tilt wiring plan above and the integrated CAD notes for the revised 342 mm sampled route and 500 mm candidate.
-
-#### Original routing estimate
-
-The STEP has a nominal 19 × 5 mm opening cut into the head floor. Its center is about 25 mm from the modeled pan axis in plan view. The pan shaft is modeled as a solid placeholder. Use an external route alongside the neck for this layout. Verify that the actual cable end can pass through the opening and that the edge and nearby bracket leave room for the cable to exit without pinching.
-
-Route the Camera Module 3 ribbon from the head-floor opening to a moving strain-relief point above the pan joint. Allow tilt slack between the head and that point. Below it, reserve an external service loop between the moving neck and a fixed chassis-side anchor. From the fixed anchor, route toward the stationary Pi tray. Keep the loop clear of the shaft, bracket, wheels and head motion.
-
-**CAD length check.** The head exit is at approximately (24.5, 29.5, 185) mm and the Pi board envelope spans X = −42.5 to 42.5 mm, Y = −53 to 3 mm at Z = 84 mm. The nearest point on that board envelope is about 104 mm away in a straight line. This is a lower bound for the external run and excludes the internal head run. For an illustrative right-angle route, the drop to board height (101 mm), the fore-aft run toward the board (27–83 mm), and a possible centerline-to-edge run (up to 68 mm from the exit X coordinate) give about 128–252 mm before detours or slack. The actual CSI connector location is absent from the CAD envelope.
-
-For a loop centered on the modeled pan axis, a 25 mm radius sweeps about 79 mm of arc from neutral to either 180° endpoint. Use this as a space-planning example, since loop shape and slack payout depend on the anchors. Adding that allowance to the sample external routes gives about 207–331 mm before tilt slack, the internal run and connector strain relief. The 300 mm BOM cable is plausible for a short route but has no demonstrated margin for a full turn. Mock up 300 mm and 500 mm lengths before changing the BOM, and check whether the extra length can be restrained without reaching the wheel or joint.
-
-| Check | Method |
-|---|---|
-| Length | With a paper strip or flexible mock-up, trace both strain-relief points, the fixed run and the loops. Compare the measured route at every extreme with the BOM's 300 mm cable. Raspberry Pi lists 200, 300 and 500 mm versions of the Standard–Mini cable. |
-| Travel | With power off, start at neutral and move the head toward each pan endpoint, checking both tilt extremes at each end. Stop before the cable binds, rubs or pulls a connector. Record the smallest clearance and the actual available angular range. Set software limits inside that verified range. |
-| Signal | After the mechanical checks and electrical review, verify the live camera feed through repeated sweeps and reversals. Check for dropouts and connector movement. |
-
-The final shaft, strain reliefs, cable bend radius and achievable sweep still need a mock-up. Keep 360° as the goal until that test establishes the range. The prototype may need a revised exit or a longer ribbon.
-
-[Raspberry Pi camera cable options](https://www.raspberrypi.com/products/camera-cable/)
 
 ### Pan mount clearance and mock-up
 
