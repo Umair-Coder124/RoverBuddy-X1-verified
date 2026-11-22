@@ -1,6 +1,10 @@
-# RoverBuddy X1 CAD studies
+# 3D model
 
 The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) combines the lower camera cable route and corrected Pi tray. Import with appearances enabled. The [assembly preview](Assembly_Preview.png), [pan and tilt close-up](Head_Camera.png) and [rear preview](Integrated_Rear_Preview.png) render this geometry with blue shell, silver bracket and dark actuator finishes. These preview finishes do not change the STEP appearances or geometry.
+
+## Main parts
+
+The robot has a base for four wheels, a battery tray, a tray for the Raspberry Pi, a front screen and a moving camera head. The STEP file is a design study, not a finished physical robot. The head brackets and camera cable still need checking with real parts.
 
 ## November 17 study
 
