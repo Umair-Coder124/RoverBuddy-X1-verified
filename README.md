@@ -1,15 +1,20 @@
 # RoverBuddy X1
 
-RoverBuddy X1 is a small robot designed to follow a person using a camera. It has four mecanum wheels, a moving camera head and a screen on its chest.
+RoverBuddy X1 is a robot designed to follow me using a camera. I chose this project because I always wanted to build a robot.
+
+My last project was an ESP32-CAM surveillance car that I could control with my phone. The camera quality was bad, it often disconnected, and it took a long time to connect. It also didn't have obstacle detection or automatic stops.
+
+For RoverBuddy X1, I want to improve on those problems. I chose a Raspberry Pi, a better camera, mecanum wheels and a metal pan-and-tilt setup for the camera.
 
 ## What it is supposed to do
 
 - Move forward, backward and sideways.
+- Let me control it from my phone or laptop.
 - Follow a selected person using the camera.
 - Detect obstacles and stop when needed.
 - Show information on the chest screen.
 
-These are project goals. The robot has not been built or tested on hardware yet.
+I've finished the main digital design and planning, but I'm still waiting to get the parts so I can start building. Some design checks are still open. These are planned features, not tested hardware features yet.
 
 ## 3D design
 
