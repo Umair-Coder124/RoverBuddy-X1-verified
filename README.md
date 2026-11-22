@@ -43,7 +43,9 @@ The [parts list (BOM)](bom.csv) has supplier links and estimated costs. The prov
 
 The Raspberry Pi processes camera information, while the Pico handles the proposed drive controls. The head uses separate pan and tilt connections and power supplies.
 
-[Wiring diagram](docs/wiring_draft.svg) | [Wiring notes](docs/WIRING.md)
+Wiring diagram: `docs/wiring_draft.svg`
+
+Wiring notes: `docs/WIRING.md`
 
 **Safety:** The wiring is a draft. Do not power the robot or enable its motors until the battery protection, wiring, isolation and actuator controls have been checked with qualified adult supervision.
 
