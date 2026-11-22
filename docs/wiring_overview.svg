@@ -69,5 +69,5 @@
 <text x="855" y="677" text-anchor="middle">Tilt servo</text>
 <text x="855" y="695" text-anchor="middle">Interface pending</text>
 <path d="M725 620 H750 V687 H775" fill="none" stroke="blue" stroke-width="2.5" marker-end="url(#b)"/>
-<text x="20" y="770" font-size="14">Red = power   Blue = signal / data   Blocks are conceptual, not pin-by-pin instructions.</text>
-<text x="20" y="793" font-size="14">Do not wire or power from this overview alone. See detailed wiring notes and safety checks.</text></g></svg>
+<text x="20" y="770" font-size="14">Red = Power wires   Blue = Signal wires</text>
+<text x="20" y="793" font-size="14">Check the full wiring guide before connecting anything.</text></g></svg>
