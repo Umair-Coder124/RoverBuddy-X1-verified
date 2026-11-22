@@ -1,10 +1,19 @@
 """Portable drive logic and desktop head-motion model. No hardware access."""
 import math
 
+
+def valid_time(now_ms, previous_ms):
+    # Timestamps must be nonnegative integers and must never go backwards.
+    if isinstance(now_ms, bool) or not isinstance(now_ms, int):
+        return False
+    if now_ms < 0:
+        return False
+    return previous_ms is None or now_ms >= previous_ms
+
 def mix(vx, vy, wz):
     # Provisional FL, FR, RL, RR convention. Physical direction requires calibration.
     values = (vx - vy - wz, vx + vy + wz, vx + vy - wz, vx - vy + wz)
-    scale = max(1.0, *[abs(v) for v in values])
+    scale = max(1.0, max(abs(v) for v in values))
     return tuple(v / scale for v in values)
 
 class DriveController:
@@ -23,9 +32,7 @@ class DriveController:
         self.requested = (0.0, 0.0, 0.0, 0.0)
 
     def _time_valid(self, now_ms):
-        return (not isinstance(now_ms, bool) and isinstance(now_ms, int)
-                and now_ms >= 0
-                and (self.updated_ms is None or now_ms >= self.updated_ms))
+        return valid_time(now_ms, self.updated_ms)
 
     def stop(self):
         self.armed = False
@@ -113,9 +120,7 @@ class HeadController:
             return False
 
     def _time_valid(self, now_ms):
-        return (not isinstance(now_ms, bool) and isinstance(now_ms, int)
-                and now_ms >= 0
-                and (self.updated_ms is None or now_ms >= self.updated_ms))
+        return valid_time(now_ms, self.updated_ms)
 
     def stop(self):
         # Freeze the simulated position; this is not a physical torque-off command.
@@ -246,9 +251,7 @@ class FollowController:
         self.updated_ms = None
 
     def _time_valid(self, now_ms):
-        return (not isinstance(now_ms, bool) and isinstance(now_ms, int)
-                and now_ms >= 0
-                and (self.updated_ms is None or now_ms >= self.updated_ms))
+        return valid_time(now_ms, self.updated_ms)
 
     def stop(self, reason='stopped'):
         self.drive.stop()
