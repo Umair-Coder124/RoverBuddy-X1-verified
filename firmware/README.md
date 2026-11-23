@@ -9,7 +9,11 @@ The code can be tested on a computer before the robot is built. It does not yet 
 - `pico/main.py`: proposed motor-control program for the Pico.
 - `pico/config.py`: pin settings and safety flags. Keep the flags off until hardware checks are complete.
 
-Start with the desktop demo. The sections below explain the individual tests and limits.
+## Try the simulation first
+
+Run the commands in Desktop checks below. Watch the printed wheel speeds and camera head angles. A speed of zero means that wheel has stopped. The demo also checks what happens when a command is lost, an obstacle is detected or a sensor fails. After a stop, a fresh command must explicitly ask to resume. These checks use simulated inputs.
+
+The following sections include the full test results and settings for reference.
 
 ## Desktop checks
 
