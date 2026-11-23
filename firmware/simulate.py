@@ -5,7 +5,7 @@ from pathlib import Path
 from drive_logic import DriveController, HeadController, FollowController, TiltPulsePlanner
 
 
-def run_demo():
+def demo_drive():
     controller = DriveController()
     drive = dict(cmd='drive', armed=True, vx=0.5, vy=0, wz=0.1)
     assert controller.receive(dict(drive, resume=True), 0)
@@ -19,6 +19,9 @@ def run_demo():
     assert any(controller.output(600))
     controller.stop()
 
+
+
+def demo_head():
     head = HeadController()
     target = dict(cmd='head', armed=True, pan_deg=30, tilt_deg=10)
     print('\nSimulated head angles: (pan degrees, tilt degrees)')
@@ -40,6 +43,9 @@ def run_demo():
     print('Out-of-range pan accepted:', accepted)
     assert not accepted
 
+
+
+def demo_tilt():
     tilt = TiltPulsePlanner()
     print('\nPlanned tilt pulse widths (desktop calculation; no PWM output):')
     for angle in (-30, 0, 30):
@@ -51,6 +57,9 @@ def run_demo():
     else:
         raise AssertionError('out-of-range tilt accepted')
 
+
+
+def demo_follow():
     def observation(now, **changes):
         # Synthetic fixture: these values are not camera detections or sensor readings.
         data = dict(cmd='follow', armed=True, target_visible=True, sensor_ok=True,
@@ -82,6 +91,13 @@ def run_demo():
     print('Clear sample without resume:', follow.output(210))
     assert follow.receive(observation(220, resume=True), 220)
     print('Explicit fresh resume:', follow.output(220))
+
+
+def run_demo():
+    demo_drive()
+    demo_head()
+    demo_tilt()
+    demo_follow()
     print('Simulation only. No camera, sensors, motors, GPIO pins or serial devices were accessed.')
 
 
