@@ -91,11 +91,10 @@ class DriveController:
 
 
 class HeadController:
-    """Desktop angle simulation; no servo pulses, bus packets or real feedback.
+    """Simulates head angles on a computer.
 
-    Zero is an assumed simulation pose, not a hardware startup position.
-    Pan follows the bounded interval without wrapping across its endpoints.
-    Startup and every stop require an explicit resume before moving again.
+    Starts at an assumed zero pose, keeps pan within its limits,
+    and requires resume after every stop. No hardware output.
     """
     def __init__(self, timeout_ms=400, pan_speed_dps=30.0,
                  tilt_speed_dps=15.0, pan_limits=(-180.0, 180.0),
@@ -104,6 +103,7 @@ class HeadController:
             raise ValueError('positive integer timeout required')
         speeds = (pan_speed_dps, tilt_speed_dps)
         limits = (tuple(pan_limits), tuple(tilt_limits))
+        # Both axes need valid speeds and limits that include zero.
         if any(not self._number(v) or v <= 0 for v in speeds):
             raise ValueError('positive finite axis speeds required')
         if any(len(pair) != 2 or any(not self._number(v) for v in pair)
@@ -131,7 +131,7 @@ class HeadController:
         return valid_time(now_ms, self.updated_ms)
 
     def stop(self):
-        # Freeze the simulated position; this is not a physical torque-off command.
+        # Hold the current simulated angle. No physical torque command.
         self.armed = False
         self.last_ms = None
         self.target = self.position
@@ -157,7 +157,7 @@ class HeadController:
             if not isinstance(resume, bool):
                 raise ValueError('boolean resume required')
             if not self.armed and not resume:
-                # Ordinary setpoints and keepalives cannot clear a stopped state.
+                # A new angle alone cannot restart a stopped head.
                 return False
             self.target = target
             self.last_ms = now_ms
@@ -173,14 +173,15 @@ class HeadController:
             return self.position
         if self.armed and self.last_ms is not None and self.updated_ms is not None:
             deadline = self.last_ms + self.timeout_ms
-            # A delayed simulator update must not integrate beyond the deadline.
-            seconds = max(0, min(now_ms, deadline) - self.updated_ms) / 1000.0
-            result = []
+            # Only count movement time before the command expires.
+            motion_end = min(now_ms, deadline)
+            seconds = max(0, motion_end - self.updated_ms) / 1000.0
+            new_angles = []
             for current, target, speed in zip(self.position, self.target, self.speeds):
                 distance = target - current
                 step = min(abs(distance), speed * seconds)
-                result.append(current + (step if distance >= 0 else -step))
-            self.position = tuple(result)
+                new_angles.append(current + (step if distance >= 0 else -step))
+            self.position = tuple(new_angles)
             if now_ms > deadline:
                 self.stop()
         self.updated_ms = now_ms
