@@ -14,7 +14,7 @@ Red lines show power. Blue lines show signals.
 - The ultrasonic sensor checks for nearby obstacles.
 - The motor stop and battery protection still need testing. The motor stop does not turn off the head.
 
-The sections below record the exact parts, pin numbers and checks needed before building. They are reference notes, not completed hardware tests.
+The tables below list the connections and parts. Use them to find the right pins and check that the parts match before building. A qualified adult should check the power protection and stop circuit before any hardware test.
 
 ## Current pan and tilt wiring plan
 
