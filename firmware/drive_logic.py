@@ -21,6 +21,23 @@ def finite_number(value):
         return False
 
 
+def is_stop_command(command, expected):
+    if not isinstance(command, dict):
+        raise ValueError('expected an object')
+    if command.get('cmd') == 'stop':
+        return True
+    if command.get('cmd') != expected or command.get('armed') is not True:
+        raise ValueError('explicit armed ' + expected + ' command required')
+    return False
+
+
+def resume_requested(command):
+    resume = command.get('resume', False)
+    if not isinstance(resume, bool):
+        raise ValueError('boolean resume required')
+    return resume
+
+
 def mix(vx, vy, wz):
     # vx = forward, vy = sideways, wz = turn.
     # Check the actual wheel directions during hardware testing.
@@ -39,8 +56,7 @@ class DriveController:
     def __init__(self, timeout_ms=400, max_output=0.20):
         if not is_integer(timeout_ms) or timeout_ms <= 0:
             raise ValueError('positive integer timeout required')
-        if (isinstance(max_output, bool) or not isinstance(max_output, (int, float))
-                or not 0 <= max_output <= 1):
+        if not finite_number(max_output) or not 0 <= max_output <= 1:
             raise ValueError('finite output limit in 0..1 required')
         self.timeout_ms = timeout_ms
         self.max_output = max_output
@@ -64,19 +80,13 @@ class DriveController:
         # Stop if the old command expired before accepting the next one.
         self.output(now_ms)
         try:
-            if not isinstance(command, dict):
-                raise ValueError('expected an object')
-            if command.get('cmd') == 'stop':
+            if is_stop_command(command, 'drive'):
                 self.stop()
                 return True
-            if command.get('cmd') != 'drive' or command.get('armed') is not True:
-                raise ValueError('explicit armed drive command required')
             axes = [command[k] for k in ('vx', 'vy', 'wz')]
             if any(not finite_number(axis) or abs(axis) > 1 for axis in axes):
                 raise ValueError('axis outside -1..1')
-            resume = command.get('resume', False)
-            if not isinstance(resume, bool):
-                raise ValueError('boolean resume required')
+            resume = resume_requested(command)
             if not self.armed and not resume:
                 return False
             self.requested = tuple(speed * self.max_output for speed in mix(*axes))
@@ -144,20 +154,14 @@ class HeadController:
             return False
         self.output(now_ms)
         try:
-            if not isinstance(command, dict):
-                raise ValueError('expected an object')
-            if command.get('cmd') == 'stop':
+            if is_stop_command(command, 'head'):
                 self.stop()
                 return True
-            if command.get('cmd') != 'head' or command.get('armed') is not True:
-                raise ValueError('explicit armed head command required')
             target = tuple(command[k] for k in ('pan_deg', 'tilt_deg'))
             if any(not finite_number(v) or not lo <= v <= hi
                    for v, (lo, hi) in zip(target, self.limits)):
                 raise ValueError('angle outside configured limits')
-            resume = command.get('resume', False)
-            if not isinstance(resume, bool):
-                raise ValueError('boolean resume required')
+            resume = resume_requested(command)
             if not self.armed and not resume:
                 # A new angle alone cannot restart a stopped head.
                 return False
@@ -277,13 +281,9 @@ class FollowController:
             return False
         self.output(now_ms)
         try:
-            if not isinstance(observation, dict):
-                raise ValueError('expected an object')
-            if observation.get('cmd') == 'stop':
+            if is_stop_command(observation, 'follow'):
                 self.stop()
                 return True
-            if observation.get('cmd') != 'follow' or observation.get('armed') is not True:
-                raise ValueError('explicit armed follow command required')
             if any(not isinstance(observation[k], bool)
                    for k in ('target_visible', 'sensor_ok')):
                 raise ValueError('boolean observation status required')
@@ -304,9 +304,7 @@ class FollowController:
             if distance <= self.obstacle_stop_cm:
                 self.stop('obstacle')
                 return False
-            resume = observation.get('resume', False)
-            if not isinstance(resume, bool):
-                raise ValueError('boolean resume required')
+            resume = resume_requested(observation)
             if not self.armed and not resume:
                 # Wait for an explicit restart after a stop.
                 return False
