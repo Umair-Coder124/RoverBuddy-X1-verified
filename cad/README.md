@@ -6,7 +6,7 @@ The [November 17 integrated CAD study](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.ste
 
 The robot has a base for four wheels, a battery tray, a tray for the Raspberry Pi, a front screen and a moving camera head. The STEP file is a design study, not a finished physical robot. The head brackets and camera cable still need checking with real parts.
 
-## November 17 study
+## Camera cable and Pi tray
 
 - The neutral cable centerline exits through the head-floor opening before turning. The lower pan loop is modeled at Z = 193 mm with a 45 mm planning radius.
 - The Pi mounting pattern is 58 × 49 mm. The board and cooler move 3 mm toward negative X, and the ribbon endpoint reference follows the board.
@@ -17,7 +17,7 @@ The robot has a base for four wheels, a battery tray, a tray for the Raspberry P
 
 The [current wiring plan](../docs/WIRING.md#current-pan-and-tilt-wiring-plan) records the XM430 pan serial interface and separate supply, D645MW tilt PWM branch, and the current sourcing references. Actuator mounts, tilt horn and any additional interface/harness hardware still need final selection and pricing. The DFR0946 pan-supply candidate is now priced, but its 70 × 39 × 32 mm enclosure needs placement, connector and ventilation checks in this assembly; the STEP has not been changed for it.
 
-## Base assembly notes
+## Earlier base model
 
 The existing full-assembly STEP and Assembly_Preview.png paths now carry the integrated study. Earlier revisions remain accessible through Git history.
 
@@ -56,7 +56,7 @@ placement. The manufacturer lists 70 × 22 × 18 mm for the motor body and
 - [Raspberry Pi Camera Module 3 product brief](https://pip-assets.raspberrypi.com/categories/786-raspberry-pi-camera-module-3/documents/RP-008151-DS-1-camera-module-3-product-brief.pdf)
 - [Waveshare display documentation](https://www.waveshare.com/wiki/5inch_HDMI_LCD_%28H%29_V4)
 
-## Before submission
+## Before building
 
 Review the colored STEP in Onshape as a separate revision. Once the exact kit
 and connector dimensions are confirmed, revise the affected parts, finish
