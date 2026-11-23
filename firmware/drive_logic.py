@@ -11,10 +11,15 @@ def valid_time(now_ms, previous_ms):
     return previous_ms is None or now_ms >= previous_ms
 
 def mix(vx, vy, wz):
-    # Provisional FL, FR, RL, RR convention. Physical direction requires calibration.
-    values = (vx - vy - wz, vx + vy + wz, vx + vy - wz, vx - vy + wz)
-    scale = max(1.0, max(abs(v) for v in values))
-    return tuple(v / scale for v in values)
+    # vx = forward, vy = sideways, wz = turn.
+    # Check the actual wheel directions during hardware testing.
+    front_left = vx - vy - wz
+    front_right = vx + vy + wz
+    rear_left = vx + vy - wz
+    rear_right = vx - vy + wz
+    wheels = (front_left, front_right, rear_left, rear_right)
+    scale = max(1.0, max(abs(speed) for speed in wheels))
+    return tuple(speed / scale for speed in wheels)
 
 class DriveController:
     """Bounded wheel commands with a watchdog and explicit restart intent."""
