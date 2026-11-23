@@ -189,10 +189,9 @@ class HeadController:
 
 
 class TiltPulsePlanner:
-    """Desktop pulse-width calculation only; no PWM output or hardware approval.
+    """Calculates example tilt pulse widths without hardware output.
 
-    Default 10 us/degree is an assumed linear map, requiring physical calibration.
-    The narrower angle and pulse windows are project planning limits.
+    The assumed 10 us per degree and angle limits need real calibration.
     """
     def __init__(self, center_us=1500, us_per_degree=10.0,
                  angle_limits=(-30.0, 30.0), pulse_limits=(1200, 1800),
@@ -229,7 +228,10 @@ class TiltPulsePlanner:
                 or not self.angle_limits[0] <= angle_deg <= self.angle_limits[1]):
             raise ValueError('tilt angle outside configured limits')
         try:
-            pulse = self.center_us + angle_deg * self.us_per_degree * (-1 if self.reverse else 1)
+            offset = angle_deg * self.us_per_degree
+            if self.reverse:
+                offset = -offset
+            pulse = self.center_us + offset
             if (not HeadController._number(pulse)
                     or not self.pulse_limits[0] <= pulse <= self.pulse_limits[1]):
                 raise ValueError('tilt pulse outside configured limits')
@@ -239,10 +241,9 @@ class TiltPulsePlanner:
 
 
 class FollowController:
-    """Desktop motion supervisor fed by synthetic observations and motion intent.
+    """Tests stop and resume behavior using simulated sensor readings.
 
-    This does not detect a person, measure distance or control hardware.
-    A stop latches until a valid observation explicitly requests resume.
+    No live sensors, detection or hardware output.
     """
     def __init__(self, obstacle_stop_cm=30.0, sample_timeout_ms=200):
         if not HeadController._number(obstacle_stop_cm) or obstacle_stop_cm < 0:
@@ -307,7 +308,7 @@ class FollowController:
             if not isinstance(resume, bool):
                 raise ValueError('boolean resume required')
             if not self.armed and not resume:
-                # A clear observation alone must not restart after a stop.
+                # Wait for an explicit restart after a stop.
                 return False
             drive = dict(cmd='drive', armed=True, resume=resume,
                          **{k: observation[k] for k in ('vx', 'vy', 'wz')})
@@ -315,10 +316,11 @@ class FollowController:
                         **{k: observation[k] for k in ('pan_deg', 'tilt_deg')})
             if not self.drive.receive(drive, now_ms) or not self.head.receive(head, now_ms):
                 raise ValueError('invalid motion intent')
-            # Refreshing a command must not refresh the underlying sensor samples.
-            self.deadline_ms = min([v + self.sample_timeout_ms for v in samples]
-                                   + [now_ms + self.drive.timeout_ms,
-                                      now_ms + self.head.timeout_ms])
+            # A new command cannot make old sensor readings fresh.
+            sensor_deadline = min(samples) + self.sample_timeout_ms
+            drive_deadline = now_ms + self.drive.timeout_ms
+            head_deadline = now_ms + self.head.timeout_ms
+            self.deadline_ms = min(sensor_deadline, drive_deadline, head_deadline)
             self.armed = True
             self.reason = 'following'
             return True
