@@ -2,13 +2,23 @@
 import math
 
 
+def is_integer(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
 def valid_time(now_ms, previous_ms):
-    # Time must be a nonnegative integer and cannot go backwards.
-    if isinstance(now_ms, bool) or not isinstance(now_ms, int):
-        return False
-    if now_ms < 0:
+    if not is_integer(now_ms) or now_ms < 0:
         return False
     return previous_ms is None or now_ms >= previous_ms
+
+
+def finite_number(value):
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
 
 
 def mix(vx, vy, wz):
@@ -27,7 +37,7 @@ def mix(vx, vy, wz):
 class DriveController:
     """Limits wheel speed and stops when commands are missing."""
     def __init__(self, timeout_ms=400, max_output=0.20):
-        if isinstance(timeout_ms, bool) or not isinstance(timeout_ms, int) or timeout_ms <= 0:
+        if not is_integer(timeout_ms) or timeout_ms <= 0:
             raise ValueError('positive integer timeout required')
         if (isinstance(max_output, bool) or not isinstance(max_output, (int, float))
                 or not 0 <= max_output <= 1):
@@ -62,9 +72,7 @@ class DriveController:
             if command.get('cmd') != 'drive' or command.get('armed') is not True:
                 raise ValueError('explicit armed drive command required')
             axes = [command[k] for k in ('vx', 'vy', 'wz')]
-            if any(isinstance(axis, bool) or not isinstance(axis, (int, float)) for axis in axes):
-                raise ValueError('numeric axes required')
-            if any(not math.isfinite(axis) or abs(axis) > 1 for axis in axes):
+            if any(not finite_number(axis) or abs(axis) > 1 for axis in axes):
                 raise ValueError('axis outside -1..1')
             resume = command.get('resume', False)
             if not isinstance(resume, bool):
@@ -99,14 +107,14 @@ class HeadController:
     def __init__(self, timeout_ms=400, pan_speed_dps=30.0,
                  tilt_speed_dps=15.0, pan_limits=(-180.0, 180.0),
                  tilt_limits=(-30.0, 30.0)):
-        if isinstance(timeout_ms, bool) or not isinstance(timeout_ms, int) or timeout_ms <= 0:
+        if not is_integer(timeout_ms) or timeout_ms <= 0:
             raise ValueError('positive integer timeout required')
         speeds = (pan_speed_dps, tilt_speed_dps)
         limits = (tuple(pan_limits), tuple(tilt_limits))
         # Both axes need valid speeds and limits that include zero.
-        if any(not self._number(v) or v <= 0 for v in speeds):
+        if any(not finite_number(v) or v <= 0 for v in speeds):
             raise ValueError('positive finite axis speeds required')
-        if any(len(pair) != 2 or any(not self._number(v) for v in pair)
+        if any(len(pair) != 2 or any(not finite_number(v) for v in pair)
                or not pair[0] <= 0 <= pair[1] or pair[0] >= pair[1]
                for pair in limits):
             raise ValueError('finite ordered limits containing neutral required')
@@ -119,13 +127,7 @@ class HeadController:
         self.last_ms = None
         self.updated_ms = None
 
-    @staticmethod
-    def _number(value):
-        try:
-            return (not isinstance(value, bool)
-                    and isinstance(value, (int, float)) and math.isfinite(value))
-        except OverflowError:
-            return False
+    _number = staticmethod(finite_number)
 
     def _time_valid(self, now_ms):
         return valid_time(now_ms, self.updated_ms)
@@ -150,7 +152,7 @@ class HeadController:
             if command.get('cmd') != 'head' or command.get('armed') is not True:
                 raise ValueError('explicit armed head command required')
             target = tuple(command[k] for k in ('pan_deg', 'tilt_deg'))
-            if any(not self._number(v) or not lo <= v <= hi
+            if any(not finite_number(v) or not lo <= v <= hi
                    for v, (lo, hi) in zip(target, self.limits)):
                 raise ValueError('angle outside configured limits')
             resume = command.get('resume', False)
@@ -200,15 +202,15 @@ class TiltPulsePlanner:
             angles, pulses = tuple(angle_limits), tuple(pulse_limits)
         except TypeError as exc:
             raise ValueError('angle and pulse limit pairs required') from exc
-        if (isinstance(center_us, bool) or not isinstance(center_us, int)
-                or not HeadController._number(us_per_degree) or us_per_degree <= 0
+        if (not is_integer(center_us)
+                or not finite_number(us_per_degree) or us_per_degree <= 0
                 or not isinstance(reverse, bool)):
             raise ValueError('integer center, positive finite scale and boolean reverse required')
-        if (len(angles) != 2 or any(not HeadController._number(v) for v in angles)
+        if (len(angles) != 2 or any(not finite_number(v) for v in angles)
                 or not angles[0] <= 0 <= angles[1] or angles[0] >= angles[1]):
             raise ValueError('ordered finite angle limits containing neutral required')
         if (len(pulses) != 2
-                or any(isinstance(v, bool) or not isinstance(v, int) for v in pulses)
+                or any(not is_integer(v) for v in pulses)
                 or not 900 <= pulses[0] <= center_us <= pulses[1] <= 2100
                 or pulses[0] >= pulses[1]):
             raise ValueError('ordered integer pulse limits inside 900..2100 us required')
@@ -224,7 +226,7 @@ class TiltPulsePlanner:
             raise ValueError('angle endpoints exceed the configured pulse window') from exc
 
     def pulse_us(self, angle_deg):
-        if (not HeadController._number(angle_deg)
+        if (not finite_number(angle_deg)
                 or not self.angle_limits[0] <= angle_deg <= self.angle_limits[1]):
             raise ValueError('tilt angle outside configured limits')
         try:
@@ -232,7 +234,7 @@ class TiltPulsePlanner:
             if self.reverse:
                 offset = -offset
             pulse = self.center_us + offset
-            if (not HeadController._number(pulse)
+            if (not finite_number(pulse)
                     or not self.pulse_limits[0] <= pulse <= self.pulse_limits[1]):
                 raise ValueError('tilt pulse outside configured limits')
             return int(round(pulse))
@@ -246,10 +248,9 @@ class FollowController:
     No live sensors, detection or hardware output.
     """
     def __init__(self, obstacle_stop_cm=30.0, sample_timeout_ms=200):
-        if not HeadController._number(obstacle_stop_cm) or obstacle_stop_cm < 0:
+        if not finite_number(obstacle_stop_cm) or obstacle_stop_cm < 0:
             raise ValueError('finite nonnegative obstacle threshold required')
-        if (isinstance(sample_timeout_ms, bool)
-                or not isinstance(sample_timeout_ms, int) or sample_timeout_ms <= 0):
+        if (not is_integer(sample_timeout_ms) or sample_timeout_ms <= 0):
             raise ValueError('positive integer sample timeout required')
         self.drive = DriveController()
         self.head = HeadController()
@@ -293,13 +294,12 @@ class FollowController:
                 self.stop('target_lost')
                 return False
             samples = [observation[k] for k in ('target_ms', 'obstacle_ms')]
-            if any(isinstance(v, bool) or not isinstance(v, int)
-                   or v < 0 or not 0 <= now_ms - v <= self.sample_timeout_ms
+            if any(not is_integer(v) or v < 0 or not 0 <= now_ms - v <= self.sample_timeout_ms
                    for v in samples):
                 self.stop('stale_observation')
                 return False
             distance = observation['obstacle_cm']
-            if not HeadController._number(distance) or distance < 0:
+            if not finite_number(distance) or distance < 0:
                 raise ValueError('finite nonnegative range required')
             if distance <= self.obstacle_stop_cm:
                 self.stop('obstacle')
