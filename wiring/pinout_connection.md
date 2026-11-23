@@ -1,29 +1,31 @@
 # RoverBuddy X1 - Wiring & Pinout Guide 🔌
 
-Here is how all the electronics on my rover are wired up and connected together.
+This is the proposed wiring plan. The hardware has not been assembled or tested. Follow the [detailed wiring notes](../docs/WIRING.md) and have a qualified adult check the electrical setup before connecting power.
 
 ## 1. Main Controllers & Power
 - **Raspberry Pi 5 (The Brain):** Powered by the main 5V regulator. Handles camera input and high-level tracking logic.
 - **Raspberry Pi Pico 2 (The Muscle):** Connected to the Pi 5 via USB Serial. Takes movement commands and controls the motor drivers directly.
-- **Battery Pack:** Powers the system through step-down voltage regulators so the motors don't cause voltage drops on the Raspberry Pi.
+- **Battery Pack:** Powers the system through separate regulated power branches.
 
 ---
 
 ## 2. Motor & Movement Connections (Pico 2)
 The Pico 2 controls four DC motors attached to mecanum wheels via motor drivers:
 - **Left Front Motor Driver:** Connected to Pico digital pins GP2 & GP3
-- **Left Rear Motor Driver:** Connected to Pico digital pins GP4 & GP5
-- **Right Front Motor Driver:** Connected to Pico digital pins GP6 & GP7
+- **Right Front Motor Driver:** Connected to Pico digital pins GP4 & GP5
+- **Left Rear Motor Driver:** Connected to Pico digital pins GP6 & GP7
 - **Right Rear Motor Driver:** Connected to Pico digital pins GP8 & GP9
 
 ---
 
 ## 3. Pan-and-Tilt Head & Sensors
 - **Pan Servo (Dynamixel XM430):** Connected to serial/TTL bus with a separate regulated power line.
-- **Tilt Servo (Hitec D645MW):** Connected to standard PWM pin on the Pico.
+- **Tilt Servo (Hitec D645MW):** The planned PWM output is GP11 (physical pin 15). The signal interface still needs checking.
 - **Ultrasonic Distance Sensor:**
   - `VCC` -> 5V
   - `GND` -> Ground
-  - `Trig` -> Pico Pin 14
-  - `Echo` -> Pico Pin 15 (with a voltage divider to protect the 3.3V pin!)
-- **Chest Display:** Plugs directly into the Raspberry Pi 5 HDMI port.
+  - `Trig` -> GP12 (reserved)
+  - `Echo` -> GP13 (reserved; level conversion still needs verification)
+- **Chest Display:** Uses the Raspberry Pi 5 HDMI port and USB for touch.
+
+The current Pico starter handles the proposed motor connections only. The servo and ultrasonic control programs still need implementation.
