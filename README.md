@@ -41,7 +41,8 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 - [CAD Model (Onshape)](https://cad.onshape.com) *(Update with your exact Onshape link)*
 - [`wiring/pinout_connection.md`](wiring/pinout_connection.md) – How everything is wired up
-- [`bom.csv`](bom.csv) – Full itemized bill of materials and pricing
+- [Bill of materials (table)](BOM.md) – Full parts list and pricing
+- [`bom.csv`](bom.csv) – Downloadable CSV
 
 ---
 
