@@ -1,340 +1,40 @@
 # Wiring
 
-This is the plan for connecting the robot's parts. It has not been tested on real hardware. Do not connect power until a qualified adult has checked the wiring and safety parts.
+![Wiring overview](wiring_overview.svg)
 
-![RoverBuddy X1 wiring overview](wiring_overview.svg)
+Red lines show power. Blue lines show signals. This is a draft. Keep power and actuators off until a qualified adult has checked the complete electrical setup.
 
-Red lines show power. Blue lines show signals.
+## How the parts connect
 
-## How it works
-
-- The battery supplies the robot through protection and power switches.
-- The Pi 5 handles the camera and screen. The Pico 2 sends movement commands.
-- Two motor drivers run the four wheels. The camera head has separate pan and tilt servos.
-- The ultrasonic sensor checks for nearby obstacles.
-- The motor stop and battery protection still need testing. The motor stop does not turn off the head.
-
-The tables below list the connections and parts. Use them to find the right pins and check that the parts match before building. A qualified adult should check the power protection and stop circuit before any hardware test.
+- Pi 5 handles the camera and screen. Pico 2 handles the proposed drive controls.
+- The two motor drivers each control two wheels.
+- The distance sensor is planned to detect nearby obstacles.
+- The battery needs protection, suitable regulated supplies and an independent hardware stop. The proposed drive cutoff does not shut off the head.
 
 ## Current pan and tilt wiring plan
 
-This section applies to the November 17 integrated STEP carried at `cad/RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step`. The current CAD candidates are one ROBOTIS XM430-W210-T for pan and one Hitec D645MW for tilt. They are not interchangeable three-wire hobby servos.
-
-| Connection | Current plan | Remaining selection |
-|---|---|---|
-| Pan data | Pi USB → U2D2 → Power Hub 3-pin TTL bus → XM430-W210-T | Confirm delivered USB revision, included lead lengths, hub placement and final harness |
-| Pan power | DFR0946 buck-boost candidate, adjusted to 12 V → Power Hub → XM430; actuator input specification is 10–14.8 V | Verify regulation over the loaded 3S range, startup and load steps, temperature, protection and installation before connecting the actuator |
-| Tilt signal | Pico GP11, physical pin 15, reserved for PWM → D645MW signal connection | Verify the purchased servo's input threshold; specify a buffer if needed for the Pico's 3.3 V output |
-| Tilt power | Separate 6 V regulator branch → D645MW supply and return | Verify connector polarity, regulator response and loaded current; manufacturer stall figure is 2.15 A at 6 V |
-| Signal reference | Common ground reference for the host, interface, actuator supplies and controller | Document the harness return paths and avoid carrying actuator current through GPIO wiring |
-| Camera | Camera Module 3 → 500 mm Standard–Mini CSI ribbon candidate → Pi 5 camera connector | Physical ribbon fit, strain relief, bending and signal checks throughout motion |
-
-The U2D2 converts USB to the DYNAMIXEL communication bus; it does **not** supply actuator power. Use its TTL port for the **-T** actuator, rather than the RS-485 port. A generic servo extension is not a replacement DYNAMIXEL harness. Select the USB cable for the actual adapter revision; ROBOTIS documents a change from Micro-B to Type-C in August 2025.
-
-The proposed pan supply cannot be the existing 6 V servo regulator. A raw 3S pack also falls below the XM430's specified minimum near discharge. `bom.csv` now prices the U2D2, its separate Power Hub and a DFR0946 pan-supply candidate using manufacturer references; any extra-length harness remains unpriced. Pricing the candidate does not qualify its electrical performance. The hub distributes power and does not regulate it.
-
-Proposed pan branch terminal mapping, subject to the supply qualification and protection checks below:
-
-| From | To | Role / check |
-|---|---|---|
-| Protected distribution positive and its power return | DFR0946 input + and input − | Input branch protection, wiring ratings and head stop remain pending |
-| DFR0946 output +, adjusted and measured at 12 V | Power Hub power-input terminal marked + | Verify setpoint and polarity with the actuator disconnected |
-| DFR0946 output − | Power Hub power-input terminal marked − | Dedicated power return; do not carry pan current through Pico GPIO ground wiring |
-| U2D2 3-pin TTL connector | Power Hub matching 3-pin connector | Data bus connection; USB does not supply actuator power |
-| Power Hub matching 3-pin connector | XM430-W210-T JST 3-pin connector | Combined actuator supply, ground and TTL data; verify exact connector markings and cable reach |
-
-Use the purchased board's terminal markings, not assumed left/right orientation in a picture. The Power Hub does not regulate voltage. Confirm its supplied supports provide underside clearance. [Manufacturer Power Hub layout and assembly](https://docs.robotis.com/docs/parts/interface/u2d2_power_hub/).
-
-These are signal and power paths, not a pin-to-pin assembly schematic. The existing hardware cutoff covers the drive-motor branches; the head-actuator stop and re-arm behavior still needs specifying. Neither the pan interface nor tilt PWM is implemented in the current drive firmware. Keep GP10 unassigned for this plan. Retain the bounded pan sweep and physically verified tilt limits before enabling movement.
-
-### Tilt PWM requirements and calibration
-
-The [Hitec D645MW v2.2 specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) identifies the servo connector as 1 = SIGNAL, 2 = VCC, 3 = GND in its drawing. Identify the actual plug orientation from that drawing and the purchased unit; do not infer left/right from a mirrored photograph.
-
-| Proposed tilt connection | Destination / qualification |
-|---|---|
-| Pico GP11, physical pin 15 | Servo SIGNAL through the still-unresolved signal interface |
-| Separate 6 V tilt regulator positive | Servo VCC; never supply the servo from a GPIO pin |
-| Tilt regulator return | Servo GND using its own power return |
-| Pico and signal-interface ground reference | Common reference to the tilt branch without carrying servo power current through GPIO wiring |
-
-**Voltage decision remains open.** The reviewed manufacturer data sheet does not publish logic-high/low thresholds or input-current limits. Its supply-voltage range is not a signal-voltage rating. Keep the conditional, unpriced PWM-buffer row in the BOM. A TTL protocol label alone does not confirm a direct 3.3 V PWM connection. Obtain model/revision-specific limits and compare them with the controller's guaranteed levels before choosing a direct connection or buffer, including power sequencing and unpowered behavior. No manufacturer inquiry has been sent by this check.
-
-**Pulse planning:** the desktop [TiltPulsePlanner](../firmware/README.md#desktop-tilt-pulse-planner) assumes a linear map giving −30° / 0° / +30° → 1200 / 1500 / 1800 µs. The software rejects values outside its configured angle and pulse windows. These are project estimates; pulse width alone does not establish physical angle or clearance. The planner does not generate a waveform or choose a refresh period.
-
-**Calibration sequence, not performed:** qualify the logic interface, supply and head stop first. Check pulse timing electrically with the actuator disconnected. Establish the purchased servo's neutral and direction unloaded before attaching the head. Review the actual horn and bracket alignment, then restrict motion to a small clearance-checked region before expanding it. Record measured angle/pulse pairs, supply droop, current and cable behavior; narrow the software limits to the demonstrated sweep. Verify loss-of-signal, stop and deliberate re-arm with the actual load. The current desktop stop models do not implement those physical behaviors.
-
-**BOM reconciliation — November 20, 2026:** the priced TD8120MG pair and 300 mm cable have been replaced with the current actuator and 500 mm cable candidates. The generic bracket and paired 25T horn allowances are replaced by unpriced, actuator-specific mount and tilt-horn rows. The hobby-servo extension quantity is one for tilt; it does not serve the pan bus. The XM430 horn and included leads are accounted for in their parent packages.
-
-### Sourcing and compatibility check — November 20, 2026
-
-These are displayed USD product prices, not delivered Saudi quotes. Other existing BOM rows retain their earlier estimates; this check does not revalidate all vendors.
-
-| BOM component | Listed USD, quantity 1 | Source and availability finding |
-|---|---:|---|
-| XM430-W210-T pan | 269.90 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0125-000); global stock and dispatch not confirmed. The [US regional listing](https://robotis.us/products/dynamixel-xm430-w210-t) is sold out and restricted to the Americas; do not use it as a Saudi supply route. |
-| D645MW tilt, HCS ordering part 36645S | 49.99 | [Hitec manufacturer](https://www.hiteccs.com/actuators/product-details/D645MW); international customers are directed to sales. Listed price is a reference; Saudi stock and delivery unconfirmed. |
-| U2D2 interface | 32.10 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0132-000); listed package includes a Type-C USB cable; verify received revision and host connector. |
-| U2D2 Power Hub Board Set | 19.00 | [ROBOTIS global](https://en.robotis.com/shop_en/item.php?it_id=902-0145-001); U2D2 is separate. Includes 100 mm X3P and X4P leads and mounting supports. |
-| 500 mm camera cable, Adafruit 5820 | 2.50 | [Adafruit seller](https://www.adafruit.com/product/5820); Add to Cart offered for the 500 mm variant. Saudi delivery unquoted. |
-| One 300 mm hobby-servo extension | 4.64 | [Pololu 2184](https://www.pololu.com/product/2184); backorders allowed, immediate stock unconfirmed. Tilt only; current and reach checks remain. |
-| DFR0946 adjustable buck-boost candidate | 8.90 | [DFRobot product](https://www.dfrobot.com/product-2539.html); [manufacturer category](https://www.dfrobot.com/category-70.html) lists stock. Saudi delivery unquoted; electrical qualification pending. |
-
-**Subtotal:** US$1,533.29 for 53 priced lines (approximately SAR 5,749.84 at the planning conversion of 3.75). Four rows have blank prices: mounts, tilt horn, conditional extra DYNAMIXEL cable and conditional PWM buffer. Blank means unknown, not free. The subtotal also excludes unresolved battery-protection and isolation hardware, shipping, import charges and any tax not already included in earlier estimates.
-
-**Mount and horn check:** the XM430 package lists its HN12-N101 horn, thrust washer and assembly fasteners. Compare that exact horn and the manufacturer's body drawing with the CAD adapter before fabrication. The old two-standard-servo bracket is not established as compatible. D645MW uses a 25T output, but the spline count alone does not establish horn offset, hole pattern or bracket fit. Keep its metal horn/coupling unpriced until those dimensions and supplied accessories are checked.
-
-### Pan supply candidate and bench qualification
-
-**Status: priced candidate; all bench results pending.** The [DFRobot DFR0946](https://www.dfrobot.com/product-2539.html) is adjustable, with published 6–35 V input and 1–33 V output ranges, 7 A maximum input and 5 A maximum output. These limits screen it for further evaluation at 12 V; they are not a continuous-current guarantee. Its 70 × 39 × 32 mm enclosure needs a CAD placement and ventilation check.
-
-This candidate replaces the unpriced regulator row, not the separate tilt or motor regulators. The earlier [S13V25F12 comparison](https://www.pololu.com/product/4984) remains a rejected selection basis: its nominal 2.5 A figure alone did not demonstrate adequate margin across the pack range.
-
-Use a current-limited bench supply and suitably rated electronic load for initial qualification, with the actuator disconnected. The following are proposed project checks, not completed measurements or manufacturer acceptance limits. Required bench equipment is not assumed to be available and is not included in this BOM update.
-
-| Check | Procedure to record | Acceptance gate |
-|---|---|---|
-| Setpoint and polarity | Verify terminal markings on the purchased module. Adjust the unloaded output to 12.0 V and measure at the intended Power Hub input. Secure adjustment against accidental movement. | Correct polarity and setpoint before any actuator connection. |
-| Input sweep and steady loads | Test 9.0, 10.0, 11.1, 12.0 and 12.6 V inputs, at no load and 0.1, 1.0 and 2.3 A output loads. Record input/output voltage, input current, wiring drop and temperature for every point. | Proposed steady output target: 11.5–12.5 V at the hub throughout the test matrix, with no resets or current-limit collapse. |
-| Startup and load changes | Use an oscilloscope to capture cold start, power cycling and repeated 0.1↔2.3 A load changes at both input endpoints and around 12 V. | Record extrema and recovery. Keep the actuator disconnected until the full trace stays within its 10–14.8 V operating range; no automatic motion on recovery. |
-| Temperature | Repeat the highest measured dissipation point with the intended enclosure, routing and ambient conditions until temperature stabilizes. | Obtain applicable thermal limits from the supplier and demonstrate margin; missing thermal evidence leaves this gate open. |
-| Protection and stop | Review branch wiring, fuse coordination, output overvoltage handling and head stop/re-arm behavior separately. | A converter current limit does not approve battery protection or the head stop circuit. Those open items still block integrated powered tests. |
-| Final assembly | Verify mounting, insulation, ventilation, terminal access and harness reach in the existing CAD; then repeat qualified checks at the actuator connector. | Document clearances and electrical results before adding the actuator. Do not use a deliberately stalled actuator as the bench load. |
-
-The 2.3 A load represents the documented XM430 stall-current demand at 12 V, not normal running current. At 27.6 W output, a screening assumption of 85% efficiency gives about 3.61 A input at 9 V and 4.87 W converter loss. These are calculations, not measured DFR0946 performance. Thermal and startup checks remain necessary.
-
-No physical result, protection rating or final module fit is claimed by this sourcing update.
-
-**Cable check:** the sampled external route reached approximately 342 mm before the internal camera run, connector exits and service slack. The 500 mm Standard-Mini camera cable has the required connector family; length, real ribbon width, twist and strain relief still require physical checks. Pan remains bounded and reverses to unwind. Measure the DYNAMIXEL path separately: included 180 mm actuator and 100 mm hub leads do not prove adequate reach.
-
-The existing Pi 5/Pico 2 architecture remains the basis of this BOM. No Ventuno Q substitution is budgeted. The head controls remain unimplemented and unpowered for this draft.
-
-Sources: [ROBOTIS XM430 manual](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/) · [U2D2 interface and external power](https://emanual.robotis.com/docs/en/parts/interface/u2d2/) · [Hitec D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Raspberry Pi camera cable](https://www.raspberrypi.com/products/camera-cable/?variant=camera-cable-std-mini-500)
-
-## Power architecture
-
-The selected assembled 3S battery reaches 12.6 V fully charged. A suitably rated fuse, disconnect, automatic low-voltage protection and hardware drive isolation must be specified before the power distribution is finalized. The current emergency-stop candidate is not approved to interrupt battery current directly.
-
-The revised power design budgets two independent 6 V motor rails, one per MDD3A, plus separate supplies for the 12 V pan branch, 6 V tilt branch and Raspberry Pi. Each motor rail uses one Pololu D36V50F6 and serves two Adafruit 3777 motors. At the vendor's measured 1.5 A stall per motor at 6 V, that is 3 A per rail compared with the regulator's typical 5.5 A rating. Treat this as a sizing estimate. Verify the regulator's available current across pack voltage and operating temperature, plus startup transients and supply faults. Keep the two 6 V positives separate. Use a common signal-ground reference. Battery protection, hardware drive isolation, wiring ratings, and hardware testing remain open.
-
-- Front regulator output → driver 1 VB+ and VB− via its own positive and return.
-- Rear regulator output → driver 2 VB+ and VB− via its own positive and return.
-- The raw battery supply stays upstream of both regulators and their pending protection. Keep the drive unpowered until protection and wiring have been reviewed.
-
-[Adafruit motor measurements](https://www.adafruit.com/product/3777) · [Pololu regulator specs and current curves](https://www.pololu.com/product/4092)
-
-The Pi supplies HDMI to the display, USB for touch/audio, CSI for the camera and USB data to the Pico. Confirm total USB power demand. Avoid backfeeding power through USB during external-power development. The design now specifies the official Raspberry Pi Pico 2 with Headers (SC1632), using a USB-A to Micro-B data cable for the Pi-to-controller link.
-
-## Battery protection and motor cutoff design draft
-
-- **Main protection:** Put the DC-rated fuse near the battery positive terminal, ahead of downstream distribution. Select it after checking the pack fault current, interrupt rating, normal and startup loads, and the weakest protected wire or connector. Review branch protection where wire ratings decrease.
-- **Undervoltage:** Specify automatic disconnect based on the exact pack manufacturer's discharge limits. Verify how the device handles an individual weak cell, voltage sag, and reconnect behavior. A buzzer can alert the operator. The protection requirement is automatic disconnection.
-- **Motor cutoff:** Use a latching stop control to drop a normally open, DC-rated switching device feeding both motor regulators. Keep the Pico outside the stop control path. Releasing the stop must require a separate deliberate re-arm before motion can resume. Verify switching and inrush ratings, suppression, and actual stopping behavior. The motor cutoff leaves the Pi and servo supplies live while pack protection is active. Use the main disconnect for whole-robot isolation.
-- **Bench acceptance:** With the wheels off the ground, verify that the cutoff works with the controller unresponsive, that releasing it does not cause motion, and that a simulated undervoltage event disconnects the downstream loads. Confirm acceptable stop time with the final hardware.
-
-The block diagram records the proposed architecture. Exact protection parts, wiring ratings, and test results are pending. Keep the robot unpowered until the design has been reviewed.
-
-[DC fuse selection guidance](https://www.bluesea.com/support/articles/Circuit_Protection/98/DC_Circuit_Protection) · [LiPo safety example](https://www.horizonhobby.com/on/demandware.static/-/Sites-horizon-master/default/dwf466d0fb/Manuals/Reedy-LiPo-Manual-MULTI.pdf)
-
-### Protection parts screening
-
-The Venom 15190 listing specifies a 3S1P pack, 12.6 V maximum, 9 V minimum pack voltage and 14 AWG pack leads. Use the published minimum as a screening boundary. The final cutoff threshold needs cell-level monitoring and margin for load sag. The pack lead gauge does not establish the capacity of downstream wiring.
-
-At the modeled simultaneous motor stall, the four motors draw approximately 36 W at the 6 V rails. The Pi regulator's 5 V × 5 A output rating adds up to 25 W. That is 61 W before servos. For a sizing example only, at 9 V input and 85% assumed conversion efficiency, those two loads would draw about 8.0 A upstream. Servo startup, relay coil draw, conversion variation, inrush and wiring losses are extra. Retain the 10 A fuse as a provisional BOM entry until the current profile, fuse time-current curve, DC interrupt capacity and weakest wire or connector are checked.
-
-| Candidate | Screening result |
-|---|---|
-| Victron Smart BatteryProtect 65 A | Pack-voltage disconnect candidate. Keep off the purchasing list until a compatible individual-cell protection input and restart behavior are verified. Its pack-voltage settings alone cannot detect a weak cell in a 3S pack. |
-| Omron/Aratas G8JN-1C6T-DC12 relay | Candidate only for the normally open drive cutoff. Datasheet resistive load rating does not establish suitability for two buck converters' DC input inrush. Verify the exact relay, socket, suppression, load profile and re-arm circuit before selection. |
-| Existing cell buzzer | Optional warning device. Automatic isolation remains a separate requirement. |
-
-[Venom pack limits](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [Pi regulator output rating](https://geekworm.com/products/yb-mpp01) · [Victron BatteryProtect](https://www.victronenergy.com/battery_protect/smart-battery-protect) · [G8JN relay datasheet](https://omronfs.omron.com/en_US/ecb/products/pdf/en-g8jn.pdf)
-
-### Protection component shortlist
-
-| Function | Exact candidate | Remaining check |
-|---|---|---|
-| Manual whole-robot disconnect | Littelfuse 75920-01, 36 V series | Check the switch's mounting envelope, terminal hardware, and delivered price. This is a manual disconnect. |
-| Hardware cutoff for both drive regulators | Omron/Aratas G8JN-1C6T-DC12, normally open contact | Qualify the relay and socket for the combined regulator input inrush, actual DC interruption duty, and minimum loaded coil voltage. Verify manual re-arm and power-loss behavior. |
-| Automatic battery disconnect | Victron Smart BatteryProtect 65 A, conditional | Requires a compatible weak-cell protection signal and a load path matched to the downstream inrush. Victron advises controlling a remote enable for high-inrush loads. Verify that the final design actually isolates the downstream loads and stays off after low-voltage recovery until deliberately re-armed. |
-
-The reviewed 20 A 3S protection board is specified as auto-recovering. The selected battery is a preassembled pack, so retain its factory wiring. Screen a compatible external weak-cell monitor and shutdown interface as a pair. The parts above remain candidates pending these checks and are excluded from the priced BOM.
-
-[Manual disconnect listing](https://www.digikey.com/en/products/detail/littelfuse-commercial-vehicle-products/75920-01/27496177) · [Drive relay listing](https://www.digikey.com/en/products/detail/omron-electronics-inc-emc-div/G8JN-1C6T-DC12/252469) · [BatteryProtect manual](https://www.victronenergy.com/upload/documents/BatteryProtect_12V_24V/114439-Smart_BatteryProtect-pdf-en.pdf)
-
-### Regulator inhibit and external cell-monitor review
-
-Pololu documents that pulling EN below 1.2 V puts the D36V50F6 into sleep. This gives the two drive regulators a hardware inhibit input that can be evaluated for a secondary stop path. The board is enabled by default. A broken inhibit wire must therefore be considered during design review. Regulator inhibit alone does not establish battery isolation, and the output voltage and wheel stop behavior after disabling still need measurement.
-
-The Junsi CellLog 8S manual documents individual cell monitoring and an alarm output. It is a candidate for evaluating the external weak-cell signal. Keep it off the purchase BOM until current sourcing and the output behavior on alarm, power loss, and balance-plug removal are verified. The final cutoff must latch off after a fault, require deliberate re-arm, and remain independent of the Pico. Keep the hardware drive cutoff and manual whole-robot disconnect as separate functions pending qualification.
-
-[Pololu regulator connections](https://www.pololu.com/product/4092#connections) · [Junsi CellLog 8S manual](https://www.manualslib.com/manual/1979403/Junsi-Celllog-8s.html?page=2)
-
-### Factory-protected battery alternative
-
-The Bioenno BLF-1206A is a factory-assembled 12 V, 6 Ah LiFePO4 candidate with an integrated protection module. Bioenno lists 12 A continuous and 24 A for two seconds, a 14.6 V charger, and a PP30 discharge connector. Verify the protection module's weak-cell behavior and recovery before relying on it in the robot. Retain independent drive isolation and qualify the fuse for the final harness.
-
-The earlier all-rail examples span roughly 11.35–12.8 A at 9 V, excluding inrush and depending on servo selection. The Bioenno's 12 A continuous rating is too close to that envelope to approve without a revised budget and bench evidence. At approximately 108 × 64 × 69 mm and 0.7 kg, it also needs a wider and taller tray than the current 108 × 35 × 27 mm pack. Update the connector, retention, center-of-gravity check and charger if adopting this route. Saudi delivery and landed pricing remain unverified. Leave the costed BOM unchanged until the battery decision is made.
-
-[Bioenno BLF-1206A specifications](https://www.bioennopower.com/products/12v-6ah-lifepo4-battery-pvc)
-
-### Provisional charging and spare plan
-
-Use the existing Venom 15190 envelope as the packaging reference while evaluating protection. Plan one removable pack in the robot and one identical spare stored offboard. Swap with the robot switched off. This plan does not approve the Venom pack for operation, and the priced BOM includes two reference packs: one onboard and one offboard spare.
-
-The Venom 15190 is a 3S 2.2 Ah LiPo with 11.1 V nominal and 12.6 V full-charge voltage. Its manual charging configuration must match the actual pack label. The named wall-powered SkyRC S100neo supports 3S LiPo balance charging. Confirm the mains lead for the destination, the mating charge lead and adapter polarity, and the balance connector before ordering. Use LiPo balance mode following both manufacturers' instructions and the pack's charge-current limit. Disconnect the pack from the robot before charging. The 14.6 V LiFePO4 charger discussed for the Bioenno alternative is incompatible with this reference pack.
-
-Each reference pack stores about 24.4 Wh nominal. At an illustrative 40–60 W average battery draw and an assumed 80% usable fraction, planning runtime is roughly 20–29 minutes per pack. This is a sensitivity estimate, pending measured usage and the selected cutoff threshold.
-
-[Venom pack specifications](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [SkyRC S100neo manual](https://www.skyrc.com/download/100202%20S100neo%20Instruction%20Manual_V27.pdf)
-
-### Lower-current head servo and pan screening
-
-The Hitec D645MW (36645S) is a metal-gear tilt candidate. At 6 V, Hitec lists 2.15 A stall current, 11.3 kgf·cm stall torque, and 2.3 kgf·cm torque at peak efficiency. The last figure supports keeping it on the shortlist; actual tilt load still needs checking. Check the mounting drawing, 25T horn fit, available travel, and actual loaded motion before purchase. The servo supports positional travel up to 175°. The design still needs a separate decision if full 360° pan is required.
-
-For pan, an upright vertical axis has no static gravitational moment about the axis. Screen acceleration separately from bearing friction, cable drag, and any load from axis misalignment. As an illustrative upper-inertia case, put an assumed 0.20 kg of rotating assembly at a radius of 0.080 m. Then I ≤ 0.00128 kg·m² for that mass and radius. At an assumed 8 rad/s², the inertial torque is about 0.010 N·m (0.10 kgf·cm). This excludes friction and cable drag. Weigh the rotating hardware, check its radial extent and desired acceleration, then measure breakaway torque with the camera cable routed before choosing the pan actuator. A continuous-rotation servo alone does not provide absolute angle positioning.
-
-If limited pan travel is acceptable and a pair of D645MW servos fits, their published simultaneous stall estimate is 4.30 A at 6 V. This is below the existing regulator's typical 5.5 A rating on paper. Check actual regulator capacity at the intended pack voltage and cooling, plus transient response and connector ratings. With the earlier 61 W motor and Pi load example, the pair adds 25.8 W, or about 11.35 A upstream in total at 9 V and 85% assumed efficiency, excluding inrush. Keep the fuse and servo supply provisional. Retain the existing BOM pending pan travel, fit, and supplier availability.
-
-[Hitec D645MW specification](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Hitec product page](https://hitecrcd.com/d645mw-high-torque-metal-gear-25T-digital-sport-servo/)
-
-### Selected head motion target
-
-The project owner selected a 360° commanded sweep. The design assumption is a bounded sweep from approximately −180° to +180° around neutral, reversing at the endpoints so the cable unwinds. Actual endpoints remain subject to the mechanical cable test. The XM430-W210-T remains the pan actuator candidate and the D645MW remains the tilt candidate.
-
-| Load | Screening output power |
-|---|---:|
-| Four drive motors at estimated stall, 6 V × 6 A total | 36.0 W |
-| Pi branch at the existing 5 V × 5 A design allowance | 25.0 W |
-| XM430 pan candidate at 12 V × 2.3 A stall | 27.6 W |
-| D645MW tilt candidate at 6 V × 2.15 A stall | 12.9 W |
-| Total screening load | 101.5 W |
-
-At 9 V pack voltage and 85% assumed overall efficiency, the illustrative combined demand is about 13.3 A before startup surges and other unbudgeted loads. This establishes a higher screening load than the earlier two-tilt-servo comparison. It does not establish normal running current or a fuse rating. The previously reviewed 12 A continuous pack and 10 A fuse cannot be approved from this estimate. A dedicated regulated 12 V supply for pan needs to maintain output across the selected pack's loaded voltage range, including voltages below and above 12 V if using the 3S pack. Fit, available supply current, and sourcing must be confirmed before adding these candidates to the order BOM.
-
-### Full-turn pan option
-
-Keep 360° commanded pan as the design goal. A position-feedback candidate is the metal-gear ROBOTIS DYNAMIXEL XM430-W210-T. Its 12-bit magnetic encoder resolves one revolution into 4096 counts. Extended position mode can command across the single-turn boundary. The actuator uses a half-duplex TTL serial bus and needs a compatible interface, a revised mount and separate power. ROBOTIS specifies 10–14.8 V operating input and 2.3 A stall current at 12 V. The planned 6 V servo rail is outside that range, and the battery voltage can fall below 10 V. Evaluate a dedicated regulated supply, control interface and power budget before committing to this actuator.
-
-For a one-turn sweep with the existing Camera Module 3 and a stationary Pi, evaluate a guided flex-cable loop that unwinds by reversing. Set software limits inside a physically verified free travel range and check strain relief and clearance at both ends. Until tested, the cable path and full-turn range remain open. Repeated same-direction turns require a different camera and tilt wiring architecture or a rotary interface qualified for those signals. The existing camera ribbon carries MIPI CSI-2. An ordinary power slip ring has no established compatibility with that link.
-
-Keep the Hitec D645MW as the limited-angle tilt candidate. The pan and tilt alternatives stay outside the order BOM pending mount fit, cable travel, power and sourcing.
-
-[ROBOTIS actuator specifications](https://en.robotis.com/service/selection_guide4.php) · [Operating modes](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/) · [Camera Module 3 schematic](https://pip-assets.raspberrypi.com/categories/1207-design-files/documents/RP-008969-SD-3-Raspberry%20Pi%20Camera%20Module%203%20Reference%20Schematic.pdf)
-
-### Pan mount clearance and mock-up
-
-The STEP places the pan-axis placeholder at X = 0, Y = 28 mm. At neutral tilt, the head shell's bounding box extends 40 mm sideways and 20 mm fore and aft from that axis. Its corners therefore sweep within a radius of about 45 mm. The camera lens envelope lies within that radius. Reserve a roughly 90 mm diameter sweep zone for the shell at neutral tilt. The estimate excludes the ribbon, brackets and any change in the swept volume during tilt.
-
-The existing pan servo envelope is 40 × 20 × 35 mm. The provisional XM430-W210-T body measures 28.5 × 46.5 × 34.0 mm. The existing envelope cannot contain that body with its faces aligned to the envelope. Use the actuator mounting drawing to lay out a new bracket around the pan axis, allowing access for fasteners and the connector. That earlier envelope did not establish fit for this actuator. The later raised study below and November 17 integrated STEP supersede that placement; horn, connector and mounting validation remains pending.
-
-For a power-off mock-up, mark the axis and sweep circle on a plan view, place a cardboard template of the actuator and connector at the intended mount, and trace both the 300 and 500 mm ribbon paths. Sweep from neutral toward both endpoints at minimum, neutral and maximum tilt. For each combination, record reach, smallest clearance, snag points and whether reversing returns the cable to neutral without a twist. Use the observed clear range to set initial travel limits. Keep actuator and ribbon choices provisional until fit and motion are checked.
-
-[ROBOTIS dimensions and ratings](https://en.robotis.com/service/selection_guide4.php)
-
-### XM430 pan mount layout
-
-| Interface | Layout |
-|---|---|
-| Shaft datum | Keep the output axis vertical at X = 0, Y = 28 mm. Use the existing Z = 149 mm neck plate top as the fixed-side datum. |
-| Fixed side | Lay out an adapter on the 50 × 35 mm neck plate, with the actuator's 46.5 mm body dimension along the 50 mm direction. Center the **output axis** using the ROBOTIS drawing. The body may overhang because the axis and body midpoint differ. Check that the adapter spreads the load onto the neck plate. |
-| Moving side | Mate the output horn to an adapter that carries the tilt assembly. The existing head-adapter underside at Z = 182 mm is a reference elevation. Check the full horn, bracket and fastener stack before deciding whether the head must sit higher. |
-| Cable clearance | Keep the actuator's stationary power and data leads on the fixed side. Leave the external camera and tilt cable loop clear of the output horn and bracket. Check access for the connector plug and mounting screws at assembly. |
-
-The 46.5 × 28.5 mm body fits inside the neck plate's footprint only when comparing centered rectangles. That comparison leaves 3.5 mm and 6.5 mm total clearance along the two dimensions and does not include the output-axis offset, mounting tabs or connector. Use the vendor STEP and frame drawings to locate the actual holes and check the stacked assembly with the head at both tilt extremes. This is a layout for CAD placement. Hole locations, stack height and the attainable sweep are still open.
-
-**Envelope stack check.** The neck plate top is at Z = 149 mm and the underside of the current head adapter is at Z = 182 mm. That leaves 33 mm. In the proposed orientation with the 46.5 × 28.5 mm faces parallel to the neck plate, the published 34 mm overall envelope exceeds that space by 1 mm even before reserving room for external mounting and fasteners. Allow for a raised head or a recessed mount and verify the actual horn datum and stack with vendor CAD. The official actuator and hinge-frame download links returned 404 pages during this check. Shaft offset, overhang and connector access still require the actual vendor geometry.
-
-[ROBOTIS XM430 and compatible frame drawings](https://emanual.robotis.com/docs/en/dxl/x/xm430-w210/#drawings)
-
-### Imported XM/H430 idler assembly fit check
-
-The supplied `XM,H-430_idler.stp` opens as an actuator reference assembly with an idler and mounting hardware. Its coaxial cylindrical faces establish the axis at local X = 0, Y = 0. The main solid extends 35.25 mm in one direction and 11.25 mm in the other along the long dimension. Aligning that axis to the center of the 50 mm neck plate leaves 10.25 mm of overhang on the long side. The shorter side has 13.75 mm to the plate edge. The visible screw center grid in this reference is 22 × 40 mm. Verify which threads and fastener depths apply to the chosen mount.
-
-The imported envelope spans 42.7 mm axially including the modeled protrusions. The original neck-to-adapter gap is 33 mm, and the raised study provides 41 mm. With the entire imported envelope between those planes, it exceeds the raised gap by 1.7 mm before fastener or cable allowance. Use the appropriate fixed-side and moving-side mounting datums to refine the stack. Verify the plugged-in harness and sweep with the selected bracket geometry.
-
-### Raised pan adapter fit study
-
-The offset deck uses the imported 22 × 40 mm reference grid. Its top is at Z=157 mm, 2 mm below the reference's lower mounting face. The central relief clears the lower protrusion. The raised head and camera clear the modeled fixed geometry by 5.3 mm vertically throughout the ±180° pan range. The shaft coupling, fasteners, tilt mount, connector and camera service loop still need a fit check. The raised layout is a separate study from the current Onshape assembly.
-
-### Battery and stop acceptance
-
-Budget one Venom 15190 pack in the robot and one same-model offboard spare. The S100neo supports 3S LiPo balance charging from AC mains. Confirm the supplied mains lead and correct main-output and balance connections. The pack manufacturer specifies 2.2 A charging. Nominal energy is 24.42 Wh. At 80% assumed usable energy and 40–60 W average draw, estimated runtime is 20–29 minutes per pack.
-
-The protection design remains on hold. Require automatic isolation if any individual cell crosses its selected cutoff threshold, detection of a lost sense lead, and manual re-arm after recovery. Validate those behaviors with a current-limited test setup before connecting the production pack. For the drive stop, verify that the normally open DC switching path drops power to both motor regulators independently of software, including with the Pico held unresponsive. Verify that releasing the stop leaves drive power disabled until a separate re-arm. Qualify disconnect hardware, fuse, wiring and regulator inrush together before marking any protection part as selected.
-
-[Venom 15190 specifications](https://venombattery.com/product/50c-3s-2200mah-11-1v-rc-rock-crawler-lipo-battery-with-universal-plug/) · [SkyRC S100neo specifications](https://www.skyrc.com/s100neo)
-
-### Component compatibility review
-
-- **Pan output:** The imported reference shows eight centers on a 16 mm pitch circle around the output axis. The envelope study measures 5.3 mm of vertical clearance to the raised head. Check the exact horn, screw engagement and central protrusion against the mating plate before using this clearance as available coupling height.
-- **Tilt:** The current Hitec D645MW drawing gives a 40.8 × 20.0 × 37.8 mm body and a 25-tooth, 6 mm output spline. The older tilt placeholder is only 20 mm high in its current orientation. Replace it with an oriented vendor envelope including mounting ears, horn and wire exit before checking tilt and pan together.
-- **Weak-cell cutoff:** Junsi CellLog 8S is a monitor candidate because the manufacturer documents individual-cell measurements and an alarm port. Its alarm rating does not qualify it to carry the robot load. Verify supply-loss and sense-lead fault behavior, output interface, manual reset and availability before selecting it. The ServoCity Low Voltage Cutoff Switch documentation describes pack-voltage cutoff and does not establish independent weak-cell detection.
-- **Motor stop:** Retain the existing normally open relay candidate pending regulator input inrush and DC interruption checks. Keep both protection entries provisional until the complete circuits and parts are specified.
-
-[Hitec D645MW dimensional drawing](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) · [Junsi CellLog 8S specifications](https://www.jun-si.com/EnProductShow.asp?ID=96) · [ServoCity cutoff description](https://www.servocity.com/low-voltage-cutoff-switch/)
-
-### Tilt servo packaging check
-
-A side-to-side 53.4 × 20.0 × 37.8 mm nominal screening box, spanning the Hitec drawing's tab length, was placed at X=−26.7 to +26.7, Y=13 to 33, Z=193 to 230.8 mm in the original head STEP coordinate system. Add 20 mm to Z in the raised pan study. Solid intersections were zero against the shell, camera carrier, PCB and lens. Minimum distances were 5.0, 5.0, 7.0 and 8.5 mm respectively. A centered front-to-back body placement intersected the shell and camera geometry.
-
-This is a static packaging candidate. The box excludes the actual horn and cable exit. The tilt pivot, stationary support and fasteners still need to be modeled and checked through motion, together with the pan coupling and camera ribbon. Use the [manufacturer drawing](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) as the reference for the hardware interfaces.
-
-## Proposed logical GPIO allocation
-
-These physical pin numbers are for the official Raspberry Pi Pico 2 with Headers (SC1632). Identify the board orientation using the [official pinout](https://pip-assets.raspberrypi.com/categories/1005-raspberry-pi-pico-2/documents/RP-008301-DS-1-Pico-2-Pinout.pdf?disposition=inline) and confirm the labels on the purchased hardware.
-
-| Function | Input A | Input B |
-|---|---|---|
-| Front-left motor, driver 1 channel 1 | GP2 (pin 4) | GP3 (pin 5) |
-| Front-right motor, driver 1 channel 2 | GP4 (pin 6) | GP5 (pin 7) |
-| Rear-left motor, driver 2 channel 1 | GP6 (pin 9) | GP7 (pin 10) |
-| Rear-right motor, driver 2 channel 2 | GP8 (pin 11) | GP9 (pin 12) |
-
-The MDD3A uses two control inputs per motor. This starter uses one PWM input at a time for forward/reverse; it does not assume a PWM/DIR interface. Actual wheel polarity and correct left/right wheel placement must be calibrated with the robot lifted.
-
-GP11 (physical pin 15) is reserved for the D645MW tilt PWM signal, subject to the interface check above. GP10 is unassigned: the current XM430 pan candidate uses the Pi's USB-to-DYNAMIXEL interface. GP12/GP13 remain reserved for future ultrasonic trigger/echo. No servo or ultrasonic implementation is included in this drive starter. Do not feed a 5 V echo directly into 3.3 V GPIO: the exact level-conversion circuit remains to be designed and verified. GP14 is reserved for a future hardware-interlock status input; reading that input in software would not itself provide a hardware stop.
-
-## Motor driver 1 — front wheels
-
-| Controller or motor connection | Cytron MDD3A driver 1 |
-|---|---|
-| Controller GP2 (pin 4) | M1A signal input |
-| Controller GP3 (pin 5) | M1B signal input |
-| Controller GP4 (pin 6) | M2A signal input |
-| Controller GP5 (pin 7) | M2B signal input |
-| Controller signal ground (Pico 2 pin 8) | GND on the signal header |
-| Front-left motor, two leads | Motor 1 output terminal pair |
-| Front-right motor, two leads | Motor 2 output terminal pair |
-| No connection | 5VO |
-| Motor supply positive and return | VB+ and VB− respectively, proposed separate 6 V rail, pending protection and bench verification |
-
-Confirm the hardware matches the selected SC1632 and the pin numbers above. Keep the hardware unpowered until the power design and protection are verified.
-
-[Cytron MDD3A datasheet, board layout and functions](https://www.electrokit.com/upload/product/41018/41018266/MDD3A%20Datasheet.pdf)
-
-## Motor driver 2 — rear wheels
-
-| Controller or motor connection | Cytron MDD3A driver 2 |
-|---|---|
-| Controller GP6 (pin 9) | M1A signal input |
-| Controller GP7 (pin 10) | M1B signal input |
-| Controller GP8 (pin 11) | M2A signal input |
-| Controller GP9 (pin 12) | M2B signal input |
-| Controller signal ground (Pico 2 pin 8) | GND on the signal header |
-| Rear-left motor, two leads | Motor 1 output terminal pair |
-| Rear-right motor, two leads | Motor 2 output terminal pair |
-| No connection | 5VO |
-| Motor supply positive and return | VB+ and VB− respectively, proposed separate 6 V rail, pending protection and bench verification |
-
-Use the same controller pinout and power checks listed for driver 1 before connecting or powering the hardware.
-
-## Unresolved before operation
-
-- Battery cutoff thresholds and circuit, hardware stop, fuse and switch ratings at 12.6 V.
-- Motor regulator bench validation, cable ratings, connectors, grounding and power sequencing.
-- Physical board identity, safe startup levels, wheel polarity and mecanum orientation.
-- Ultrasonic level conversion, sensor failure behavior, servo rail and mechanical travel limits.
-- Complete pin-to-pin schematic, connector numbering and power budget.
-
-References: [Cytron manufacturer library](https://github.com/CytronTechnologies/CytronMotorDriver) documents the MDD3A-compatible PWM/PWM mode; [Raspberry Pi microcontroller documentation](https://www.raspberrypi.com/documentation/microcontrollers/) covers supported official boards. The pin assignments above apply to the official Pico 2.
+| Part | Planned connection |
+| --- | --- |
+| Pan servo (XM430-W210-T) | Pi USB to U2D2 and Power Hub over the TTL bus. Separate regulated 12 V supply is proposed. |
+| Tilt servo (D645MW) | Pico PWM through an interface that still needs checking. Separate 6 V supply is proposed. |
+| Camera Module 3 | 500 mm Standard–Mini camera cable to Pi 5. |
+
+Check the actual servo interface, cable length, power rating, grounding and startup behavior before connecting. The U2D2 USB connection does not power the actuator, and the Power Hub does not regulate voltage.
+
+## Proposed Pico GPIO assignments
+
+| Function | GPIO |
+| --- | --- |
+| Front left | GP2, GP3 |
+| Front right | GP4, GP5 |
+| Rear left | GP6, GP7 |
+| Rear right | GP8, GP9 |
+| Tilt PWM (reserved) | GP11 |
+| Ultrasonic trigger and echo (reserved) | GP12, GP13 |
+| Interlock status (reserved) | GP14 |
+
+The sensor echo needs verified level conversion before it can connect to the 3.3 V GPIO. Only drive control is implemented in the Pico starter. The actual pin labels, wheel directions, driver and power circuit still need checking.
+
+## Before building
+
+Use the [build checklist](build-checklist.md). The [full wiring reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/docs/WIRING.md) includes detailed terminal mappings, power calculations, battery protection options, source links and outstanding electrical checks. It is a design reference and still needs qualified review.

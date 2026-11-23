@@ -43,6 +43,9 @@ I wanted to build something way more reliable, modular, and actually capable of 
 - [`wiring/pinout_connection.md`](wiring/pinout_connection.md) – How everything is wired up
 - [Bill of materials (table)](BOM.md) – Full parts list and pricing
 - [`bom.csv`](bom.csv) – Downloadable CSV
+- [Robot code and simulation](firmware/README.md)
+- [3D model notes](cad/README.md)
+- [Build checklist](docs/build-checklist.md)
 
 ---
 

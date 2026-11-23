@@ -3,12 +3,13 @@ import math
 
 
 def valid_time(now_ms, previous_ms):
-    # Timestamps must be nonnegative integers and must never go backwards.
+    # Time must be a nonnegative integer and cannot go backwards.
     if isinstance(now_ms, bool) or not isinstance(now_ms, int):
         return False
     if now_ms < 0:
         return False
     return previous_ms is None or now_ms >= previous_ms
+
 
 def mix(vx, vy, wz):
     # vx = forward, vy = sideways, wz = turn.
@@ -18,11 +19,13 @@ def mix(vx, vy, wz):
     rear_left = vx + vy - wz
     rear_right = vx - vy + wz
     wheels = (front_left, front_right, rear_left, rear_right)
-    scale = max(1.0, max(abs(speed) for speed in wheels))
-    return tuple(speed / scale for speed in wheels)
+    # Scale all wheels together so none exceeds the allowed range.
+    largest_speed = max(1.0, max(abs(speed) for speed in wheels))
+    return tuple(speed / largest_speed for speed in wheels)
+
 
 class DriveController:
-    """Bounded wheel commands with a watchdog and explicit restart intent."""
+    """Limits wheel speed and stops when commands are missing."""
     def __init__(self, timeout_ms=400, max_output=0.20):
         if isinstance(timeout_ms, bool) or not isinstance(timeout_ms, int) or timeout_ms <= 0:
             raise ValueError('positive integer timeout required')
@@ -48,7 +51,7 @@ class DriveController:
         if not self._time_valid(now_ms):
             self.stop()
             return False
-        # Check the old deadline before a packet can refresh the watchdog.
+        # Stop if the old command expired before accepting the next one.
         self.output(now_ms)
         try:
             if not isinstance(command, dict):
@@ -58,17 +61,17 @@ class DriveController:
                 return True
             if command.get('cmd') != 'drive' or command.get('armed') is not True:
                 raise ValueError('explicit armed drive command required')
-            values = [command[k] for k in ('vx', 'vy', 'wz')]
-            if any(isinstance(v, bool) or not isinstance(v, (int, float)) for v in values):
+            axes = [command[k] for k in ('vx', 'vy', 'wz')]
+            if any(isinstance(axis, bool) or not isinstance(axis, (int, float)) for axis in axes):
                 raise ValueError('numeric axes required')
-            if any(not math.isfinite(v) or abs(v) > 1 for v in values):
+            if any(not math.isfinite(axis) or abs(axis) > 1 for axis in axes):
                 raise ValueError('axis outside -1..1')
             resume = command.get('resume', False)
             if not isinstance(resume, bool):
                 raise ValueError('boolean resume required')
             if not self.armed and not resume:
                 return False
-            self.requested = tuple(v * self.max_output for v in mix(*values))
+            self.requested = tuple(speed * self.max_output for speed in mix(*axes))
             self.last_ms = now_ms
             self.armed = True
             return True
@@ -81,7 +84,7 @@ class DriveController:
         if not self._time_valid(now_ms):
             self.stop()
             return self.requested
-        if not self.armed or self.last_ms is None or now_ms-self.last_ms > self.timeout_ms:
+        if not self.armed or self.last_ms is None or now_ms - self.last_ms > self.timeout_ms:
             self.stop()
         self.updated_ms = now_ms
         return self.requested
