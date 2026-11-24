@@ -10,6 +10,18 @@ The software is still being developed on a computer. The physical robot has not 
 | `pico/config.py` | Proposed pin settings and hardware enable flags. |
 | `tests/` | Desktop tests. |
 
+## How the code works
+
+- Wheel mixing: `vx` is forward/backward, `vy` is sideways and `wz` is turning. The mix function calculates four wheel speeds.
+- Timeout: if the drive controller gets no new command for over 400 ms, it requests zero wheel speed.
+- Resume: after stopping, a valid command with an explicit resume is needed to start moving again.
+- Head movement: the computer model shows how pan and tilt angles change within limits. Real servos are still to be tested.
+- Follow mode: the desktop model uses simulated sensor readings to check stops when a target is lost, an obstacle is close, or readings are missing.
+
+## Development
+
+AI assistance was used to design, write, simplify and test the firmware, including the stop and resume logic. The next step for me is to study the code and test it independently as I build the robot.
+
 ## Run on a computer
 
 ```sh
@@ -17,7 +29,7 @@ python3 firmware/simulate.py
 python3 -m unittest discover -s firmware/tests -v
 ```
 
-The desktop demo and 77 tests passed on November 23. They use simulated inputs and mocked hardware. Recorded-video detection is optional and uses OpenCV.
+The desktop demo and 77 tests passed again on November 24, 2026. They use simulated inputs and mocked hardware. Recorded-video detection is optional and uses OpenCV.
 
 ## What is left
 
