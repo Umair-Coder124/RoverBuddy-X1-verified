@@ -11,7 +11,7 @@
 - [Download all individual parts](Current%20parts.zip)
 - [Current parts list](Current%20parts.csv)
 
-The current STEP was exported from Onshape on November 24 after the head shell and mounting parts were added. All 188 solids reopened without shape errors. The cable path did not appear in the solid export; the actual ribbon and head movement still need checking.
+The November 24 Onshape export contains the new head shell, bearings, brackets and bolts. The STEP reopened with 188 valid solids. The camera ribbon path is missing from the export.
 
 ## Main parts
 
@@ -32,9 +32,7 @@ The current STEP was exported from Onshape on November 24 after the head shell a
 
 These are model measurements. Check actual parts and clearances before printing or assembly.
 
-Earlier design references are retained in this folder. Use the current assembly and parts above for the latest geometry.
-
-See the [build checklist](../docs/build-checklist.md) for remaining checks and the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md) for measurements, supplier drawings and earlier model details.
+For older measurements and supplier drawings, see the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md) for measurements, supplier drawings and earlier model details.
 
 ## Fit check
 
@@ -45,8 +43,6 @@ See the [build checklist](../docs/build-checklist.md) for remaining checks and t
 
 Custom metal parts need a supplier quote. Quote request: https://www.thanfa.com/en/rfq/
 
-## Checking the real parts
-
-Once the parts arrive, compare the bearings, servos, brackets and bolts with the 3D model. Check that the screws fit and the head can move without squeezing the camera cable. If anything does not fit, adjust the design before assembly.
+See the [build checklist](../docs/build-checklist.md) for the remaining fit checks.
 
 [Revised head shell](current-parts/Head%20Shell.step)

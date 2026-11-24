@@ -1,50 +1,35 @@
 # Robot code
 
-The software is still being developed on a computer. The physical robot has not been tested.
+The code is being tested on a computer. The robot still needs to be built and tested with real parts.
 
-| File | Purpose |
-| --- | --- |
-| `drive_logic.py` | Wheel speeds, stop and timeout logic. Start here. |
-| `desktop_models.py` | Simulated head movement, tilt calculations and follow-mode checks. |
-| `simulate.py` | Desktop examples and recorded-video detection. |
-| `pico/main.py` | Motor-control starter for the Pico. |
-| `pico/config.py` | Proposed pin settings and hardware enable flags. |
-| `tests/` | Desktop tests. |
+## Start here
 
-The Pico only needs the drive module for the current motor-control starter. The desktop model stays on the computer.
+- `drive_logic.py` works out the four wheel speeds and handles stop commands.
+- `simulate.py` prints examples of forward, sideways and turning movement.
+- `pico/main.py` is the motor starter for the Pico 2. Its hardware flags are off until the wiring and power checks are complete.
 
-## How the code works
+`desktop_models.py` and `desktop_experiments.py` are desktop experiments for the moving head, follow mode and recorded video. They are not needed on the Pico.
 
-- Wheel mixing: `vx` is forward/backward, `vy` is sideways and `wz` is turning. The mix function calculates four wheel speeds.
-- Timeout: if the drive controller gets no new command for over 400 ms, it requests zero wheel speed.
-- Resume: after stopping, a valid command with an explicit resume is needed to start moving again.
-- Head movement: the computer model shows how pan and tilt angles change within limits. Real servos are still to be tested.
-- Follow mode: the desktop model uses simulated sensor readings to check stops when a target is lost, an obstacle is close, or readings are missing.
-
-## Development
-
-The firmware is organized into smaller files so each part is easier to understand and test.
-
-- **Pico 2:** The motor-control starter handles wheel calculations and movement commands.
-- **Safety stop:** The desktop model checks stops when commands are lost or sensor readings indicate a problem.
-- **Pi 5 communication:** Planned to handle camera tracking and send movement instructions over USB serial.
-- **Camera head:** Pan and tilt are tested in a desktop simulation.
-
-The next step is to study the code and independently test it with the real components.
-
-## Run on a computer
+## Try it on a computer
 
 ```sh
 python3 firmware/simulate.py
+python3 -m unittest discover -s firmware/tests -p test_drive.py -v
+```
+
+The drive tests check mixing, timeout, resume, bad commands and the simulated Pico runtime. If a command stops arriving for over 400 ms, wheel output goes to zero. The next movement needs `armed=true` and `resume=true`.
+
+For the other desktop experiments and their tests:
+
+```sh
+python3 firmware/simulate.py --full
 python3 -m unittest discover -s firmware/tests -v
 ```
 
-The desktop demo and 77 tests passed again on November 24, 2026, after separating the drive and desktop models. They use simulated inputs and mocked hardware. Recorded-video detection is optional and uses OpenCV.
+Recorded-video detection is optional (`--video`); it uses OpenCV and does not control hardware. See the [firmware reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/firmware/README.md) for commands and limits.
 
-## What is left
+## Still to do
 
-- Real camera and sensor inputs, Pi-to-Pico integration and phone controls.
-- Actual motor direction, camera head movement and stopping tests.
-- Keep the Pico hardware flags off until the power, wiring and independent stop circuit are checked with qualified adult supervision.
-
-The [full firmware reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/firmware/README.md) contains the command format, test details, video options and safety limits.
+- Finish the camera, sensor, phone controls and Pi-to-Pico connection.
+- Test motor directions, stopping and the moving head with real parts.
+- Keep hardware outputs disabled until the power, wiring and independent stop circuit have been checked with qualified adult supervision.

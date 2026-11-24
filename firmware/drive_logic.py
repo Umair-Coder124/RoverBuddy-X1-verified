@@ -27,14 +27,14 @@ def is_stop_command(command, expected):
     if command.get('cmd') == 'stop':
         return True
     if command.get('cmd') != expected or command.get('armed') is not True:
-        raise ValueError('explicit armed ' + expected + ' command required')
+        raise ValueError(expected + ' needs armed=true')
     return False
 
 
 def resume_requested(command):
     resume = command.get('resume', False)
     if not isinstance(resume, bool):
-        raise ValueError('boolean resume required')
+        raise ValueError('resume must be true or false')
     return resume
 
 
@@ -65,16 +65,13 @@ class DriveController:
         self.updated_ms = None
         self.requested = (0.0, 0.0, 0.0, 0.0)
 
-    def _time_valid(self, now_ms):
-        return valid_time(now_ms, self.updated_ms)
-
     def stop(self):
         self.armed = False
         self.last_ms = None
         self.requested = (0.0, 0.0, 0.0, 0.0)
 
     def receive(self, command, now_ms):
-        if not self._time_valid(now_ms):
+        if not valid_time(now_ms, self.updated_ms):
             self.stop()
             return False
         # Stop if the old command expired before accepting the next one.
@@ -99,7 +96,7 @@ class DriveController:
 
     def output(self, now_ms):
         # Runtime uses a monotonic integer accumulated from MicroPython ticks_diff.
-        if not self._time_valid(now_ms):
+        if not valid_time(now_ms, self.updated_ms):
             self.stop()
             return self.requested
         if not self.armed or self.last_ms is None or now_ms - self.last_ms > self.timeout_ms:
