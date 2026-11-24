@@ -37,12 +37,13 @@ Right now this is still mostly design and computer testing. I haven’t built th
 
 ## Project links
 
-1. [CAD Design](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
-2. [Wiring / pinout](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/wiring/pinout_connection.md)
-3. [BOM.csv](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/bom.csv) · [BOM table](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/BOM.md)
-4. [Code](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/firmware/README.md)
-5. [3D model notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/README.md)
-6. [Build checklist](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/build-checklist.md)
+1. CAD Design - https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d
+2. Wiring / pinout - https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/wiring/pinout_connection.md
+3. BOM.csv - https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/bom.csv
+   BOM table - https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/BOM.md
+4. Code - https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/firmware/README.md
+5. 3D model notes - https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/README.md
+6. Build checklist - https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/build-checklist.md
 
 ![Current assembly preview](cad/Current%20assembly.png)
 
