@@ -1,14 +1,17 @@
 # 3D model
 
-![Revised assembly draft](Assembly%20review.png)
+![Current assembly preview](Current%20assembly.png)
 
-![Pivot](Pivot%20review.png)
+![Pivot screenshot](Current%20pivot.png)
 
-![Neck brackets](Neck%20review.png)
+![Neck bracket screenshot](Current%20neck.png)
 
-[Earlier GitHub STEP model](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) · [Head preview](Head_Camera.png) · [Rear preview](Integrated_Rear_Preview.png)
+- [Complete assembly STEP](RoverBuddy%20X1.step)
+- [Individual STEP files](current-parts/)
+- [Download all individual parts](Current%20parts.zip)
+- [Current parts list](Current%20parts.csv)
 
-The GitHub exports and previews are from the earlier assembly. A revised mounting draft was prepared on November 24 and reported imported to Onshape. All 182 parts reopened successfully in the revised STEP. The pictures above show the draft, not the older GitHub STEP. The current draft still needs independent review, fit checks and upload of the matching exports.
+The current STEP was exported from Onshape on November 24 after the head shell and mounting parts were added. All 188 solids reopened without shape errors. The cable path did not appear in the solid export; the actual ribbon and head movement still need checking.
 
 ## Main parts
 
@@ -29,7 +32,7 @@ The GitHub exports and previews are from the earlier assembly. A revised mountin
 
 These are model measurements. Check actual parts and clearances before printing or assembly.
 
-[Parts manifest](Parts_Manifest.csv) · [Interference check](Interference_Check.csv) · [Earlier detailed STEP](RoverBuddy_X1_Detailed_Assembly.step)
+Earlier design references are retained in this folder. Use the current assembly and parts above for the latest geometry.
 
 See the [build checklist](../docs/build-checklist.md) for remaining checks and the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md) for measurements, supplier drawings and earlier model details.
 
@@ -46,4 +49,4 @@ Custom metal parts need a supplier quote. Quote request: https://www.thanfa.com/
 
 Once the parts arrive, compare the bearings, servos, brackets and bolts with the 3D model. Check that the screws fit and the head can move without squeezing the camera cable. If anything does not fit, adjust the design before assembly.
 
-Cable opening draft: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/Head%20Shell%20review.step
+[Revised head shell](current-parts/Head%20Shell.step)
