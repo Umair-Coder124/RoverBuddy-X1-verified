@@ -1,53 +1,48 @@
-# RoverBuddy-X1 
+# RoverBuddy X1
 
-Hi! I'm Umair, a 15-year-old student from Riyadh, Saudi Arabia. This is my project for Hack Club's Fallen program: an autonomous, Mars-rover-inspired follow-me robot planned around a Raspberry Pi 5, a Raspberry Pi Pico 2, and mecanum wheels.
+Hi, I’m Umair. I’m 15 and I live in Riyadh, Saudi Arabia. This is my Hack Club Fallen project.
 
----
+RoverBuddy X1 is a follow-me robot I’m designing. It’s kind of inspired by Mars rovers. The plan is to use a Raspberry Pi 5, a Raspberry Pi Pico 2, and mecanum wheels so it can move in any direction.
 
-## Why I Built This (And My Old Failures)
+## Why I’m building this
 
-Before building RoverBuddy X1, I tried making a basic ESP32-CAM surveillance car controlled over Wi-Fi. It was a fun first project, but I ran into massive walls:
-- The video stream lagged like crazy.
-- The cheap plastic servos kept stripping gears under load.
-- It had zero obstacle detection, so it crashed into walls constantly.
-- The wiring was a giant spaghetti mess.
+Before this, I built a small ESP32-CAM car that I controlled from my phone. It was fun, but a lot of things went wrong:
 
-I wanted to build something way more reliable, modular, and actually capable of smart computer vision tracking without buying an overpriced pre-made chassis.
+1. The camera lagged a lot
+2. The cheap plastic servos kept breaking
+3. It had no obstacle detection, so it hit walls
+4. The wiring was a mess
 
----
+I wanted to make something stronger and smarter, with better camera tracking, instead of just buying a ready-made robot kit.
 
-## Planned features
+## What I want it to do
 
-- **Smart Person Tracking:** Uses a Raspberry Pi Camera Module 3 paired with the Pi 5 to lock onto and follow a target.
-- **Omnidirectional Movement:** Four mecanum wheels driven by a Pico 2, letting the robot strafe sideways, spin in place, and drive in any direction smoothly.
-- **Heavy-Duty Pan-and-Tilt Head:** Powered by a ROBOTIS Dynamixel XM430 for the pan axis and a Hitec D645MW for the tilt axis.
-- **Chest Status Screen:** A 5-inch HDMI display mounted on the front to show real-time diagnostics and system status.
-- **Emergency Braking:** An HC-SR04 ultrasonic sensor is planned to provide distance readings for stopping. Independent motor cutoff and real sensor integration still need testing.
+1. Follow a person using the Raspberry Pi Camera Module 3
+2. Move forward, sideways, and turn using 4 mecanum wheels
+3. Have a moving camera head (pan + tilt)
+4. Show status on a small screen on the front
+5. Stop when something is too close (ultrasonic sensor)
 
----
+Right now this is still mostly design and computer testing. I haven’t built the full robot yet.
 
-## Hardware Breakdown
+## Main parts
 
-- **Brain (High-Level Logic & Vision):** Raspberry Pi 5 (4GB)
-- **Muscle (Low-Level Motor Control & Sensors):** Raspberry Pi Pico 2
-- **Vision:** Raspberry Pi Camera Module 3
-- **Chassis & Movement:** Custom 3D printed PETG parts + 4x Mecanum wheels + TT DC gear motors
-- **Steering:** ROBOTIS Dynamixel XM430-W210-T & Hitec D645MW servos
-- **Power:** 3S LiPo battery pack with separate regulated power branches
-
----
+1. Raspberry Pi 5 – camera and main software
+2. Raspberry Pi Pico 2 – motor control
+3. Camera Module 3
+4. 4 mecanum wheels + motors
+5. Dynamixel XM430 for pan and Hitec D645MW for tilt
+6. 3S LiPo battery with separate power for different parts
+7. 3D printed PETG chassis (planned)
 
 ## Project links
 
-- Onshape: https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d
-- Wiring: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/wiring/pinout_connection.md
-- BOM table: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/BOM.md
-- BOM CSV: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/bom.csv
-- Code and simulation: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/firmware/README.md
-- 3D model: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/README.md
-- Build checklist: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/build-checklist.md
-
----
+1. [CAD Design](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d)
+2. [Wiring / pinout](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/wiring/pinout_connection.md)
+3. [BOM.csv](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/bom.csv) · [BOM table](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/BOM.md)
+4. [Code](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/firmware/README.md)
+5. [3D model notes](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/README.md)
+6. [Build checklist](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/build-checklist.md)
 
 ![Current assembly preview](cad/Current%20assembly.png)
 
@@ -55,7 +50,7 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ![Wiring overview](docs/wiring_overview.svg)
 
-## Current Status
-- **CAD & Simulation:** Design files and desktop simulations are available. The revised mounting design is in the latest Onshape export and individual STEP files. It needs independent review and physical fit checks.
-- **Physical Build:** Waiting on Hack Club Fallen funding approval to order parts, print the PETG chassis, and assemble everything for Maker Faire Shenzhen!
-Thanks!
+## Current status
+
+- **CAD & simulation:** Design files and desktop tests are ready. I updated the mounting parts in Onshape and exported STEP files. Still needs review and real fit checks when parts arrive.
+- **Physical build:** Waiting on Hack Club Fallen funding so I can order parts, print the chassis, and start assembling. I want to take it to Maker Faire Shenzhen if I can finish in time.
