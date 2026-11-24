@@ -64,7 +64,10 @@ Prices are in USD. Shipping and final costs still need checking.
 | DFRobot DFR0946 adjustable buck-boost module for 12V pan supply - candidate | 1 | 8.90 | 8.90 | [Supplier](https://www.dfrobot.com/product-2539.html) | Candidate 12V supply for the pan servo. Listed price checked Nov 20. Saudi shipping unknown. Still needs bench checks for voltage, startup, load, heat, protection and fit with the actuator disconnected. See wiring notes before use. |
 | ROBOTIS X3P 240 mm cable pack (10 pcs, 903-0250-000) if required | 1 | 25.89 | 25.89 | [Supplier](https://www.robotis.ch/488-robot-cable-x3p-240mm-10pcs) | Optional longer pan cable pack. Listed price including VAT checked Nov 23. Check length, connectors, stock and Saudi delivery. Included cables may be enough. |
 | Tilt PWM interface buffer if purchased D645MW requires it | 1 | Pending | Pending | [Supplier](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) | May need a buffer for 3.3V PWM. Check signal limits and startup before use. Price pending. |
+| MR106ZZ pivot bearings 6 x 10 x 3 mm (draft candidate) | 2 | 2.80 | 5.60 | [Supplier](https://www.jsumo.com/mr-106-zz-miniature-bearing-6x10x3mm-6mm-hole) | For the tilt pivot. Price reference checked Nov 24. Confirm fit and Saudi delivery. |
+| Neck brackets, bearing plates and pivot flange hardware (draft) | 1 | Pending | Pending | Pending | Final parts and fabrication quote pending independent design review. |
+| Mounting bolts, nuts and spacers (draft, if not covered by existing kits) | 1 | Pending | Pending | [Supplier](https://ielectrony.com/en/product/200pcs-screw-kit-for-robot-accessories/) | Check exact sizes and quantities against the revised design and existing kit before ordering. |
 
-**Priced subtotal: $1,612.77**
+**Priced subtotal: $1,618.37**
 
-2 items still need prices. See the descriptions for parts that need fit or compatibility checks.
+4 rows still need prices. New mounting items are draft candidates pending independent fit and sourcing checks.

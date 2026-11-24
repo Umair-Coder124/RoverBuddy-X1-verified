@@ -5,10 +5,14 @@
 - [ ] Check Fallen review status and funding.
 - [ ] Confirm the exact parts, stock, delivered prices, shipping and tax in the [BOM](../BOM.md).
 - [ ] Check FR12-H101K pan bracket fit, R-ML25 tilt horn fit and whether extra X3P cables are needed.
-- [ ] Get a quote for the remaining custom tilt bracket and adapters.
+- [ ] Get quotes for the remaining custom tilt bracket, neck brackets, bearing plates and pivot hardware. Confirm fastener quantities.
 - [ ] Confirm D645MW input voltage limits and whether a PWM buffer is needed.
 
 ## CAD and mounting
+
+- [ ] Independently inspect the revised tilt bearing and shaft retention, neck attachment, and bolt fit against Sophia's feedback.
+- [ ] Export the reviewed assembly, individual revised STEP files and updated screenshots to GitHub.
+- [ ] Check the existing head-shell/camera cable interference and resolve it before fabrication.
 
 - [ ] Compare the latest STEP with the Onshape import in a separate revision.
 - [ ] Check the pan mount gap (41 mm in the raised study versus a 42.7 mm reference envelope), screw holes, shaft position and coupling.

@@ -2,9 +2,9 @@
 
 ![Assembly preview](Assembly_Preview.png)
 
-[Latest STEP model](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) · [Head preview](Head_Camera.png) · [Rear preview](Integrated_Rear_Preview.png)
+[Earlier GitHub STEP model](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) · [Head preview](Head_Camera.png) · [Rear preview](Integrated_Rear_Preview.png)
 
-Import the STEP with appearances enabled. The Onshape import is an earlier revision and still needs comparison with the latest STEP.
+The GitHub exports and previews are from the earlier assembly. A revised mounting draft was prepared on November 24 and reported imported to Onshape. Independent review, fit checks and new exports are still pending.
 
 ## Main parts
 
