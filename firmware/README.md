@@ -32,10 +32,6 @@ The firmware is organized into smaller files so each part is easier to understan
 
 The next step is to study the code and independently test it with the real components.
 
-## Development credit
-
-AI assistance was used to design, write, simplify and test the firmware.
-
 ## Run on a computer
 
 ```sh
