@@ -37,7 +37,13 @@ See the [build checklist](../docs/build-checklist.md) for remaining checks and t
 
 - Two 6 × 10 × 3 mm bearing envelopes are in the tilt mount.
 - The neck has two brackets and fasteners modeled.
-- The camera cable still intersects the head shell in the model; fix this before printing.
+- The cable opening was widened to 21.5 × 21.5 mm in the revised head shell. The modeled cable path clears the shell at its neutral position. The real cable still needs a movement test.
 - Check real bearing fit, fastener engagement, head travel and mounting strength before building.
 
 Custom metal parts need a supplier quote. Quote request: https://www.thanfa.com/en/rfq/
+
+## Checking the real parts
+
+Once the parts arrive, compare the bearings, servos, brackets and bolts with the 3D model. Check that the screws fit and the head can move without squeezing the camera cable. If anything does not fit, adjust the design before assembly.
+
+Cable opening draft: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/Head%20Shell%20review.step

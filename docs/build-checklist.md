@@ -12,7 +12,8 @@
 
 - [ ] Independently inspect the revised tilt bearing and shaft retention, neck attachment, and bolt fit against Sophia's feedback.
 - [ ] Export the reviewed assembly, individual revised STEP files and updated screenshots to GitHub.
-- [ ] Check the existing head-shell/camera cable interference and resolve it before fabrication.
+- [x] Widen the cable opening in the draft and check the centerline at the neutral position.
+- [ ] Check the real ribbon width, bending and clearance throughout head movement. Review the shell strength before printing.
 
 - [ ] Compare the latest STEP with the Onshape import in a separate revision.
 - [ ] Check the pan mount gap (41 mm in the raised study versus a 42.7 mm reference envelope), screw holes, shaft position and coupling.
