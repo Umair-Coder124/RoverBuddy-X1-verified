@@ -29,15 +29,10 @@ class HeadController:
         self.speeds = speeds
         self.limits = limits
         self.position = (0.0, 0.0)
-        self.target = self.position
-        self.armed = False
-        self.last_ms = None
         self.updated_ms = None
+        self.stop()
 
     _number = staticmethod(finite_number)
-
-    def _time_valid(self, now_ms):
-        return valid_time(now_ms, self.updated_ms)
 
     def stop(self):
         # Hold the current simulated angle. No physical torque command.
@@ -46,7 +41,7 @@ class HeadController:
         self.target = self.position
 
     def receive(self, command, now_ms):
-        if not self._time_valid(now_ms):
+        if not valid_time(now_ms, self.updated_ms):
             self.stop()
             return False
         self.output(now_ms)
@@ -54,10 +49,10 @@ class HeadController:
             if is_stop_command(command, 'head'):
                 self.stop()
                 return True
-            target = tuple(command[k] for k in ('pan_deg', 'tilt_deg'))
-            if any(not finite_number(v) or not lo <= v <= hi
-                   for v, (lo, hi) in zip(target, self.limits)):
-                raise ValueError('angle outside configured limits')
+            target = (command['pan_deg'], command['tilt_deg'])
+            for angle, (low, high) in zip(target, self.limits):
+                if not finite_number(angle) or not low <= angle <= high:
+                    raise ValueError('angle outside configured limits')
             resume = resume_requested(command)
             if not self.armed and not resume:
                 # A new angle alone cannot restart a stopped head.
@@ -71,7 +66,7 @@ class HeadController:
             return False
 
     def output(self, now_ms):
-        if not self._time_valid(now_ms):
+        if not valid_time(now_ms, self.updated_ms):
             self.stop()
             return self.position
         if self.armed and self.last_ms is not None and self.updated_ms is not None:
@@ -157,13 +152,8 @@ class FollowController:
         self.head = HeadController()
         self.obstacle_stop_cm = obstacle_stop_cm
         self.sample_timeout_ms = sample_timeout_ms
-        self.armed = False
-        self.reason = 'disarmed'
-        self.deadline_ms = None
         self.updated_ms = None
-
-    def _time_valid(self, now_ms):
-        return valid_time(now_ms, self.updated_ms)
+        self.stop('disarmed')
 
     def stop(self, reason='stopped'):
         self.drive.stop()
@@ -173,7 +163,7 @@ class FollowController:
         self.reason = reason
 
     def receive(self, observation, now_ms):
-        if not self._time_valid(now_ms):
+        if not valid_time(now_ms, self.updated_ms):
             self.stop('invalid_time')
             return False
         self.output(now_ms)
@@ -181,20 +171,21 @@ class FollowController:
             if is_stop_command(observation, 'follow'):
                 self.stop()
                 return True
-            if any(not isinstance(observation[k], bool)
-                   for k in ('target_visible', 'sensor_ok')):
-                raise ValueError('boolean observation status required')
-            if not observation['sensor_ok']:
+            target_visible = observation['target_visible']
+            sensor_ok = observation['sensor_ok']
+            if not isinstance(target_visible, bool) or not isinstance(sensor_ok, bool):
+                raise ValueError('sensor flags must be true or false')
+            if not sensor_ok:
                 self.stop('sensor_fault')
                 return False
-            if not observation['target_visible']:
+            if not target_visible:
                 self.stop('target_lost')
                 return False
-            samples = [observation[k] for k in ('target_ms', 'obstacle_ms')]
-            if any(not is_integer(v) or v < 0 or not 0 <= now_ms - v <= self.sample_timeout_ms
-                   for v in samples):
-                self.stop('stale_observation')
-                return False
+            samples = (observation['target_ms'], observation['obstacle_ms'])
+            for sample in samples:
+                if not is_integer(sample) or sample < 0 or not 0 <= now_ms - sample <= self.sample_timeout_ms:
+                    self.stop('stale_observation')
+                    return False
             distance = observation['obstacle_cm']
             if not finite_number(distance) or distance < 0:
                 raise ValueError('finite nonnegative range required')
@@ -224,7 +215,7 @@ class FollowController:
             return False
 
     def output(self, now_ms):
-        if not self._time_valid(now_ms):
+        if not valid_time(now_ms, self.updated_ms):
             self.stop('invalid_time')
         else:
             if self.armed:

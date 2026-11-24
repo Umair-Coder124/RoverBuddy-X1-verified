@@ -68,9 +68,9 @@ Prices are in USD. Shipping and final costs still need checking.
 | Neck brackets, bearing plates and pivot flange hardware (draft) | 1 | 155.00 | 155.00 | [Supplier](https://www.thanfa.com/en/rfq/) | Estimate for two brackets, two bearing plates, shaft, spacer and washer. Get a quote. |
 | Mounting bolts, nuts and spacers (draft, if not covered by existing kits) | 1 | 35.65 | 35.65 | [Supplier](https://www.noon.com/saudi-en/m2-m3-m4-m5-nuts-and-bolts-assorted-set-1225-pcs-carbon-steel-hex-socket-head-cap-screws-bolts-and-nuts-kit-thread-fastener-machine-hex-bolts-nuts-assortment-kit-with-4pieces-hex-keys-for-free/ZCF1A998446E792981AECZ/p/) | Estimate: SAR 114.94 kit plus $5 for missing sizes. Check existing hardware before buying. |
 
-**Estimated subtotal: $1,869.97**
+**Estimated parts subtotal: $1,869.97 (SAR 7,012.39)**
 
-All rows now have prices or budget estimates. Three estimates still need actual supplier confirmation. The optional buffer is a price reference only.
+Prices include estimates. Final quotes, shipping and any additional taxes are still pending. The optional buffer is a price reference.
 
 ## Price checks
 
@@ -80,8 +80,6 @@ All rows now have prices or budget estimates. Three estimates still need actual 
 - Custom metal price estimates use published prototype machining ranges: https://yeyuancnc.com/pricing/ . The $155 estimate is two brackets at $35 each, two plates at $15 each, a pivot shaft at $35, and a spacer and washer at $10 each. Actual metal, fit, delivery, and fabrication prices need a supplier quote: https://www.thanfa.com/en/rfq/
 
 ## Delivery and quote checks
-
-The listed parts subtotal is $1,869.97 (about SAR 7,012.39 at 3.75 SAR/USD). This is a budget before final delivery and any taxes or fees not already included in listed prices.
 
 - Custom metal parts: $215 is an estimate. Request a written quote covering the tilt bracket, adapters, neck brackets and bearing/pivot hardware: https://www.thanfa.com/en/rfq/
 - Printing: $146.67 is a budget. The print supplier needs the actual printable part files, material and finishing requirements for a confirmed quote: https://omq3d.com/en/calculator.html

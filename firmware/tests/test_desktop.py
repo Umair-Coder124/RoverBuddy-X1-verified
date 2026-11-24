@@ -1,13 +1,9 @@
-import unittest, sys
+import unittest
+import sys
 import tempfile
-import io
-import json
-import runpy
-import types
-from unittest.mock import patch
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from drive_logic import HeadController, FollowController, TiltPulsePlanner
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from desktop_models import HeadController, FollowController, TiltPulsePlanner
 from simulate import detection_report, video_reports, make_people_detector, BoxTargetLock, box_iou
 
 class HeadTests(unittest.TestCase):
@@ -298,13 +294,18 @@ class FollowTests(unittest.TestCase):
         self.assertTrue(c.drive.armed)
         self.assertTrue(c.head.armed)
 
-    def test_target_loss_stops_drive_and_freezes_head(self):
-        c = self.started()
-        self.assertFalse(c.receive(self.sample(100, target_visible=False), 100))
-        state = c.output(100)
-        self.assertStopped(state)
-        self.assertEqual(state['reason'], 'target_lost')
-        self.assertEqual(c.output(5000)['head_deg'], state['head_deg'])
+    def test_target_loss_or_sensor_fault_stops_both(self):
+        for changes, reason in [(dict(target_visible=False), 'target_lost'),
+                                (dict(sensor_ok=False), 'sensor_fault')]:
+            with self.subTest(reason=reason):
+                c = self.started()
+                self.assertFalse(c.receive(self.sample(100, **changes), 100))
+                state = c.output(100)
+                self.assertStopped(state)
+                self.assertFalse(c.drive.armed)
+                self.assertFalse(c.head.armed)
+                self.assertEqual(state['reason'], reason)
+                self.assertEqual(c.output(5000)['head_deg'], state['head_deg'])
 
     def test_obstacle_threshold_includes_boundary_and_zero(self):
         for distance in [0, 29.9, 30]:
@@ -313,14 +314,6 @@ class FollowTests(unittest.TestCase):
             self.assertStopped(c.output(100))
             self.assertEqual(c.reason, 'obstacle')
         self.assertTrue(FollowController().receive(self.sample(resume=True, obstacle_cm=30.1), 0))
-
-    def test_sensor_fault_stops_both_controllers(self):
-        c = self.started()
-        self.assertFalse(c.receive(self.sample(100, sensor_ok=False), 100))
-        self.assertStopped(c.output(100))
-        self.assertFalse(c.drive.armed)
-        self.assertFalse(c.head.armed)
-        self.assertEqual(c.reason, 'sensor_fault')
 
     def test_camera_and_range_have_independent_freshness(self):
         for changes in [dict(target_ms=0), dict(obstacle_ms=0),

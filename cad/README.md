@@ -15,11 +15,7 @@
 
 The November 24 Onshape export contains the new head shell, bearings, brackets and bolts. The STEP reopened with 188 valid solids. The camera ribbon path is missing from the export.
 
-## Main parts
-
-- Base with four wheels, motor brackets and battery tray.
-- Raspberry Pi tray, electronics space and chest display.
-- Moving head with a camera and pan-and-tilt servo mounts.
+The model includes the four-wheel base, electronics trays, chest display and moving camera head.
 
 ## Measurements to check
 
@@ -32,9 +28,9 @@ The November 24 Onshape export contains the new head shell, bearings, brackets a
 | Pan mount | 41 mm raised gap; 42.7 mm actuator reference envelope |
 | Pan power board | 70 × 39 × 32 mm candidate enclosure |
 
-These are model measurements. Check actual parts and clearances before printing or assembly.
+Check these dimensions against the actual parts before printing.
 
-For older measurements and supplier drawings, see the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md) for measurements, supplier drawings and earlier model details.
+For earlier measurements and drawings, see the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md).
 
 ## Fit check
 
