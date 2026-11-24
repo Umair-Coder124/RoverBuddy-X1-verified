@@ -55,7 +55,6 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ## Current Status
 
-AI assistance was used during CAD, firmware and documentation development. Independent design review and physical testing are pending.
 
 - **CAD & Simulation:** Design files and desktop simulations are available. The revised mounting design needs independent review and the repository CAD exports still need synchronization.
 - **Physical Build:** Waiting on Hack Club Fallen funding approval to order parts, print the PETG chassis, and assemble everything for Maker Faire Shenzhen!
