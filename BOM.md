@@ -22,7 +22,7 @@ Prices are in USD. Shipping and final costs still need checking.
 | DFRobot FIT0765 black 60mm LEFT mecanum wheel with coupling | 2 | 6.90 | 13.80 | [Supplier](https://www.dfrobot.com/product-2268.html) | Two left wheels. Check the roller layout against the maker's diagram. |
 | DFRobot FIT0766 black 60mm RIGHT mecanum wheel with coupling | 2 | 6.90 | 13.80 | [Supplier](https://www.dfrobot.com/product-2269.html) | Two right wheels. The robot needs two of each wheel type. |
 | ROBOTIS FR12-H101K XM430 hinge frame and idler bearing (903-0239-000) | 1 | 40.60 | 40.60 | [Supplier](https://en.robotis.com/shop_en/item.php?it_id=903-0239-000) | Optional pan bracket and bearing. Price checked Nov 23. Check adapter fit and shipping before ordering. |
-| D645MW tilt mounting bracket and custom adapters | 1 | Pending | Pending | [Supplier](https://www.thanfa.com/en/rfq/) | Price pending. Need to check the tilt bracket dimensions and get a metal fabrication quote. |
+| D645MW tilt mounting bracket and custom adapters | 1 | 60.00 | 60.00 | [Supplier](https://www.thanfa.com/en/rfq/) | Budget estimate: $30 each for two custom pieces. Check size and get a real quote before ordering. |
 | ROBOTIS DYNAMIXEL XM430-W210-T pan actuator (902-0125-000) | 1 | 269.90 | 269.90 | [Supplier](https://en.robotis.com/shop_en/item.php?it_id=902-0125-000) | Turns the head. Needs TTL and its own regulated 12V supply. Check fit, cables and delivery. |
 | Hitec D645MW tilt actuator (HCS ordering part 36645S) | 1 | 49.99 | 49.99 | [Supplier](https://www.hiteccs.com/actuators/product-details/D645MW) | Tilts the head. Needs 6V. Check mount, horn, PWM input and delivery. |
 | Pololu 2184 servo extension cable, 300mm, 22AWG, JR/Futaba male-female | 1 | 4.64 | 4.64 | [Supplier](https://www.pololu.com/product/2184/specs) | Extra cable for the tilt servo only. Listed price checked Nov 20. Check length, polarity and current. Backorder possible; Saudi delivery cost unknown. |
@@ -65,16 +65,16 @@ Prices are in USD. Shipping and final costs still need checking.
 | ROBOTIS X3P 240 mm cable pack (10 pcs, 903-0250-000) if required | 1 | 25.89 | 25.89 | [Supplier](https://www.robotis.ch/488-robot-cable-x3p-240mm-10pcs) | Optional longer pan cable pack. Listed price including VAT checked Nov 23. Check length, connectors, stock and Saudi delivery. Included cables may be enough. |
 | SN74AHCT125N tilt signal buffer (only if needed) | 1 | 0.95 | 0.95 | [Supplier](https://www.digikey.com/en/products/detail/texas-instruments/SN74AHCT125N/375798) | Price reference checked Nov 24. Confirm servo signal voltage and safe startup before choosing it. Shipping and extra parts pending. |
 | MR106ZZ pivot bearings 6 x 10 x 3 mm (draft candidate) | 2 | 2.80 | 5.60 | [Supplier](https://www.jsumo.com/mr-106-zz-miniature-bearing-6x10x3mm-6mm-hole) | For the tilt pivot. Price reference checked Nov 24. Confirm fit and Saudi delivery. |
-| Neck brackets, bearing plates and pivot flange hardware (draft) | 1 | Pending | Pending | [Supplier](https://www.thanfa.com/en/rfq/) | Final parts and fabrication quote pending independent design review. |
-| Mounting bolts, nuts and spacers (draft, if not covered by existing kits) | 1 | Pending | Pending | [Supplier](https://ielectrony.com/en/product/200pcs-screw-kit-for-robot-accessories/) | Existing kit includes M3 nuts but only 6mm M3 screws. Check the other sizes and buy only what is missing. |
+| Neck brackets, bearing plates and pivot flange hardware (draft) | 1 | 155.00 | 155.00 | [Supplier](https://www.thanfa.com/en/rfq/) | Budget estimate for two brackets, two bearing plates, pivot shaft, spacer and washer. Get a quote before ordering. |
+| Mounting bolts, nuts and spacers (draft, if not covered by existing kits) | 1 | 35.65 | 35.65 | [Supplier](https://www.noon.com/saudi-en/m2-m3-m4-m5-nuts-and-bolts-assorted-set-1225-pcs-carbon-steel-hex-socket-head-cap-screws-bolts-and-nuts-kit-thread-fastener-machine-hex-bolts-nuts-assortment-kit-with-4pieces-hex-keys-for-free/ZCF1A998446E792981AECZ/p/) | Budget estimate: SAR 114.94 kit price reference plus $5 for missing sizes. Buy only the required fasteners after checking the existing kit. |
 
-**Priced subtotal: $1,619.32**
+**Estimated subtotal: $1,869.97**
 
-3 items still need final prices. The optional buffer price is a reference only.
+All rows now have prices or budget estimates. Three estimates still need actual supplier confirmation. The optional buffer is a price reference only.
 
 ## Price checks
 
 - iElectrony screw kit: SAR 56.50, already in the BOM. It includes M3 nuts and 6 mm screws, so the longer bolts still need checking.
 - Noon screw assortment: SAR 114.94 listed. This is a backup price reference only. It contains many extra pieces and does not cover every exact size.
   https://www.noon.com/saudi-en/ZCF1A998446E792981AECZ/p/
-- Custom metal brackets and plates still need a quote based on their actual dimensions: https://www.thanfa.com/en/rfq/
+- Custom metal price estimates use published prototype machining ranges: https://yeyuancnc.com/pricing/ . The $155 estimate is two brackets at $35 each, two plates at $15 each, a pivot shaft at $35, and a spacer and washer at $10 each. Actual metal, fit, delivery, and fabrication prices need a supplier quote: https://www.thanfa.com/en/rfq/
