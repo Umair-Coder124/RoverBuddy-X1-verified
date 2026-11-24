@@ -11,11 +11,12 @@
 ## CAD and mounting
 
 - [ ] Independently inspect the revised tilt bearing and shaft retention, neck attachment, and bolt fit against Sophia's feedback.
-- [ ] Export the reviewed assembly, individual revised STEP files and updated screenshots to GitHub.
+- [x] Export the current assembly, individual STEP files, preview and mounting screenshots to GitHub.
 - [x] Widen the cable opening in the draft and check the centerline at the neutral position.
 - [ ] Check the real ribbon width, bending and clearance throughout head movement. Review the shell strength before printing.
 
-- [ ] Compare the latest STEP with the Onshape import in a separate revision.
+- [x] Reopen the November 24 Onshape STEP and check that all 188 solids are valid.
+- [ ] Check the camera ribbon path in Onshape; it is absent from the solid STEP export.
 - [ ] Check the pan mount gap (41 mm in the raised study versus a 42.7 mm reference envelope), screw holes, shaft position and coupling.
 - [ ] Compare actual tilt servo and horn dimensions with the supplier drawing before fabrication.
 - [ ] Check all mounting holes, fasteners, wheel clearance, camera alignment, connector access and cable movement.
