@@ -4,11 +4,14 @@ The software is still being developed on a computer. The physical robot has not 
 
 | File | Purpose |
 | --- | --- |
-| `drive_logic.py` | Wheel speeds, stop and timeout logic, and simulated head movement. |
+| `drive_logic.py` | Wheel speeds, stop and timeout logic. Start here. |
+| `desktop_models.py` | Simulated head movement, tilt calculations and follow-mode checks. |
 | `simulate.py` | Desktop examples and recorded-video detection. |
 | `pico/main.py` | Motor-control starter for the Pico. |
 | `pico/config.py` | Proposed pin settings and hardware enable flags. |
 | `tests/` | Desktop tests. |
+
+The Pico only needs the drive module for the current motor-control starter. The desktop model stays on the computer.
 
 ## How the code works
 
@@ -29,7 +32,7 @@ python3 firmware/simulate.py
 python3 -m unittest discover -s firmware/tests -v
 ```
 
-The desktop demo and 77 tests passed again on November 24, 2026. They use simulated inputs and mocked hardware. Recorded-video detection is optional and uses OpenCV.
+The desktop demo and 77 tests passed again on November 24, 2026, after separating the drive and desktop models. They use simulated inputs and mocked hardware. Recorded-video detection is optional and uses OpenCV.
 
 ## What is left
 

@@ -2,7 +2,8 @@
 import argparse
 import json
 from pathlib import Path
-from drive_logic import DriveController, HeadController, FollowController, TiltPulsePlanner
+from drive_logic import DriveController
+from desktop_models import HeadController, FollowController, TiltPulsePlanner
 
 
 def demo_drive():
