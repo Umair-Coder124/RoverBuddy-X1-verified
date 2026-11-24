@@ -23,7 +23,18 @@ The Pico only needs the drive module for the current motor-control starter. The 
 
 ## Development
 
-AI assistance was used to design, write, simplify and test the firmware, including the stop and resume logic. The next step for me is to study the code and test it independently as I build the robot.
+The firmware is organized into smaller files so each part is easier to understand and test.
+
+- **Pico 2:** The motor-control starter handles wheel calculations and movement commands.
+- **Safety stop:** The desktop model checks stops when commands are lost or sensor readings indicate a problem.
+- **Pi 5 communication:** Planned to handle camera tracking and send movement instructions over USB serial.
+- **Camera head:** Pan and tilt are tested in a desktop simulation.
+
+The next step is to study the code and independently test it with the real components.
+
+## Development credit
+
+AI assistance was used to design, write, simplify and test the firmware.
 
 ## Run on a computer
 
