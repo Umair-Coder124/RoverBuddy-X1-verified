@@ -2,6 +2,8 @@
 
 ![Current assembly preview](Current%20assembly.png)
 
+![Rear view](Current%20assembl%20rear.png)
+
 ![Pivot screenshot](Current%20pivot.png)
 
 ![Neck bracket screenshot](Current%20neck.png)
