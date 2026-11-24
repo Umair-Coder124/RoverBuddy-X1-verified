@@ -51,6 +51,8 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ![Current assembly preview](cad/Current%20assembly.png)
 
+![Rear view](cad/Current%20assembl%20rear.png)
+
 ![Wiring overview](docs/wiring_overview.svg)
 
 ## Current Status
