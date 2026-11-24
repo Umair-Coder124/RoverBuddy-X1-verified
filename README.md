@@ -1,4 +1,4 @@
-# RoverBuddy X1 🤖🚀
+# RoverBuddy-X1 
 
 Hi! I'm Umair, a 15-year-old student from Riyadh, Saudi Arabia. This is my project for Hack Club's Fallen program: an autonomous, Mars-rover-inspired follow-me robot planned around a Raspberry Pi 5, a Raspberry Pi Pico 2, and mecanum wheels.
 
