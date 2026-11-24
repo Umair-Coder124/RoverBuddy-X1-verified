@@ -1,6 +1,6 @@
 # RoverBuddy X1 🤖🚀
 
-Hi! I'm Umair, a 15-year-old student from Riyadh, Saudi Arabia. This is my project for Hack Club's Fallen program: an autonomous, Mars-rover-inspired follow-me robot built with a Raspberry Pi 5, a Raspberry Pi Pico 2, and mecanum wheels.
+Hi! I'm Umair, a 15-year-old student from Riyadh, Saudi Arabia. This is my project for Hack Club's Fallen program: an autonomous, Mars-rover-inspired follow-me robot planned around a Raspberry Pi 5, a Raspberry Pi Pico 2, and mecanum wheels.
 
 ---
 
@@ -16,30 +16,30 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ---
 
-## What It Does (Features)
+## Planned features
 
 - **Smart Person Tracking:** Uses a Raspberry Pi Camera Module 3 paired with the Pi 5 to lock onto and follow a target.
 - **Omnidirectional Movement:** Four mecanum wheels driven by a Pico 2, letting the robot strafe sideways, spin in place, and drive in any direction smoothly.
 - **Heavy-Duty Pan-and-Tilt Head:** Powered by a ROBOTIS Dynamixel XM430 for the pan axis and a Hitec D645MW for the tilt axis.
-- **Chest Status Screen:** A 3.5-inch display mounted on the front to show real-time diagnostics and system status.
-- **Emergency Braking:** An HC-SR04 ultrasonic sensor that automatically cuts motor power if an obstacle gets too close.
+- **Chest Status Screen:** A 5-inch HDMI display mounted on the front to show real-time diagnostics and system status.
+- **Emergency Braking:** An HC-SR04 ultrasonic sensor is planned to provide distance readings for stopping. Independent motor cutoff and real sensor integration still need testing.
 
 ---
 
 ## Hardware Breakdown
 
-- **Brain (High-Level Logic & Vision):** Raspberry Pi 5 (8GB)
+- **Brain (High-Level Logic & Vision):** Raspberry Pi 5 (4GB)
 - **Muscle (Low-Level Motor Control & Sensors):** Raspberry Pi Pico 2
 - **Vision:** Raspberry Pi Camera Module 3
-- **Chassis & Movement:** Custom 3D printed PETG parts + 4x Mecanum wheels + DC gear motors with encoders
+- **Chassis & Movement:** Custom 3D printed PETG parts + 4x Mecanum wheels + TT DC gear motors
 - **Steering:** ROBOTIS Dynamixel XM430-W210-T & Hitec D645MW servos
-- **Power:** 3S LiPo battery pack regulated down via a 5V 5A BEC
+- **Power:** 3S LiPo battery pack with separate regulated power branches
 
 ---
 
 ## Project Structure & Quick Links
 
-- [CAD Model (Onshape)](https://cad.onshape.com) *(Update with your exact Onshape link)*
+- [CAD Model (Onshape)](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d) (check the current imported revision)
 - [`wiring/pinout_connection.md`](wiring/pinout_connection.md) – How everything is wired up
 - [Bill of materials (table)](BOM.md) – Full parts list and pricing
 - [`bom.csv`](bom.csv) – Downloadable CSV
@@ -49,7 +49,13 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ---
 
+![Earlier assembly preview](cad/Assembly_Preview.png)
+
+![Wiring overview](docs/wiring_overview.svg)
+
 ## Current Status
 
-- **CAD & Simulation:** Designed in Onshape and tested logic via desktop scripts.
+AI assistance was used during CAD, firmware and documentation development. Independent design review and physical testing are pending.
+
+- **CAD & Simulation:** Design files and desktop simulations are available. The revised mounting design needs independent review and the repository CAD exports still need synchronization.
 - **Physical Build:** Waiting on Hack Club Fallen funding approval to order parts, print the PETG chassis, and assemble everything for Maker Faire Shenzhen!
