@@ -1,0 +1,189 @@
+Part,Solid count,STEP file
+Battery,1,current-parts/Battery.step
+Battery Tray,1,current-parts/Battery Tray.step
+Bearing Bolt 1,1,current-parts/Bearing Bolt 1.step
+Bearing Bolt 2,1,current-parts/Bearing Bolt 2.step
+Bearing Nut 1,1,current-parts/Bearing Nut 1.step
+Bearing Nut 2,1,current-parts/Bearing Nut 2.step
+Camera Board,1,current-parts/Camera Board.step
+Camera Carrier,1,current-parts/Camera Carrier.step
+Camera Lens,1,current-parts/Camera Lens.step
+Chassis,1,current-parts/Chassis.step
+Chest Bracket 1,1,current-parts/Chest Bracket 1.step
+Chest Bracket 2,1,current-parts/Chest Bracket 2.step
+Chest Gusset,1,current-parts/Chest Gusset.step
+Chest Panel,1,current-parts/Chest Panel.step
+Controller,1,current-parts/Controller.step
+Controller Foot,1,current-parts/Controller Foot.step
+Display,1,current-parts/Display.step
+Display Frame,1,current-parts/Display Frame.step
+Display Retainer 1,1,current-parts/Display Retainer 1.step
+Display Retainer 2,1,current-parts/Display Retainer 2.step
+Driver Left Foot,1,current-parts/Driver Left Foot.step
+Driver Right Foot,1,current-parts/Driver Right Foot.step
+Front Left Base Screw 1,1,current-parts/Front Left Base Screw 1.step
+Front Left Base Screw 2,1,current-parts/Front Left Base Screw 2.step
+Front Left Base Screw 3,1,current-parts/Front Left Base Screw 3.step
+Front Left Base Screw 4,1,current-parts/Front Left Base Screw 4.step
+Front Left Cap Post 1,1,current-parts/Front Left Cap Post 1.step
+Front Left Cap Post 2,1,current-parts/Front Left Cap Post 2.step
+Front Left Coupling,1,current-parts/Front Left Coupling.step
+Front Left Motor,1,current-parts/Front Left Motor.step
+Front Left Motor Cradle,1,current-parts/Front Left Motor Cradle.step
+Front Left Motor Cradle Cap,1,current-parts/Front Left Motor Cradle Cap.step
+Front Left Roller 1,1,current-parts/Front Left Roller 1.step
+Front Left Roller 2,1,current-parts/Front Left Roller 2.step
+Front Left Roller 3,1,current-parts/Front Left Roller 3.step
+Front Left Roller 4,1,current-parts/Front Left Roller 4.step
+Front Left Roller 5,1,current-parts/Front Left Roller 5.step
+Front Left Roller 6,1,current-parts/Front Left Roller 6.step
+Front Left Roller 7,1,current-parts/Front Left Roller 7.step
+Front Left Roller 8,1,current-parts/Front Left Roller 8.step
+Front Left Roller 9,1,current-parts/Front Left Roller 9.step
+Front Left Shaft,1,current-parts/Front Left Shaft.step
+Front Left Wheel Hub,1,current-parts/Front Left Wheel Hub.step
+Front Right Base Screw 1,1,current-parts/Front Right Base Screw 1.step
+Front Right Base Screw 2,1,current-parts/Front Right Base Screw 2.step
+Front Right Base Screw 3,1,current-parts/Front Right Base Screw 3.step
+Front Right Base Screw 4,1,current-parts/Front Right Base Screw 4.step
+Front Right Cap Post 1,1,current-parts/Front Right Cap Post 1.step
+Front Right Cap Post 2,1,current-parts/Front Right Cap Post 2.step
+Front Right Coupling,1,current-parts/Front Right Coupling.step
+Front Right Motor,1,current-parts/Front Right Motor.step
+Front Right Motor Cradle,1,current-parts/Front Right Motor Cradle.step
+Front Right Motor Cradle Cap,1,current-parts/Front Right Motor Cradle Cap.step
+Front Right Roller 1,1,current-parts/Front Right Roller 1.step
+Front Right Roller 2,1,current-parts/Front Right Roller 2.step
+Front Right Roller 3,1,current-parts/Front Right Roller 3.step
+Front Right Roller 4,1,current-parts/Front Right Roller 4.step
+Front Right Roller 5,1,current-parts/Front Right Roller 5.step
+Front Right Roller 6,1,current-parts/Front Right Roller 6.step
+Front Right Roller 7,1,current-parts/Front Right Roller 7.step
+Front Right Roller 8,1,current-parts/Front Right Roller 8.step
+Front Right Roller 9,1,current-parts/Front Right Roller 9.step
+Front Right Shaft,1,current-parts/Front Right Shaft.step
+Front Right Wheel Hub,1,current-parts/Front Right Wheel Hub.step
+Head Shell,1,current-parts/Head Shell.step
+Inner Bearing Plate,1,current-parts/Inner Bearing Plate.step
+Left Chest Bolt 1,1,current-parts/Left Chest Bolt 1.step
+Left Chest Bolt 2,1,current-parts/Left Chest Bolt 2.step
+Left Chest Nut 1,1,current-parts/Left Chest Nut 1.step
+Left Chest Nut 2,1,current-parts/Left Chest Nut 2.step
+Left Driver,1,current-parts/Left Driver.step
+Left Neck Bolt,1,current-parts/Left Neck Bolt.step
+Left Neck Bracket,1,current-parts/Left Neck Bracket.step
+Left Neck Nut,1,current-parts/Left Neck Nut.step
+Left Pivot,1,current-parts/Left Pivot.step
+Neck Plate,1,current-parts/Neck Plate.step
+Outer Bearing Plate,1,current-parts/Outer Bearing Plate.step
+Pan Connector,1,current-parts/Pan Connector.step
+Pan Deck,1,current-parts/Pan Deck.step
+Pan Hub,1,current-parts/Pan Hub.step
+Pan Screw 1,1,current-parts/Pan Screw 1.step
+Pan Screw 2,1,current-parts/Pan Screw 2.step
+Pan Screw 3,1,current-parts/Pan Screw 3.step
+Pan Screw 4,1,current-parts/Pan Screw 4.step
+Pan Screw 5,1,current-parts/Pan Screw 5.step
+Pan Screw 6,1,current-parts/Pan Screw 6.step
+Pan Screw 7,1,current-parts/Pan Screw 7.step
+Pan Screw 8,1,current-parts/Pan Screw 8.step
+Pan Servo,1,current-parts/Pan Servo.step
+Pan Spacer 1,1,current-parts/Pan Spacer 1.step
+Pan Spacer 2,1,current-parts/Pan Spacer 2.step
+Pan Spacer 3,1,current-parts/Pan Spacer 3.step
+Pan Spacer 4,1,current-parts/Pan Spacer 4.step
+Pan Washer 1,1,current-parts/Pan Washer 1.step
+Pan Washer 2,1,current-parts/Pan Washer 2.step
+Pan Washer 3,1,current-parts/Pan Washer 3.step
+Pan Washer 4,1,current-parts/Pan Washer 4.step
+Pan Washer 5,1,current-parts/Pan Washer 5.step
+Pan Washer 6,1,current-parts/Pan Washer 6.step
+Pan Washer 7,1,current-parts/Pan Washer 7.step
+Pan Washer 8,1,current-parts/Pan Washer 8.step
+Pi 5,1,current-parts/Pi 5.step
+Pi Cooler,1,current-parts/Pi Cooler.step
+Pi Spacer 1,1,current-parts/Pi Spacer 1.step
+Pi Spacer 2,1,current-parts/Pi Spacer 2.step
+Pi Spacer 3,1,current-parts/Pi Spacer 3.step
+Pi Spacer 4,1,current-parts/Pi Spacer 4.step
+Pi Standoff 1,1,current-parts/Pi Standoff 1.step
+Pi Standoff 2,1,current-parts/Pi Standoff 2.step
+Pi Standoff 3,1,current-parts/Pi Standoff 3.step
+Pi Standoff 4,1,current-parts/Pi Standoff 4.step
+Pi Tray,1,current-parts/Pi Tray.step
+Pivot Bearing 1,1,current-parts/Pivot Bearing 1.step
+Pivot Bearing 2,1,current-parts/Pivot Bearing 2.step
+Pivot Flange Bolt 1,1,current-parts/Pivot Flange Bolt 1.step
+Pivot Flange Bolt 2,1,current-parts/Pivot Flange Bolt 2.step
+Pivot Flange Nut 1,1,current-parts/Pivot Flange Nut 1.step
+Pivot Flange Nut 2,1,current-parts/Pivot Flange Nut 2.step
+Pivot Retaining Bolt,1,current-parts/Pivot Retaining Bolt.step
+Pivot Spacer,1,current-parts/Pivot Spacer.step
+Pivot Washer,1,current-parts/Pivot Washer.step
+Power Distribution,1,current-parts/Power Distribution.step
+Power Distribution Foot,1,current-parts/Power Distribution Foot.step
+Rear Left Base Screw 1,1,current-parts/Rear Left Base Screw 1.step
+Rear Left Base Screw 2,1,current-parts/Rear Left Base Screw 2.step
+Rear Left Base Screw 3,1,current-parts/Rear Left Base Screw 3.step
+Rear Left Base Screw 4,1,current-parts/Rear Left Base Screw 4.step
+Rear Left Cap Post 1,1,current-parts/Rear Left Cap Post 1.step
+Rear Left Cap Post 2,1,current-parts/Rear Left Cap Post 2.step
+Rear Left Coupling,1,current-parts/Rear Left Coupling.step
+Rear Left Motor,1,current-parts/Rear Left Motor.step
+Rear Left Motor Cradle,1,current-parts/Rear Left Motor Cradle.step
+Rear Left Motor Cradle Cap,1,current-parts/Rear Left Motor Cradle Cap.step
+Rear Left Roller 1,1,current-parts/Rear Left Roller 1.step
+Rear Left Roller 2,1,current-parts/Rear Left Roller 2.step
+Rear Left Roller 3,1,current-parts/Rear Left Roller 3.step
+Rear Left Roller 4,1,current-parts/Rear Left Roller 4.step
+Rear Left Roller 5,1,current-parts/Rear Left Roller 5.step
+Rear Left Roller 6,1,current-parts/Rear Left Roller 6.step
+Rear Left Roller 7,1,current-parts/Rear Left Roller 7.step
+Rear Left Roller 8,1,current-parts/Rear Left Roller 8.step
+Rear Left Roller 9,1,current-parts/Rear Left Roller 9.step
+Rear Left Shaft,1,current-parts/Rear Left Shaft.step
+Rear Left Wheel Hub,1,current-parts/Rear Left Wheel Hub.step
+Rear Right Base Screw 1,1,current-parts/Rear Right Base Screw 1.step
+Rear Right Base Screw 2,1,current-parts/Rear Right Base Screw 2.step
+Rear Right Base Screw 3,1,current-parts/Rear Right Base Screw 3.step
+Rear Right Base Screw 4,1,current-parts/Rear Right Base Screw 4.step
+Rear Right Cap Post 1,1,current-parts/Rear Right Cap Post 1.step
+Rear Right Cap Post 2,1,current-parts/Rear Right Cap Post 2.step
+Rear Right Coupling,1,current-parts/Rear Right Coupling.step
+Rear Right Motor,1,current-parts/Rear Right Motor.step
+Rear Right Motor Cradle,1,current-parts/Rear Right Motor Cradle.step
+Rear Right Motor Cradle Cap,1,current-parts/Rear Right Motor Cradle Cap.step
+Rear Right Roller 1,1,current-parts/Rear Right Roller 1.step
+Rear Right Roller 2,1,current-parts/Rear Right Roller 2.step
+Rear Right Roller 3,1,current-parts/Rear Right Roller 3.step
+Rear Right Roller 4,1,current-parts/Rear Right Roller 4.step
+Rear Right Roller 5,1,current-parts/Rear Right Roller 5.step
+Rear Right Roller 6,1,current-parts/Rear Right Roller 6.step
+Rear Right Roller 7,1,current-parts/Rear Right Roller 7.step
+Rear Right Roller 8,1,current-parts/Rear Right Roller 8.step
+Rear Right Roller 9,1,current-parts/Rear Right Roller 9.step
+Rear Right Shaft,1,current-parts/Rear Right Shaft.step
+Rear Right Wheel Hub,1,current-parts/Rear Right Wheel Hub.step
+Right Chest Bolt 1,1,current-parts/Right Chest Bolt 1.step
+Right Chest Bolt 2,1,current-parts/Right Chest Bolt 2.step
+Right Chest Nut 1,1,current-parts/Right Chest Nut 1.step
+Right Chest Nut 2,1,current-parts/Right Chest Nut 2.step
+Right Coupler,1,current-parts/Right Coupler.step
+Right Driver,1,current-parts/Right Driver.step
+Right Neck Bolt,1,current-parts/Right Neck Bolt.step
+Right Neck Bracket,1,current-parts/Right Neck Bracket.step
+Right Neck Nut,1,current-parts/Right Neck Nut.step
+Sensor,1,current-parts/Sensor.step
+Sensor Mount 1,1,current-parts/Sensor Mount 1.step
+Sensor Mount 2,1,current-parts/Sensor Mount 2.step
+Tilt Servo,1,current-parts/Tilt Servo.step
+Tilt Servo 2,1,current-parts/Tilt Servo 2.step
+Tilt Servo 3,1,current-parts/Tilt Servo 3.step
+Tilt Servo 4,1,current-parts/Tilt Servo 4.step
+Tilt Servo 5,1,current-parts/Tilt Servo 5.step
+Tilt Servo 6,1,current-parts/Tilt Servo 6.step
+Tilt Servo 7,1,current-parts/Tilt Servo 7.step
+Tilt Servo 8,1,current-parts/Tilt Servo 8.step
+Tilt Yoke,1,current-parts/Tilt Yoke.step
+Ultrasonic Transducer 1,1,current-parts/Ultrasonic Transducer 1.step
+Ultrasonic Transducer 2,1,current-parts/Ultrasonic Transducer 2.step
