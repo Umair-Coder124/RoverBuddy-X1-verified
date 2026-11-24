@@ -37,15 +37,15 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ---
 
-## Project Structure & Quick Links
+## Project links
 
-- [CAD Model (Onshape)](https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d) (check the current imported revision)
-- [`wiring/pinout_connection.md`](wiring/pinout_connection.md) – How everything is wired up
-- [Bill of materials (table)](BOM.md) – Full parts list and pricing
-- [`bom.csv`](bom.csv) – Downloadable CSV
-- [Robot code and simulation](firmware/README.md)
-- [3D model notes](cad/README.md)
-- [Build checklist](docs/build-checklist.md)
+- Onshape: https://cad.onshape.com/documents/6810cacad94ccaed2254a4c9/w/506e2971336fa1f66d037230/e/09c7e032cc91bfb2e46e0e5d
+- Wiring: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/wiring/pinout_connection.md
+- BOM table: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/BOM.md
+- BOM CSV: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/bom.csv
+- Code and simulation: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/firmware/README.md
+- 3D model: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/cad/README.md
+- Build checklist: https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/main/docs/build-checklist.md
 
 ---
 
