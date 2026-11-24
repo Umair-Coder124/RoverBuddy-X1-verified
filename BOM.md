@@ -78,3 +78,16 @@ All rows now have prices or budget estimates. Three estimates still need actual 
 - Noon screw assortment: SAR 114.94 listed. This is a backup price reference only. It contains many extra pieces and does not cover every exact size.
   https://www.noon.com/saudi-en/ZCF1A998446E792981AECZ/p/
 - Custom metal price estimates use published prototype machining ranges: https://yeyuancnc.com/pricing/ . The $155 estimate is two brackets at $35 each, two plates at $15 each, a pivot shaft at $35, and a spacer and washer at $10 each. Actual metal, fit, delivery, and fabrication prices need a supplier quote: https://www.thanfa.com/en/rfq/
+
+## Delivery and quote checks
+
+The listed parts subtotal is $1,869.97 (about SAR 7,012.39 at 3.75 SAR/USD). This is a budget before final delivery and any taxes or fees not already included in listed prices.
+
+- Custom metal parts: $215 is an estimate. Request a written quote covering the tilt bracket, adapters, neck brackets and bearing/pivot hardware: https://www.thanfa.com/en/rfq/
+- Printing: $146.67 is a budget. The print supplier needs the actual printable part files, material and finishing requirements for a confirmed quote: https://omq3d.com/en/calculator.html
+- iElectrony: Saudi delivery is listed as 1–3 business days for major cities; exact cost and timing appear at checkout: https://ielectrony.com/en/shipping-payment-methods/
+- Adafruit ships to Saudi Arabia; check the cart for shipping and import fees: https://www.adafruit.com/shipping_locations
+- DigiKey delivery charges depend on the order and destination: https://www.digikey.com/en/help-support/delivery-information/international-shipping-rates
+- Saudi standard VAT is 15%; check which prices already include VAT before adding any tax: https://zatca.gov.sa/en/RulesRegulations/VAT/Pages/About-VAT.aspx
+
+Final supplier quotes and delivered total are pending. No order has been placed.
