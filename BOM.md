@@ -22,7 +22,7 @@ Prices are in USD. Shipping and final costs still need checking.
 | DFRobot FIT0765 black 60mm LEFT mecanum wheel with coupling | 2 | 6.90 | 13.80 | [Supplier](https://www.dfrobot.com/product-2268.html) | Two left wheels. Check the roller layout against the maker's diagram. |
 | DFRobot FIT0766 black 60mm RIGHT mecanum wheel with coupling | 2 | 6.90 | 13.80 | [Supplier](https://www.dfrobot.com/product-2269.html) | Two right wheels. The robot needs two of each wheel type. |
 | ROBOTIS FR12-H101K XM430 hinge frame and idler bearing (903-0239-000) | 1 | 40.60 | 40.60 | [Supplier](https://en.robotis.com/shop_en/item.php?it_id=903-0239-000) | Optional pan bracket and bearing. Price checked Nov 23. Check adapter fit and shipping before ordering. |
-| D645MW tilt mounting bracket and custom adapters | 1 | Pending | Pending | Pending | Price pending. Need to check the tilt bracket dimensions and get a metal fabrication quote. |
+| D645MW tilt mounting bracket and custom adapters | 1 | Pending | Pending | [Quote request](https://www.thanfa.com/en/rfq/) | Price pending. Need to check the tilt bracket dimensions and get a metal fabrication quote. |
 | ROBOTIS DYNAMIXEL XM430-W210-T pan actuator (902-0125-000) | 1 | 269.90 | 269.90 | [Supplier](https://en.robotis.com/shop_en/item.php?it_id=902-0125-000) | Turns the head. Needs TTL and its own regulated 12V supply. Check fit, cables and delivery. |
 | Hitec D645MW tilt actuator (HCS ordering part 36645S) | 1 | 49.99 | 49.99 | [Supplier](https://www.hiteccs.com/actuators/product-details/D645MW) | Tilts the head. Needs 6V. Check mount, horn, PWM input and delivery. |
 | Pololu 2184 servo extension cable, 300mm, 22AWG, JR/Futaba male-female | 1 | 4.64 | 4.64 | [Supplier](https://www.pololu.com/product/2184/specs) | Extra cable for the tilt servo only. Listed price checked Nov 20. Check length, polarity and current. Backorder possible; Saudi delivery cost unknown. |
@@ -65,7 +65,7 @@ Prices are in USD. Shipping and final costs still need checking.
 | ROBOTIS X3P 240 mm cable pack (10 pcs, 903-0250-000) if required | 1 | 25.89 | 25.89 | [Supplier](https://www.robotis.ch/488-robot-cable-x3p-240mm-10pcs) | Optional longer pan cable pack. Listed price including VAT checked Nov 23. Check length, connectors, stock and Saudi delivery. Included cables may be enough. |
 | Tilt PWM interface buffer if purchased D645MW requires it | 1 | Pending | Pending | [Supplier](https://www.hiteccs.com/public/uploads/data_sheet/HCS_D645MW_Specsheetv2.2_102-1729815560.pdf) | May need a buffer for 3.3V PWM. Check signal limits and startup before use. Price pending. |
 | MR106ZZ pivot bearings 6 x 10 x 3 mm (draft candidate) | 2 | 2.80 | 5.60 | [Supplier](https://www.jsumo.com/mr-106-zz-miniature-bearing-6x10x3mm-6mm-hole) | For the tilt pivot. Price reference checked Nov 24. Confirm fit and Saudi delivery. |
-| Neck brackets, bearing plates and pivot flange hardware (draft) | 1 | Pending | Pending | Pending | Final parts and fabrication quote pending independent design review. |
+| Neck brackets, bearing plates and pivot flange hardware (draft) | 1 | Pending | Pending | [Quote request](https://www.thanfa.com/en/rfq/) | Final parts and fabrication quote pending independent design review. |
 | Mounting bolts, nuts and spacers (draft, if not covered by existing kits) | 1 | Pending | Pending | [Supplier](https://ielectrony.com/en/product/200pcs-screw-kit-for-robot-accessories/) | Check exact sizes and quantities against the revised design and existing kit before ordering. |
 
 **Priced subtotal: $1,618.37**

@@ -1,10 +1,14 @@
 # 3D model
 
-![Assembly preview](Assembly_Preview.png)
+![Revised assembly draft](Assembly%20review.png)
+
+![Pivot](Pivot%20review.png)
+
+![Neck brackets](Neck%20review.png)
 
 [Earlier GitHub STEP model](RoverBuddy_X1_Full_Pan_Tilt_Fit_Study.step) · [Head preview](Head_Camera.png) · [Rear preview](Integrated_Rear_Preview.png)
 
-The GitHub exports and previews are from the earlier assembly. A revised mounting draft was prepared on November 24 and reported imported to Onshape. Independent review, fit checks and new exports are still pending.
+The GitHub exports and previews are from the earlier assembly. A revised mounting draft was prepared on November 24 and reported imported to Onshape. All 182 parts reopened successfully in the revised STEP. The pictures above show the draft, not the older GitHub STEP. The current draft still needs independent review, fit checks and upload of the matching exports.
 
 ## Main parts
 
@@ -28,3 +32,12 @@ These are model measurements. Check actual parts and clearances before printing 
 [Parts manifest](Parts_Manifest.csv) · [Interference check](Interference_Check.csv) · [Earlier detailed STEP](RoverBuddy_X1_Detailed_Assembly.step)
 
 See the [build checklist](../docs/build-checklist.md) for remaining checks and the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md) for measurements, supplier drawings and earlier model details.
+
+## Fit check
+
+- Two 6 × 10 × 3 mm bearing envelopes are in the tilt mount.
+- The neck has two brackets and fasteners modeled.
+- The camera cable still intersects the head shell in the model; fix this before printing.
+- Check real bearing fit, fastener engagement, head travel and mounting strength before building.
+
+Custom metal parts need a supplier quote. Quote request: https://www.thanfa.com/en/rfq/

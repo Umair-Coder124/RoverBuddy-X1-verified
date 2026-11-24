@@ -49,7 +49,7 @@ I wanted to build something way more reliable, modular, and actually capable of 
 
 ---
 
-![Earlier assembly preview](cad/Assembly_Preview.png)
+![Revised CAD draft](cad/Assembly%20review.png)
 
 ![Wiring overview](docs/wiring_overview.svg)
 
