@@ -1,4 +1,4 @@
-"""Desktop-only models for head angles and simulated sensor input."""
+"""Optional desktop models for the moving head and follow mode. The Pico does not load this file."""
 from drive_logic import (
     DriveController, finite_number, is_integer, valid_time,
     is_stop_command, resume_requested,

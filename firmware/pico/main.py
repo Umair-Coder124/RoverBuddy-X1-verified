@@ -45,7 +45,7 @@ try:
         tick = time.ticks_ms()
         elapsed += time.ticks_diff(tick, previous)
         previous = tick
-        # Read bounded chunks without waiting for an entire line.
+        # Read a little at a time so an unfinished line can't delay the stop check.
         for _ in range(128):
             if not poll.poll(0):
                 break
@@ -63,12 +63,14 @@ try:
                 buffer = ''
                 discard_line = False
             elif not discard_line:
+                # Stop and skip the rest of an oversized message.
                 if len(buffer) >= 256:
                     controller.stop()
                     buffer = ''
                     discard_line = True
                 else:
                     buffer += char
+        # Check the timeout even if no new command arrived.
         apply(controller.output(elapsed))
         time.sleep_ms(5)
 finally:

@@ -17,16 +17,11 @@ python3 firmware/simulate.py
 python3 -m unittest discover -s firmware/tests -p test_drive.py -v
 ```
 
-The drive tests check mixing, timeout, resume, bad commands and the simulated Pico runtime. If a command stops arriving for over 400 ms, wheel output goes to zero. The next movement needs `armed=true` and `resume=true`.
+The drive tests check mixing, timeout, resume, bad commands. If a command stops arriving for over 400 ms, wheel output goes to zero. The next movement needs `armed=true` and `resume=true`.
 
-For the other desktop experiments and their tests:
+## Optional desktop experiments
 
-```sh
-python3 firmware/simulate.py --full
-python3 -m unittest discover -s firmware/tests -v
-```
-
-Recorded-video detection is optional (`--video`); it uses OpenCV and does not control hardware. See the [firmware reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/firmware/README.md) for commands and limits.
+Run `python3 firmware/simulate.py --full` to see what happens when a target disappears or a sensor stops sending readings. The extra tests in `firmware/tests/extra/` also check the Pico loop with pretend motors. Run all tests with `python3 -m unittest discover -s firmware/tests -v`.
 
 ## Still to do
 

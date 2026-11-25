@@ -13,7 +13,7 @@
 - [Download all individual parts](Current%20parts.zip)
 - [Current parts list](Current%20parts.csv)
 
-The November 24 Onshape export contains the new head shell, bearings, brackets and bolts. The STEP reopened with 188 valid solids. The camera ribbon path is missing from the export.
+The November 24 Onshape export contains the new head shell, bearings, brackets and bolts. The assembly opened again after export. The camera ribbon path is missing from the export.
 
 The model includes the four-wheel base, electronics trays, chest display and moving camera head.
 
@@ -22,19 +22,17 @@ The model includes the four-wheel base, electronics trays, chest display and mov
 | Part | Design measurements |
 | --- | --- |
 | Pi tray | 58 × 49 mm board mounting pattern |
-| Battery space | 108 × 35 × 27 mm reference envelope |
-| Chest display | 121 × 89.48 mm reference envelope |
+| Battery space | 108 × 35 × 27 mm space used in the model |
+| Chest display | 121 × 89.48 mm space used in the model |
 | Camera cable | 342 mm longest sampled route; 500 mm cable candidate |
-| Pan mount | 41 mm raised gap; 42.7 mm actuator reference envelope |
-| Pan power board | 70 × 39 × 32 mm candidate enclosure |
+| Pan mount | 41 mm raised gap; 42.7 mm actuator space used in the model |
+| Pan power board | 70 × 39 × 32 mm board to fit |
 
 Check these dimensions against the actual parts before printing.
 
-For earlier measurements and drawings, see the [full CAD reference](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/README.md).
-
 ## Fit check
 
-- Two 6 × 10 × 3 mm bearing envelopes are in the tilt mount.
+- The tilt mount has space modeled for two 6 × 10 × 3 mm bearings.
 - The neck has two brackets and fasteners modeled.
 - The cable opening was widened to 21.5 × 21.5 mm in the revised head shell. The modeled cable path clears the shell at its neutral position. The real cable still needs a movement test.
 - Check real bearing fit, fastener engagement, head travel and mounting strength before building.

@@ -2,7 +2,7 @@ import unittest
 import sys
 import tempfile
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from desktop_models import HeadController, FollowController, TiltPulsePlanner
 from simulate import detection_report, video_reports, make_people_detector, BoxTargetLock, box_iou
 

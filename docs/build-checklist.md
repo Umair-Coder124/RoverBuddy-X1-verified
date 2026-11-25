@@ -2,41 +2,25 @@
 
 ## Before ordering
 
-- [ ] Check Fallen review status and funding.
-- [ ] Confirm the exact parts, stock, delivered prices, shipping and tax in the [BOM](../BOM.md).
-- [ ] Check FR12-H101K pan bracket fit, R-ML25 tilt horn fit and whether extra X3P cables are needed.
-- [ ] Get quotes for the remaining custom tilt bracket, neck brackets, bearing plates and pivot hardware. Confirm fastener quantities.
-- [ ] Confirm D645MW input voltage limits and whether a PWM buffer is needed.
+- [ ] Check Fallen funding, then confirm stock, shipping and tax for the [parts list](../BOM.md).
+- [ ] Check which screws and X3P cables come with the FR12-H101K pan bracket and R-ML25 tilt horn.
+- [ ] Get a quote for the tilt bracket, neck brackets, bearing plates and pivot hardware.
+- [ ] Check the D645MW signal voltage and whether it needs a PWM buffer.
 
-## CAD and mounting
+## Parts that need a fit check
 
-- [ ] Independently inspect the revised tilt bearing and shaft retention, neck attachment, and bolt fit against Sophia's feedback.
-- [x] Export the current assembly, individual STEP files, preview and mounting screenshots to GitHub.
-- [x] Widen the cable opening in the draft and check the centerline at the neutral position.
-- [ ] Check the real ribbon width, bending and clearance throughout head movement. Review the shell strength before printing.
+- [x] Export the assembly, individual parts and pictures. The November 24 STEP opened with 188 valid solids.
+- [x] Widen the camera cable opening and check the route with the head facing forward.
+- [ ] Check the ribbon in Onshape. The STEP leaves it out. Try the full head movement with the real 500 mm cable and allow room for bends and plugs.
+- [ ] Compare the 41 mm pan gap with the 42.7 mm actuator dimension. Check the shaft, coupling and screw positions.
+- [ ] Check the tilt servo and horn against the supplier drawing. Get a second person to check the bearings, shaft retention, neck attachment and bolts.
+- [ ] Check wheel clearance, camera alignment, shell strength and access to the plugs. Leave space for the 70 × 39 × 32 mm power board, wires and airflow.
 
-- [x] Reopen the November 24 Onshape STEP and check that all 188 solids are valid.
-- [ ] Check the camera ribbon path in Onshape; it is absent from the solid STEP export.
-- [ ] Check the pan mount gap (41 mm in the raised study versus a 42.7 mm reference envelope), screw holes, shaft position and coupling.
-- [ ] Compare actual tilt servo and horn dimensions with the supplier drawing before fabrication.
-- [ ] Check all mounting holes, fasteners, wheel clearance, camera alignment, connector access and cable movement.
-- [ ] Check the 500 mm camera ribbon throughout head travel. The longest sampled route was 342 mm; the remaining 158 mm also has to cover bends and connectors.
-- [ ] Find room for the DFR0946 (70 × 39 × 32 mm), wiring and airflow.
+## Before powering the rover
 
-## Before powering
+- [ ] Finish the pin-to-pin drawing and power budget. Assemble with power off.
+- [ ] Have a qualified adult check the battery protection, independent stop, wire ratings, regulators, grounds and isolation.
+- [ ] Check signal levels, startup, servo travel and wheel direction during supervised bench tests. Keep actuators disabled until the relevant checks pass.
+- [ ] Record what happens in each real test before trying a driving demo.
 
-- [ ] Have a qualified adult check the complete power circuit, battery protection, independent hardware stop, cable ratings, voltage regulation, grounding and isolation.
-- [ ] Confirm GPIO, sensor level conversion, startup behavior, servo travel and wheel polarity.
-- [ ] Complete the pin-to-pin schematic, power budget and supervised bench checks.
-- [ ] Assemble with power off. Keep actuators disabled until checks pass.
-- [ ] Record supervised real-world tests and fix any failures before a working demo.
-
-See the [wiring notes](WIRING.md) and [CAD notes](../cad/README.md).
-
-## Previous design notes
-
-Earlier measurements and decisions remain available in Git history:
-
-- [November 20 design check](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/docs/2026-11-20-design-review.md)
-- [November 21 parts plan](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/docs/2026-11-21-procurement-review.md)
-- [November 21 mounting check](https://github.com/Umair-Coder124/RoverBuddy-X1-verified/blob/d836ea650516e329bdd500ddd6cfbd0f682dbf04/cad/2026-11-21-mounting-review.md)
+[Wiring notes](WIRING.md) · [CAD measurements](../cad/README.md)

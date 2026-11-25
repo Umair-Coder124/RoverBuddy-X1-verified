@@ -1,4 +1,4 @@
-"""Desktop motion simulation and optional local-video detection; no hardware output."""
+"""Optional desktop experiments for movement and recorded video. The Pico does not load this file."""
 from pathlib import Path
 from drive_logic import DriveController
 from desktop_models import HeadController, FollowController, TiltPulsePlanner
