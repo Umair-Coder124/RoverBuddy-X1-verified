@@ -8,7 +8,7 @@ The code is being tested on a computer. The robot still needs to be built and te
 - `simulate.py` prints examples of forward, sideways and turning movement.
 - `pico/main.py` is the motor starter for the Pico 2. Its hardware flags are off until the wiring and power checks are complete.
 
-`desktop_models.py` and `desktop_experiments.py` are desktop experiments for the moving head, follow mode and recorded video. They are not needed on the Pico.
+`desktop_models.py` and `desktop_experiments.py` are only used on the computer. The individual experiments live in `experiments/head.py`, `experiments/follow.py` and `experiments/video.py`. Each has a matching test file in `tests/extra/`.
 
 ## Try it on a computer
 
