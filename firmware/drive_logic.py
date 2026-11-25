@@ -104,12 +104,3 @@ def resume_requested(command):
     if not isinstance(resume, bool):
         raise ValueError('resume must be true or false')
     return resume
-
-
-
-def __getattr__(name):
-    # Keep older desktop imports working without loading simulations on the Pico.
-    if name in ('HeadController', 'TiltPulsePlanner', 'FollowController'):
-        import desktop_models
-        return getattr(desktop_models, name)
-    raise AttributeError(name)
