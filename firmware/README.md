@@ -1,6 +1,6 @@
 # Robot code
 
-The main code is the drive logic and a Pico 2 starter. The real robot is still at the design stage.
+The planned setup uses the Pi 5 for the camera and the Pico 2 for the motors. So far the drive code runs on a computer. The robot has yet to be assembled.
 
 ## Try the drive demo
 
@@ -15,4 +15,4 @@ python3 -m unittest discover -s firmware/tests -p test_drive.py -v
 
 `pico/main.py` is the motor starter. Its outputs stay disabled until the wiring, power, wheel directions and independent stop have been checked with a qualified adult.
 
-Anything under `experiments/` is optional computer practice. One example limits the head angles. The other uses pretend readings to decide when to follow or stop. The real camera, sensors and motors still need testing together.
+Anything under `experiments/` is optional computer practice. One example limits the head angles. The other uses pretend readings to decide when to follow or stop. The nine basic drive tests passed on a computer. The camera, sensors and motors still need real testing.

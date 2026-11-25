@@ -13,9 +13,9 @@
 - [Download all individual parts](Current%20parts.zip)
 - [Current parts list](Current%20parts.csv)
 
-The November 24 Onshape export contains the new head shell, bearings, brackets and bolts. The assembly opened again after export. The camera ribbon path is missing from the export.
+On November 24, the STEP export had to be restored after an update went wrong. The latest export includes the new shell, bearings, brackets and bolts. It opens again, but the ribbon cable route is missing.
 
-The model includes the four-wheel base, electronics trays, chest display and moving camera head.
+The design started with the base. The chest screen and moving head came later. The cable hole was too restrictive for the planned moving head, so the opening was widened.
 
 ## Measurements to check
 
@@ -30,11 +30,11 @@ The model includes the four-wheel base, electronics trays, chest display and mov
 
 Check these dimensions against the actual parts before printing.
 
-## Fit check
+## What changed and what needs checking
 
 - The tilt mount has space modeled for two 6 × 10 × 3 mm bearings.
 - The neck has two brackets and fasteners modeled.
-- The cable opening was widened to 21.5 × 21.5 mm in the revised head shell. The modeled cable path clears the shell at its neutral position. The real cable still needs a movement test.
+- The cable opening was widened to 21.5 × 21.5 mm in the revised head shell. The cable route clears the shell with the head facing forward. The real cable still needs a movement test.
 - Check real bearing fit, fastener engagement, head travel and mounting strength before building.
 
 Custom metal parts need a supplier quote. Quote request: https://www.thanfa.com/en/rfq/

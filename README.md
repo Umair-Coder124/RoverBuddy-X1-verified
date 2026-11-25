@@ -4,26 +4,19 @@ Hi, I’m Umair. I’m 15 and I live in Riyadh, Saudi Arabia. This is my Hack Cl
 
 RoverBuddy X1 is a follow-me robot I’m designing. It’s kind of inspired by Mars rovers. The plan is to use a Raspberry Pi 5, a Raspberry Pi Pico 2, and mecanum wheels so it can move in any direction.
 
-## Why I’m building this
+## How it started
 
-Before this, I built a small ESP32-CAM car that I controlled from my phone. It was fun, but a lot of things went wrong:
+My old ESP32-CAM car had a laggy camera, broken plastic servos and messy wiring. It also hit walls. I wanted to try a different design.
 
-1. The camera lagged a lot
-2. The cheap plastic servos kept breaking
-3. It had no obstacle detection, so it hit walls
-4. The wiring was a mess
+I started with a four-wheel base, then added a screen on the chest and a camera head that can turn and tilt. Learning Onshape was difficult at first, especially getting the thickness of parts right.
 
-I wanted to make something stronger and smarter, with better camera tracking, instead of just buying a ready-made robot kit.
+## What I want to make
 
-## What I want it to do
-
-1. Follow a person using the Raspberry Pi Camera Module 3
-2. Move forward, sideways, and turn using 4 mecanum wheels
-3. Have a moving camera head (pan + tilt)
-4. Show status on a small screen on the front
-5. Stop when something is too close (ultrasonic sensor)
-
-Right now this is still mostly design and computer testing. I haven’t built the full robot yet.
+- A rover that can follow a person.
+- Four mecanum wheels so it can move sideways without turning first.
+- A camera head that moves up, down, left and right.
+- A screen that shows what the rover is doing.
+- A distance sensor to help it stop near obstacles.
 
 ## Main parts
 
@@ -51,7 +44,6 @@ Right now this is still mostly design and computer testing. I haven’t built th
 
 ![Wiring overview](docs/wiring_overview.svg)
 
-## Current status
+## Where I am now
 
-- **CAD & simulation:** Design files and desktop tests are ready. I updated the mounting parts in Onshape and exported STEP files. Still needs review and real fit checks when parts arrive.
-- **Physical build:** Waiting on Hack Club Fallen funding so I can order parts, print the chassis, and start assembling. I want to take it to Maker Faire Shenzhen if I can finish in time.
+The CAD has been exported and the basic drive demo runs on a computer. The head mounts and camera cable still need fit checks. I am waiting for Fallen funding to order parts and start the real build. My goal is to bring RoverBuddy to Shenzhen.

@@ -1,8 +1,10 @@
-# RoverBuddy X1 – Bill of materials
+# Parts for RoverBuddy X1
 
 [Download CSV](bom.csv)
 
-Prices are in USD. Shipping and final costs still need checking.
+The table shows the parts planned for the rover and what each is for. Prices are in USD. Shipping and final prices still need checking.
+
+The Pi 5 is for the camera and screen, while the Pico 2 is for the motors. The four mecanum wheels allow sideways movement. The new head uses metal mounting parts because the plastic mounts on the old car wore out. The battery and power boards still need an electrical check before ordering.
 
 | Item | Quantity | Unit price (USD) | Total (USD) | Link | Description |
 | --- | ---: | ---: | ---: | --- | --- |
@@ -72,14 +74,14 @@ Prices are in USD. Shipping and final costs still need checking.
 
 Prices include estimates. Final quotes, shipping and any additional taxes are still pending. The optional buffer is a price reference.
 
-## Price checks
+## Prices to check
 
 - iElectrony screw kit: SAR 56.50, already in the BOM. It includes M3 nuts and 6 mm screws, so the longer bolts still need checking.
 - Noon screw assortment: SAR 114.94 listed. This is a backup price reference only. It contains many extra pieces and does not cover every exact size.
   https://www.noon.com/saudi-en/ZCF1A998446E792981AECZ/p/
 - Custom metal price estimates use published prototype machining ranges: https://yeyuancnc.com/pricing/ . The $155 estimate is two brackets at $35 each, two plates at $15 each, a pivot shaft at $35, and a spacer and washer at $10 each. Actual metal, fit, delivery, and fabrication prices need a supplier quote: https://www.thanfa.com/en/rfq/
 
-## Delivery and quote checks
+## Shipping and custom parts
 
 - Custom metal parts: $215 is an estimate. Request a written quote covering the tilt bracket, adapters, neck brackets and bearing/pivot hardware: https://www.thanfa.com/en/rfq/
 - Printing: $146.67 is a budget. The print supplier needs the actual printable part files, material and finishing requirements for a confirmed quote: https://omq3d.com/en/calculator.html
