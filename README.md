@@ -47,3 +47,5 @@ I started with a four-wheel base, then added a screen on the chest and a camera 
 ## Where I am now
 
 The CAD has been exported and the basic drive demo runs on a computer. The head mounts and camera cable still need fit checks. I am waiting for Fallen funding to order parts and start the real build. My goal is to bring RoverBuddy to Shenzhen.
+
+Next, I plan to draw the wiring diagram on paper so I can go through the connections one by one.
