@@ -2,7 +2,7 @@
 
 ![Wiring overview](wiring_overview.svg)
 
-Red lines show power. Blue lines show signals. This is a draft. Keep power and actuators off until a qualified adult has checked the complete electrical setup.
+Red lines show power. Blue lines show signals. The overview is missing the ultrasonic sensor and its reserved GP12/GP13 connections; use the GPIO table below when drawing the next version. This is a draft. Keep power and actuators off until a qualified adult has checked the complete electrical setup.
 
 ## How the parts connect
 
