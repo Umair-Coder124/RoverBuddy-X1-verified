@@ -1,8 +1,12 @@
 # Wiring
 
-![Wiring overview](wiring_overview.svg)
+![Handwritten wiring diagram](handwritten-wiring.jpg)
 
-Red lines show power. Blue lines show signals. The overview is missing the ultrasonic sensor and its reserved GP12/GP13 connections; use the GPIO table below when drawing the next version. This is a draft. Keep power and actuators off until a qualified adult has checked the complete electrical setup.
+## Digital reference
+
+![Digital wiring overview](wiring_overview.svg)
+
+Red lines show power. Blue lines show signals. Both drawings are overview drafts. The GPIO table below adds the planned ultrasonic sensor connections and tilt signal that are missing from the drawings. This is a draft. Keep power and actuators off until a qualified adult has checked the complete electrical setup.
 
 ## How the parts connect
 
@@ -30,7 +34,8 @@ Check the actual servo interface, cable length, power rating, grounding and star
 | Rear left | GP6, GP7 |
 | Rear right | GP8, GP9 |
 | Tilt PWM (reserved) | GP11 |
-| Ultrasonic trigger and echo (reserved) | GP12, GP13 |
+| Ultrasonic trigger (reserved) | GP12 |
+| Ultrasonic echo (reserved, level conversion pending) | GP13 |
 | Interlock status (reserved) | GP14 |
 
 The sensor echo needs verified level conversion before it can connect to the 3.3 V GPIO. Only drive control is implemented in the Pico starter. The actual pin labels, wheel directions, driver and power circuit still need checking.

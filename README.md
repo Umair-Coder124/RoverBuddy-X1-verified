@@ -42,10 +42,12 @@ I started with a four-wheel base, then added a screen on the chest and a camera 
 
 ![Rear view](cad/Current%20assembl%20rear.png)
 
-![Wiring overview](docs/wiring_overview.svg)
+![Handwritten wiring diagram](docs/handwritten-wiring.jpg)
+
+[Digital wiring reference and planned pin connections](docs/WIRING.md)
 
 ## Where I am now
 
 The CAD has been exported and the basic drive demo runs on a computer. The head mounts and camera cable still need fit checks. I am waiting for Fallen funding to order parts and start the real build. My goal is to bring RoverBuddy to Shenzhen.
 
-Next, I plan to draw the wiring diagram on paper so I can go through the connections one by one.
+The wiring diagram is now drawn on paper. The digital diagram and pin notes are available as references.

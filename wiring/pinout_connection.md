@@ -2,6 +2,8 @@
 
 These are the planned connections. The actual wiring still needs to be built and tested. Follow the [detailed wiring notes](../docs/WIRING.md) and have a qualified adult check the electrical setup before connecting power.
 
+[Handwritten diagram](../docs/handwritten-wiring.jpg) · [Digital wiring reference](../docs/WIRING.md)
+
 ## Pi 5, Pico 2 and power
 - **Raspberry Pi 5:** Powered by the main 5V regulator. Runs the camera and tracking software.
 - **Raspberry Pi Pico 2:** Connected to the Pi 5 via USB Serial. Gets drive commands from the Pi and sends signals to the motor drivers.
