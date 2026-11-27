@@ -12,9 +12,18 @@
 - [x] Export the assembly, individual parts and pictures. The November 24 file opened successfully.
 - [x] Widen the camera cable opening and check the route with the head facing forward.
 - [ ] Check the ribbon in Onshape. The STEP leaves it out. Try the full head movement with the real 500 mm cable and allow room for bends and plugs.
-- [ ] Compare the 41 mm pan gap with the 42.7 mm actuator dimension. Check the shaft, coupling and screw positions.
+- [ ] Check the 43 mm pan gap and 0.3 mm modeled clearance against the real servo, shaft, coupling and screws.
 - [ ] Check the tilt servo and horn against the supplier drawing. Ask someone to check how the bearings, shaft, neck and bolts fit.
 - [ ] Check wheel clearance, camera alignment, shell strength and access to the plugs. Leave space for the 70 × 39 × 32 mm power board, wires and airflow.
+
+## Assembly order (planned)
+
+1. Check the delivered parts against the BOM and CAD measurements.
+2. Dry-fit the chassis, motor cradles and wheel couplings with power off.
+3. Check the battery tray, board mounts and display frame.
+4. Dry-fit the neck brackets, bearings, servo mounts and head shell.
+5. Check the ribbon path with the head moved by hand while disconnected, including plugs, bend clearance and cable guides.
+6. Ask a qualified adult to review the complete electrical layout and supervised bench-test plan before connecting any power.
 
 ## First real tests
 
