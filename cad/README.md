@@ -32,7 +32,7 @@ Check these dimensions against the actual parts before printing.
 
 ## November 27 fit check
 
-I reopened 23 individual STEP files for the chassis, battery, display, head, neck, pan mount, bearings and selected tilt parts. Each imported solid was valid. One tilt subpart (Tilt Servo 2) could not be retrieved, so this is a partial check.
+A desktop CAD check reopened 24 individual STEP files for the chassis, battery, display, head, neck, pan mount, bearings and selected tilt parts. Each imported solid was valid. One tilt subpart (Tilt Servo 2) could not be retrieved, so this is a partial check.
 
 - The top of the pan deck is at 157 mm and the bottom of the tilt yoke is at 200 mm. The old 41 mm gap came from an earlier design. The current 43 mm gap leaves 0.3 mm between the modeled pan servo and yoke at the exported pose. Check the real horn, coupling, bolts and tolerances before cutting the brackets.
 - The two modeled head pivot bearings are 10 mm across and 3 mm thick, matching the chosen bearing size on the BOM. Check their bore, shaft retention and fit with actual parts.
